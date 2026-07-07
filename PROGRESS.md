@@ -35,6 +35,18 @@
   - `#/board` ✅、`#/my-posts` ✅（未登入擋下）、`#/privacy` ✅
   - Console：0 error
 
+## 2026-07-07 — GitHub repo 建立與首次部署
+
+- `git init -b main`，初始 commit `a6e4edc`（39 檔案；`.env.local` 經確認未入庫，並移除殘留 template 資源 src/assets、public/icons.svg）
+- 以 Git Credential Manager 既存憑證（scopes: gist, repo, workflow）呼叫 GitHub API：
+  - 建立 public repo `lilichen-F/study-in-germany`（201）。第一次呼叫因 inline JSON 中文 payload 編碼問題靜默失敗（404 驗證），改 ASCII 描述 + `--data @file` 成功
+  - 啟用 GitHub Pages `build_type: workflow`（201）
+- `git push -u origin main` ✅
+- Workflow run #1：build ✅ / deploy ❌（當時 Pages 尚未啟用）→ 啟用後 workflow_dispatch 重跑：**全綠 ✅**
+- 上線驗證：https://lilichen-f.github.io/study-in-germany/ 回 HTTP 200，title 正確
+- ⚠️ **repo Secrets（SUPABASE_URL / SUPABASE_ANON_KEY）尚未設定**：build 不會失敗，但目前線上頁面在 supabase.ts 擲出 env 缺失錯誤（設計如此）。使用者設定 Secrets 後需再跑一次 workflow
+- 注意：SSH host alias `github.com-deutsch-weg` 綁的是另一個專案 `lilichen-F/deutsch-weg`（德語學習站），與本專案無關，未使用
+
 ### 已知注意事項
 - listings 的 `listings_public_read` policy（expires_at > NOW()）對所有 SELECT 生效
   → **本人在 /my-posts 也看不到自己已過期的貼文**（依提供之 SQL 原樣實作，未擅改）
