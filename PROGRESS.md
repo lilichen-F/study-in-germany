@@ -1,0 +1,42 @@
+# PROGRESS
+
+## 2026-07-07 — v2 初始建置（Google OAuth + RLS）
+
+### 建置內容
+- Scaffold：`npm create vite@latest -- --template react-ts`（Vite 8.1.3、React 19.2.7、TypeScript 6.0.2）
+- 依賴：@supabase/supabase-js 2.110.0、react-router-dom 7.18.1、tailwindcss 4.3.2（@tailwindcss/vite plugin）
+- tsconfig.app.json：加入 `strict: true`、`resolveJsonModule: true`
+- vite.config.ts：`base: './'` + tailwindcss plugin
+
+### 產出檔案
+| 檔案 | 說明 |
+|------|------|
+| src/lib/supabase.ts | createClient，detectSessionInUrl: true、flowType: 'pkce'；env 缺失時擲明確錯誤 |
+| src/lib/useAuth.ts | 依使用者提供範例；增加 redirectTo（GH Pages 子路徑需要） |
+| src/lib/types.ts | DB row 型別 + attachProfiles()（client-side join，因 schema 無 reviews→profiles FK） |
+| src/components/Header.tsx | 登入狀態顯示（頭像+名稱）、Google 登入/登出、我的發文連結 |
+| src/components/AuthGate.tsx | 未登入顯示登入提示；註明 RLS 才是真正權限層 |
+| src/components/PrivacyNotice.tsx | 可重用同意勾選（required checkbox + /privacy 連結） |
+| src/components/ReviewForm.tsx | 星等×2 + 評論；勾選同意才可送出；insert 帶 user.id |
+| src/components/ReviewList.tsx | 公開讀取；作者資料自 profiles 合併；本人顯示刪除鈕 |
+| src/components/BoardForm.tsx | 類型/地區/標題/內容/價格/聯絡方式；同意公開聯絡方式 checkbox |
+| src/components/BoardList.tsx | 類型篩選 tabs；過期過濾交由 RLS |
+| src/components/SchoolList/Detail、FAQ、Footer | v1 靜態內容元件 |
+| src/pages/Home、Schools、Board、Privacy、MyPosts | 5 路由頁面 |
+| src/data/schools.json（5 校）、faq.json（6 題） | 靜態資料 |
+| supabase/schema.sql | 使用者提供之 SQL 原樣保存（僅加註執行說明） |
+| .github/workflows/deploy.yml | GH Pages 官方 artifact 流程；SUPABASE_URL/ANON_KEY Secrets → VITE_ env |
+| .env.example / .env.local | env 範本 / 本地佔位值（.local 已 gitignore） |
+
+### 驗證結果
+- `npm run build`（tsc -b && vite build）：✅ 通過，0 error。bundle 466.29 kB（gzip 134.33 kB）
+- Dev server smoke test（佔位 Supabase env）：
+  - `#/` 首頁 ✅、`#/schools/goethe-berlin` ✅（AuthGate 正確顯示登入提示）
+  - `#/board` ✅、`#/my-posts` ✅（未登入擋下）、`#/privacy` ✅
+  - Console：0 error
+
+### 已知注意事項
+- listings 的 `listings_public_read` policy（expires_at > NOW()）對所有 SELECT 生效
+  → **本人在 /my-posts 也看不到自己已過期的貼文**（依提供之 SQL 原樣實作，未擅改）
+- 尚未 git init / commit（等使用者指示）
+- Supabase 端需手動：執行 schema.sql、啟用 Google provider、設定 Redirect URLs（見 README）

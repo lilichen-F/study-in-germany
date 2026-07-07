@@ -1,0 +1,42 @@
+[
+  {
+    "id": "goethe-berlin",
+    "name": "Goethe-Institut Berlin",
+    "city": "Berlin",
+    "priceRange": "€1,200–1,500 / 4週密集班",
+    "website": "https://www.goethe.de/ins/de/de/sta/ber.html",
+    "description": "官方德國文化中心，教學品質穩定，證書國際認可度最高，適合需要 APS 或簽證用語言證明的學生。"
+  },
+  {
+    "id": "goethe-muenchen",
+    "name": "Goethe-Institut München",
+    "city": "München",
+    "priceRange": "€1,300–1,600 / 4週密集班",
+    "website": "https://www.goethe.de/ins/de/de/sta/mue.html",
+    "description": "慕尼黑校區，鄰近大學區，設備新，寄宿家庭與宿舍資源多，但生活費在全德屬最高一級。"
+  },
+  {
+    "id": "did-frankfurt",
+    "name": "did deutsch-institut Frankfurt",
+    "city": "Frankfurt am Main",
+    "priceRange": "€800–1,100 / 4週密集班",
+    "website": "https://www.did.de",
+    "description": "連鎖語言學校，價格中等，開課頻率高（每週一皆可插班），適合時程彈性的申請者。"
+  },
+  {
+    "id": "fu-sprachenzentrum",
+    "name": "FU Berlin 語言中心（Sprachenzentrum）",
+    "city": "Berlin",
+    "priceRange": "€300–600 / 學期",
+    "website": "https://www.sprachenzentrum.fu-berlin.de",
+    "description": "大學附設語言中心，價格最低，但名額有限且通常需持有大學入學許可或交換身分。"
+  },
+  {
+    "id": "carl-duisberg-koeln",
+    "name": "Carl Duisberg Centren Köln",
+    "city": "Köln",
+    "priceRange": "€900–1,250 / 4週密集班",
+    "website": "https://www.carl-duisberg.de",
+    "description": "老牌語言機構，TestDaF 考場之一，考前衝刺班口碑好，宿舍可代訂。"
+  }
+]
