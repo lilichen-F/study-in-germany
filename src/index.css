@@ -1,1 +1,127 @@
 @import 'tailwindcss';
+
+/* DS v4.0 · Tailwind v4 CSS-first（spec A-1/A-2 之 v3 config 等價翻譯，token 1:1） */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* DS v4.0 Light (German Functional Design) */
+  --surface-canvas: 250 250 248;
+  --surface-card: 255 255 255;
+  --surface-hover: 240 240 236;
+  --border-subtle: 229 229 229;
+  --border-strong: 208 208 208;
+  --content-primary: 28 28 28;
+  --content-secondary: 102 102 102;
+  --content-muted: 153 153 153;
+  --brand-burgundy: 183 28 28;
+  --brand-burgundy-hover: 160 24 24;
+  --brand-gold: 217 163 0;
+  --brand-gold-hover: 194 146 0;
+  --state-danger: 183 28 28;
+  --state-success: 46 125 50;
+}
+.dark {
+  --surface-canvas: 18 18 18;
+  --surface-card: 29 29 29;
+  --surface-hover: 42 42 42;
+  --border-subtle: 51 51 51;
+  --border-strong: 68 68 68;
+  --content-primary: 245 245 245;
+  --content-secondary: 176 176 176;
+  --content-muted: 122 122 122;
+  --brand-burgundy: 214 69 69;
+  --brand-burgundy-hover: 224 89 89;
+  --brand-gold: 242 201 76;
+  --brand-gold-hover: 250 211 96;
+  --state-danger: 214 69 69;
+  --state-success: 93 179 122;
+}
+
+@theme inline {
+  --color-surface-canvas: rgb(var(--surface-canvas));
+  --color-surface-card: rgb(var(--surface-card));
+  --color-surface-hover: rgb(var(--surface-hover));
+  --color-border-subtle: rgb(var(--border-subtle));
+  --color-border-strong: rgb(var(--border-strong));
+  --color-content-primary: rgb(var(--content-primary));
+  --color-content-secondary: rgb(var(--content-secondary));
+  --color-content-muted: rgb(var(--content-muted));
+  --color-brand-burgundy: rgb(var(--brand-burgundy));
+  --color-brand-burgundy-hover: rgb(var(--brand-burgundy-hover));
+  --color-brand-gold: rgb(var(--brand-gold));
+  --color-brand-gold-hover: rgb(var(--brand-gold-hover));
+  --color-state-danger: rgb(var(--state-danger));
+  --color-state-success: rgb(var(--state-success));
+
+  --radius-card: 16px;
+  --container-content: 1320px;
+  --spacing-section: 96px;
+  --spacing-section-sm: 72px;
+  --font-sans: Inter, 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  --default-transition-duration: 150ms;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-surface-canvas text-content-primary font-sans antialiased;
+    color-scheme: light dark;
+  }
+  a {
+    color: rgb(var(--brand-burgundy));
+    transition: color 150ms;
+  }
+  a:hover {
+    color: rgb(var(--brand-burgundy-hover));
+  }
+  ::selection {
+    background: rgb(var(--brand-gold) / 0.35);
+  }
+}
+
+@layer components {
+  /* .btn 基底同時掛在變體上（Tailwind v4 @apply 不支援引用自訂 class） */
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-card
+      text-sm font-medium transition-colors duration-150
+      disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-brand-burgundy text-white hover:bg-brand-burgundy-hover;
+  }
+  .btn-ghost {
+    @apply border border-border-strong bg-surface-card text-content-primary hover:bg-surface-hover;
+  }
+  .btn-danger {
+    @apply border border-state-danger/60 text-state-danger hover:bg-state-danger/10;
+  }
+
+  .card,
+  .card-interactive {
+    @apply bg-surface-card border border-border-subtle rounded-card p-4
+      transition-all duration-150;
+  }
+  .card-interactive {
+    @apply cursor-pointer hover:border-border-strong hover:-translate-y-0.5;
+  }
+
+  .input {
+    @apply w-full bg-surface-canvas border border-border-subtle rounded-lg
+      px-3 py-2 text-sm text-content-primary
+      focus:outline-none focus:border-brand-burgundy transition-colors;
+  }
+  .label {
+    @apply block text-xs font-medium text-content-secondary mb-1;
+  }
+
+  .container-content {
+    @apply max-w-content w-full mx-auto px-4;
+  }
+}

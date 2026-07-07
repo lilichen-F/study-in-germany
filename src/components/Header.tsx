@@ -1,88 +1,77 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useAuth } from '../lib/useAuth'
+import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../lib/useAuth';
+import { useTheme } from '../lib/theme';
 
-const navItems = [
-  { to: '/', label: '首頁' },
-  { to: '/schools', label: '語言學校' },
-  { to: '/board', label: '佈告欄' },
-]
+export default function Header() {
+  const { user, loading, signInWithGoogle, signOut } = useAuth();
+  const { preference, setPreference } = useTheme();
 
-export function Header() {
-  const { user, loading, signInWithGoogle, signOut } = useAuth()
+  const navClass = ({ isActive }: { isActive: boolean }) =>
+    `text-sm px-3 py-1.5 rounded-lg transition-colors ${
+      isActive
+        ? 'text-brand-burgundy'
+        : 'text-content-secondary hover:text-content-primary hover:bg-surface-hover'
+    }`;
 
-  const displayName =
-    (user?.user_metadata?.full_name as string | undefined) ??
-    user?.email?.split('@')[0] ??
-    ''
-  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined
+  const cycleTheme = () => {
+    const next = preference === 'light' ? 'dark' : preference === 'dark' ? 'system' : 'light';
+    setPreference(next);
+  };
+
+  const themeIcon = preference === 'light' ? '☀' : preference === 'dark' ? '☾' : '⌂';
+  const themeLabel = preference === 'light' ? '淺色' : preference === 'dark' ? '深色' : '系統';
 
   return (
-    <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-        <div className="flex items-center gap-6">
-          <Link to="/" className="text-lg font-bold text-slate-900">
-            🇩🇪 留德資訊
-          </Link>
-          <nav className="flex gap-4 text-sm">
-            {navItems.map(({ to, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  isActive
-                    ? 'font-semibold text-blue-700'
-                    : 'text-slate-600 hover:text-slate-900'
-                }
-              >
-                {label}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
+    <header className="border-b border-border-subtle bg-surface-card">
+      <div className="container-content h-14 flex items-center justify-between">
+        <Link to="/" className="font-semibold text-content-primary">
+          留德資訊<span className="text-brand-burgundy">.</span>
+        </Link>
 
-        <div className="flex items-center gap-3 text-sm">
+        <nav className="hidden sm:flex items-center gap-1">
+          <NavLink to="/schools" className={navClass}>語校</NavLink>
+          <NavLink to="/board" className={navClass}>佈告欄</NavLink>
+          <NavLink to="/my-posts" className={navClass}>我的</NavLink>
+          <NavLink to="/privacy" className={navClass}>隱私</NavLink>
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={cycleTheme}
+            aria-label={`主題：${themeLabel}`}
+            title={`主題：${themeLabel}`}
+            className="btn-ghost text-xs px-2.5 py-1.5"
+          >
+            <span aria-hidden>{themeIcon}</span>
+          </button>
           {loading ? (
-            <span className="text-slate-400">…</span>
+            <div className="text-xs text-content-muted">…</div>
           ) : user ? (
             <>
-              <NavLink
-                to="/my-posts"
-                className={({ isActive }) =>
-                  isActive
-                    ? 'font-semibold text-blue-700'
-                    : 'text-slate-600 hover:text-slate-900'
-                }
-              >
-                我的發文
-              </NavLink>
-              <span className="flex items-center gap-2 text-slate-700">
-                {avatarUrl && (
+              <div className="hidden sm:flex items-center gap-2">
+                {user.user_metadata?.avatar_url && (
                   <img
-                    src={avatarUrl}
+                    src={user.user_metadata.avatar_url as string}
                     alt=""
+                    className="w-6 h-6 rounded-full"
                     referrerPolicy="no-referrer"
-                    className="h-7 w-7 rounded-full"
                   />
                 )}
-                <span className="hidden sm:inline">{displayName}</span>
-              </span>
-              <button
-                onClick={() => void signOut()}
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-slate-700 hover:bg-slate-50"
-              >
+                <span className="text-xs text-content-secondary max-w-[10rem] truncate">
+                  {user.user_metadata?.full_name || user.email}
+                </span>
+              </div>
+              <button onClick={() => signOut()} className="btn-ghost text-xs px-3 py-1.5">
                 登出
               </button>
             </>
           ) : (
-            <button
-              onClick={() => void signInWithGoogle()}
-              className="rounded-md bg-blue-600 px-3 py-1.5 font-medium text-white hover:bg-blue-700"
-            >
-              使用 Google 登入
+            <button onClick={() => signInWithGoogle()} className="btn-primary text-xs px-3 py-1.5">
+              Google 登入
             </button>
           )}
         </div>
       </div>
     </header>
-  )
+  );
 }

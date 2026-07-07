@@ -1,31 +1,39 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-interface PrivacyNoticeProps {
-  checked: boolean
-  onChange: (checked: boolean) => void
-  /** 同意內容描述，依表單類型客製 */
-  message: string
+type Variant = 'listing' | 'review';
+
+interface Props {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  variant: Variant;
 }
 
+const MESSAGE: Record<Variant, string> = {
+  listing:
+    '我同意將填寫的聯絡方式公開顯示於佈告欄（任何訪客皆可見），且貼文於 60 天後自動下架。',
+  review:
+    '我了解此評價將公開顯示，且我的 Google 顯示名稱與頭像會一併公開。',
+};
+
 /** 發文前的隱私同意勾選。未勾選時表單不得送出。 */
-export function PrivacyNotice({ checked, onChange, message }: PrivacyNoticeProps) {
+export default function PrivacyNotice({ checked, onChange, variant }: Props) {
   return (
-    <label className="flex items-start gap-2 rounded-md bg-amber-50 p-3 text-sm text-slate-700">
+    <label className="flex items-start gap-2 rounded-lg border border-brand-gold/40 bg-brand-gold/10 p-3 text-sm text-content-secondary">
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="mt-0.5 h-4 w-4"
+        className="mt-0.5 h-4 w-4 accent-brand-burgundy"
         required
       />
       <span>
-        {message}
+        {MESSAGE[variant]}
         我已閱讀並同意
-        <Link to="/privacy" target="_blank" className="mx-1 text-blue-700 underline">
+        <Link to="/privacy" target="_blank" className="mx-1 underline">
           隱私政策
         </Link>
         。
       </span>
     </label>
-  )
+  );
 }

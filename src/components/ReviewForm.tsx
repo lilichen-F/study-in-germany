@@ -1,120 +1,116 @@
-import { useState, type FormEvent } from 'react'
-import { supabase } from '../lib/supabase'
-import { useAuth } from '../lib/useAuth'
-import { PrivacyNotice } from './PrivacyNotice'
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../lib/useAuth';
+import type { RatingSchema } from '../lib/types';
 
-const starOptions = [1, 2, 3, 4, 5]
+interface Props {
+  schoolId: string;
+  onSubmitted?: () => void;
+}
 
-function StarSelect({
-  label,
-  value,
-  onChange,
-}: {
-  label: string
-  value: number
-  onChange: (v: number) => void
-}) {
+function StarPicker({
+  value, onChange, label, required,
+}: { value: number; onChange: (n: number) => void; label: string; required?: boolean }) {
   return (
-    <label className="flex items-center gap-3 text-sm">
-      <span className="w-16 text-slate-700">{label}</span>
-      <span className="flex gap-1">
-        {starOptions.map((n) => (
+    <div>
+      <div className="label">
+        {label}{required && <span className="text-brand-burgundy">*</span>}
+      </div>
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             type="button"
             onClick={() => onChange(n)}
             aria-label={`${label} ${n} 星`}
-            className={`text-xl ${n <= value ? 'text-amber-500' : 'text-slate-300'} hover:scale-110`}
+            className={`w-8 h-8 rounded text-xl transition-colors ${
+              n <= value
+                ? 'text-brand-gold'
+                : 'text-border-strong hover:text-brand-gold-hover'
+            }`}
           >
             ★
           </button>
         ))}
-      </span>
-    </label>
-  )
+      </div>
+    </div>
+  );
 }
 
-export function ReviewForm({
-  schoolId,
-  onSubmitted,
-}: {
-  schoolId: string
-  onSubmitted?: () => void
-}) {
-  const { user } = useAuth()
-  const [starsTeaching, setStarsTeaching] = useState(5)
-  const [starsEnvironment, setStarsEnvironment] = useState(5)
-  const [comment, setComment] = useState('')
-  const [consented, setConsented] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export default function ReviewForm({ schoolId, onSubmitted }: Props) {
+  const { user } = useAuth();
+  // Phase A: 只開 overall + teaching + environment 三個維度作為橋接。
+  // Phase C 會擴至 6 維並全部走同一 JSONB。
+  const [overall, setOverall] = useState(0);
+  const [teaching, setTeaching] = useState(0);
+  const [environment, setEnvironment] = useState(0);
+  const [text, setText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const canSubmit =
+    overall >= 1 &&
+    text.trim().length >= 5 &&
+    text.trim().length <= 1000 &&
+    !submitting;
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    if (!user) {
-      setError('請先登入')
-      return
-    }
-    if (!consented) {
-      setError('請先勾選同意隱私政策')
-      return
-    }
-    if (comment.trim().length < 5) {
-      setError('評價內容至少 5 個字')
-      return
-    }
-    setSubmitting(true)
-    // RLS policy reviews_auth_insert 要求 auth.uid() = user_id，
-    // 未登入或冒用他人 id 的寫入會被資料庫直接拒絕
+    e.preventDefault();
+    if (!user) return;
+    setSubmitting(true);
+    setErr(null);
+
+    const stars: RatingSchema = { overall };
+    if (teaching > 0) stars.teaching = teaching;
+    if (environment > 0) stars.environment = environment;
+
     const { error } = await supabase.from('school_reviews').insert({
       school_id: schoolId,
       user_id: user.id,
-      stars_teaching: starsTeaching,
-      stars_environment: starsEnvironment,
-      comment_text: comment.trim(),
-    })
-    setSubmitting(false)
-    if (error) {
-      setError(`送出失敗：${error.message}`)
-      return
-    }
-    setComment('')
-    setConsented(false)
-    onSubmitted?.()
-  }
+      stars,
+      comment_text: text.trim(),
+    });
+    setSubmitting(false);
+    if (error) { setErr(error.message); return; }
+    setOverall(0); setTeaching(0); setEnvironment(0); setText('');
+    onSubmitted?.();
+  };
 
   return (
-    <form
-      onSubmit={(e) => void handleSubmit(e)}
-      className="space-y-4 rounded-lg border border-slate-200 bg-white p-4"
-    >
-      <h3 className="font-semibold text-slate-900">發表評價</h3>
-      <StarSelect label="教學品質" value={starsTeaching} onChange={setStarsTeaching} />
-      <StarSelect label="環境設備" value={starsEnvironment} onChange={setStarsEnvironment} />
-      <textarea
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="分享你的就讀經驗（5–1000 字）"
-        minLength={5}
-        maxLength={1000}
-        rows={4}
-        required
-        className="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:outline-none"
-      />
-      <PrivacyNotice
-        checked={consented}
-        onChange={setConsented}
-        message="我了解此評價將公開顯示，且我的 Google 顯示名稱與頭像會一併公開。"
-      />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting || !consented}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-      >
-        {submitting ? '送出中…' : '送出評價'}
-      </button>
+    <form onSubmit={handleSubmit} className="card space-y-4">
+      <StarPicker value={overall} onChange={setOverall} label="整體" required />
+
+      <div className="grid grid-cols-2 gap-4">
+        <StarPicker value={teaching} onChange={setTeaching} label="教學" />
+        <StarPicker value={environment} onChange={setEnvironment} label="環境" />
+      </div>
+
+      <div>
+        <label className="label" htmlFor="review-text">心得（5–1000 字）</label>
+        <textarea
+          id="review-text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={5}
+          className="input resize-none"
+          placeholder="上過的課程、老師、你的收穫或不推薦的原因…"
+        />
+        <div className="mt-1 text-xs text-content-muted text-right">
+          {text.trim().length} / 1000
+        </div>
+      </div>
+
+      {err && <div className="text-sm text-state-danger">送出失敗：{err}</div>}
+
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-content-muted">
+          評價一經送出無法編輯，只能刪除重發（避免竄改）。
+        </div>
+        <button type="submit" disabled={!canSubmit} className="btn-primary">
+          {submitting ? '送出中…' : '送出評價'}
+        </button>
+      </div>
     </form>
-  )
+  );
 }

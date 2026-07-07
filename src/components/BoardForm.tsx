@@ -1,34 +1,50 @@
-import { useState, type FormEvent } from 'react'
-import { supabase } from '../lib/supabase'
-import { useAuth } from '../lib/useAuth'
-import type { ListingType } from '../lib/types'
-import { PrivacyNotice } from './PrivacyNotice'
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../lib/useAuth';
+import { LISTING_TYPE_LABEL } from '../lib/types';
+import type { ListingType } from '../lib/types';
+import PrivacyNotice from './PrivacyNotice';
+import PhotoUploader from './PhotoUploader';
 
-export function BoardForm({ onSubmitted }: { onSubmitted?: () => void }) {
-  const { user } = useAuth()
-  const [type, setType] = useState<ListingType>('secondhand')
-  const [region, setRegion] = useState('')
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [price, setPrice] = useState('')
-  const [contactInfo, setContactInfo] = useState('')
-  const [consented, setConsented] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+interface Props {
+  onSubmitted?: () => void;
+}
+
+const TYPE_HINT: Record<ListingType, string> = {
+  secondhand: '二手物品轉讓（家具、電器、教材等）',
+  rental_offer: '出租房屋、轉租、找室友（房屋限定）',
+  rental_seek: '求租房屋、找住宿（房屋限定）',
+};
+
+export default function BoardForm({ onSubmitted }: Props) {
+  const { user } = useAuth();
+  const [type, setType] = useState<ListingType>('secondhand');
+  const [region, setRegion] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [contact, setContact] = useState('');
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [consent, setConsent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const canSubmit =
+    consent &&
+    region.trim().length > 0 &&
+    title.trim().length >= 2 &&
+    title.trim().length <= 100 &&
+    description.trim().length >= 5 &&
+    description.trim().length <= 2000 &&
+    contact.trim().length > 0 &&
+    !submitting;
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    if (!user) {
-      setError('請先登入')
-      return
-    }
-    if (!consented) {
-      setError('請先勾選同意公開聯絡方式')
-      return
-    }
-    setSubmitting(true)
-    // RLS policy listings_auth_insert 在資料庫層強制 auth.uid() = user_id
+    e.preventDefault();
+    if (!user) return;
+    setSubmitting(true);
+    setErr(null);
     const { error } = await supabase.from('listings').insert({
       user_id: user.id,
       type,
@@ -36,116 +52,118 @@ export function BoardForm({ onSubmitted }: { onSubmitted?: () => void }) {
       title: title.trim(),
       description: description.trim(),
       price: price.trim() || null,
-      contact_info: contactInfo.trim(),
-    })
-    setSubmitting(false)
+      contact_info: contact.trim(),
+      photo_urls: photos,
+    });
+    setSubmitting(false);
     if (error) {
-      setError(`送出失敗：${error.message}`)
-      return
+      setErr(error.message);
+      return;
     }
-    setRegion('')
-    setTitle('')
-    setDescription('')
-    setPrice('')
-    setContactInfo('')
-    setConsented(false)
-    onSubmitted?.()
-  }
-
-  const inputClass =
-    'w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:outline-none'
+    setTitle(''); setDescription(''); setPrice('');
+    setContact(''); setRegion(''); setPhotos([]); setConsent(false);
+    onSubmitted?.();
+  };
 
   return (
-    <form
-      onSubmit={(e) => void handleSubmit(e)}
-      className="space-y-4 rounded-lg border border-slate-200 bg-white p-4"
-    >
-      <h3 className="font-semibold text-slate-900">刊登貼文</h3>
+    <form onSubmit={handleSubmit} className="card space-y-4">
+      <div>
+        <div className="label">類型</div>
+        <div className="grid grid-cols-3 gap-2">
+          {(Object.keys(LISTING_TYPE_LABEL) as ListingType[]).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setType(t)}
+              className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+                type === t
+                  ? 'border-brand-burgundy text-brand-burgundy bg-brand-burgundy/5'
+                  : 'border-border-subtle text-content-secondary hover:border-border-strong'
+              }`}
+            >
+              {LISTING_TYPE_LABEL[t]}
+            </button>
+          ))}
+        </div>
+        <div className="mt-1 text-xs text-content-muted">{TYPE_HINT[type]}</div>
+      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm">
-          <span className="mb-1 block text-slate-700">類型</span>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value as ListingType)}
-            className={inputClass}
-          >
-            <option value="secondhand">二手交易</option>
-            <option value="accommodation">找房 / 出租</option>
-          </select>
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1 block text-slate-700">地區</span>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="label" htmlFor="region">城市／區域</label>
           <input
+            id="region"
+            className="input"
             value={region}
             onChange={(e) => setRegion(e.target.value)}
-            placeholder="例如：Berlin、München"
-            required
-            className={inputClass}
+            placeholder="Berlin / München-Schwabing…"
           />
-        </label>
-      </div>
-
-      <label className="block text-sm">
-        <span className="mb-1 block text-slate-700">標題（2–100 字）</span>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          minLength={2}
-          maxLength={100}
-          required
-          className={inputClass}
-        />
-      </label>
-
-      <label className="block text-sm">
-        <span className="mb-1 block text-slate-700">內容（5–2000 字）</span>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          minLength={5}
-          maxLength={2000}
-          rows={4}
-          required
-          className={inputClass}
-        />
-      </label>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block text-sm">
-          <span className="mb-1 block text-slate-700">價格（選填）</span>
+        </div>
+        <div>
+          <label className="label" htmlFor="price">
+            {type === 'rental_seek' ? '預算（選填）' : '價格（選填）'}
+          </label>
           <input
+            id="price"
+            className="input"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="例如：€50、面議"
-            className={inputClass}
+            placeholder={type === 'secondhand' ? '€50' : '€600 warm'}
           />
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1 block text-slate-700">聯絡方式</span>
-          <input
-            value={contactInfo}
-            onChange={(e) => setContactInfo(e.target.value)}
-            placeholder="Email、Telegram、LINE ID…"
-            required
-            className={inputClass}
-          />
-        </label>
+        </div>
       </div>
 
-      <PrivacyNotice
-        checked={consented}
-        onChange={setConsented}
-        message="我同意將上方填寫的聯絡方式公開顯示於佈告欄（任何訪客皆可見），且貼文將於 60 天後自動下架。"
-      />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting || !consented}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-      >
-        {submitting ? '送出中…' : '刊登貼文'}
-      </button>
+      <div>
+        <label className="label" htmlFor="title">標題（2–100 字）</label>
+        <input
+          id="title"
+          className="input"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label className="label" htmlFor="desc">內容（5–2000 字）</label>
+        <textarea
+          id="desc"
+          rows={5}
+          className="input resize-none"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder={
+            type === 'secondhand'
+              ? '物品狀況、購買時間、面交／寄送方式…'
+              : type === 'rental_offer'
+              ? '坪數、房型、租期、押金、可搬遷時間、家具家電…'
+              : '需求區域、房型、預算上限、可入住時間、有無寵物…'
+          }
+        />
+      </div>
+
+      <PhotoUploader value={photos} onChange={setPhotos} />
+
+      <div>
+        <label className="label" htmlFor="contact">聯絡方式（將公開顯示）</label>
+        <input
+          id="contact"
+          className="input"
+          value={contact}
+          onChange={(e) => setContact(e.target.value)}
+          placeholder="Telegram @xxx / Email"
+        />
+      </div>
+
+      <PrivacyNotice checked={consent} onChange={setConsent} variant="listing" />
+
+      {err && <div className="text-sm text-state-danger">送出失敗：{err}</div>}
+
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-content-muted">貼文於 60 天後自動下架。</div>
+        <button type="submit" disabled={!canSubmit} className="btn-primary">
+          {submitting ? '送出中…' : '公開發布'}
+        </button>
+      </div>
     </form>
-  )
+  );
 }

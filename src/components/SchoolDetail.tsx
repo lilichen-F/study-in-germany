@@ -1,62 +1,89 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import schools from '../data/schools.json'
-import type { School } from '../lib/types'
-import { AuthGate } from './AuthGate'
-import { ReviewForm } from './ReviewForm'
-import { ReviewList } from './ReviewList'
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import schools from '../data/schools.json';
+import { supabase } from '../lib/supabase';
+import { attachProfiles } from '../lib/types';
+import type { School, SchoolReview } from '../lib/types';
+import AuthGate from './AuthGate';
+import ReviewForm from './ReviewForm';
+import ReviewList from './ReviewList';
 
-export function SchoolDetail() {
-  const { id } = useParams<{ id: string }>()
-  const [refreshKey, setRefreshKey] = useState(0)
+export default function SchoolDetail() {
+  const { id } = useParams<{ id: string }>();
+  const school = (schools as School[]).find((s) => s.id === id);
 
-  const school = (schools as School[]).find((s) => s.id === id)
+  const [reviews, setReviews] = useState<SchoolReview[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
+    setErr(null);
+    const { data, error } = await supabase
+      .from('school_reviews')
+      .select('*')
+      .eq('school_id', id)
+      .order('created_at', { ascending: false });
+    if (error) {
+      setErr(error.message);
+      setLoading(false);
+      return;
+    }
+    setReviews(await attachProfiles((data ?? []) as SchoolReview[]));
+    setLoading(false);
+  }, [id]);
+
+  useEffect(() => { load(); }, [load]);
 
   if (!school) {
     return (
-      <div className="py-12 text-center">
-        <p className="text-slate-600">找不到這間學校。</p>
-        <Link to="/schools" className="mt-2 inline-block text-blue-700 underline">
-          回學校列表
-        </Link>
+      <div className="py-20 text-center text-content-secondary">
+        <p>找不到這間學校。</p>
+        <Link to="/schools" className="mt-2 inline-block underline">回學校列表</Link>
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-8">
       <div>
-        <Link to="/schools" className="text-sm text-blue-700 hover:underline">
-          ← 回學校列表
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">{school.name}</h1>
-        <p className="mt-1 text-slate-500">
-          {school.city} · {school.priceRange}
+        <Link to="/schools" className="text-sm">← 回學校列表</Link>
+        <h1 className="mt-2 text-2xl font-semibold text-content-primary">{school.name_zh}</h1>
+        <p className="text-content-muted">{school.name_de}</p>
+        <p className="mt-1 text-sm text-content-secondary">
+          {school.city} · {school.level}
         </p>
-        <p className="mt-3 text-slate-700">{school.description}</p>
-        <a
-          href={school.website}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-2 inline-block text-sm text-blue-700 underline"
-        >
-          官方網站 ↗
-        </a>
+        {school.note && <p className="mt-3 text-content-secondary">{school.note}</p>}
+        {school.website && (
+          <a
+            href={school.website}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-block text-sm underline"
+          >
+            官方網站 ↗
+          </a>
+        )}
       </div>
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-slate-900">學生評價</h2>
-        <ReviewList schoolId={school.id} refreshKey={refreshKey} />
+      <section className="space-y-3">
+        <h2 className="text-lg font-medium">學生評價</h2>
+        {loading ? (
+          <div className="text-sm text-content-muted">載入中…</div>
+        ) : err ? (
+          <div className="text-sm text-state-danger">讀取失敗：{err}</div>
+        ) : (
+          <ReviewList reviews={reviews} onDeleted={load} />
+        )}
       </section>
 
-      <section>
-        <AuthGate action="發表評價">
-          <ReviewForm
-            schoolId={school.id}
-            onSubmitted={() => setRefreshKey((k) => k + 1)}
-          />
+      <section className="space-y-3">
+        <h2 className="text-lg font-medium">發表評價</h2>
+        <AuthGate message="請先登入才能發表評價。">
+          <ReviewForm schoolId={school.id} onSubmitted={load} />
         </AuthGate>
       </section>
     </div>
-  )
+  );
 }

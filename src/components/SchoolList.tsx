@@ -1,23 +1,26 @@
-import { Link } from 'react-router-dom'
-import schools from '../data/schools.json'
-import type { School } from '../lib/types'
+import { Link } from 'react-router-dom';
+import schools from '../data/schools.json';
+import type { School } from '../lib/types';
 
-export function SchoolList() {
+export default function SchoolList() {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {(schools as School[]).map((school) => (
         <Link
           key={school.id}
           to={`/schools/${school.id}`}
-          className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-300 hover:shadow"
+          className="card-interactive block no-underline"
         >
-          <h3 className="font-semibold text-slate-900">{school.name}</h3>
-          <p className="mt-1 text-sm text-slate-500">
-            {school.city} · {school.priceRange}
+          <h3 className="font-semibold text-content-primary">{school.name_zh}</h3>
+          <p className="text-sm text-content-muted">{school.name_de}</p>
+          <p className="mt-1 text-sm text-content-secondary">
+            {school.city} · {school.level}
           </p>
-          <p className="mt-2 line-clamp-2 text-sm text-slate-600">{school.description}</p>
+          {school.note && (
+            <p className="mt-2 line-clamp-2 text-sm text-content-secondary">{school.note}</p>
+          )}
         </Link>
       ))}
     </div>
-  )
+  );
 }
