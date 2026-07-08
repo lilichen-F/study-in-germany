@@ -44,6 +44,20 @@ DevBadge 條件 `import.meta.env.DEV` 於 build 時常量摺疊，dead-code elim
 ## PAT-18 [CORE_IMMUTABLE]: Vite manualChunks 拆 supabase-vendor
 supabase-js 約 30+ KB gzip，獨立 chunk 允許業務代碼變動時保留 vendor cache。
 
+## PAT-19 [CORE_IMMUTABLE]: Hero 天際線 · 4 城 SVG 橫向拼組
+HeroSection 用 flex + `flex-1 min-w-0` 讓 4 城 CityIllustration 平均拼組。
+opacity 淺色 0.08 / 深色 0.12 確保背景不搶焦。currentColor 對接主題自動適配。
+若未來加城市，於 index.tsx 註冊後 HeroSection 手動選取 4 個代表，非自動遍歷。
+
+## PAT-20 [CORE_IMMUTABLE]: SchoolDetail Banner overlay 漸層蓋層
+`bg-gradient-to-t from-surface-card via-surface-card/95 to-transparent` 在 SVG 底部
+產生可讀性蓋層。淺深模式各自對接 surface-card token。整合時保留 MOCK_MODE fallback
+（B.1 banner 版原漏，phase-b-integrated 補回）。
+
+## PAT-21 [CORE_IMMUTABLE]: PortalCard 4:3 aspect 硬鎖
+`aspect-[4/3]` 對齊 DS v4.0 spec §六。Icon `w-14 sm:w-16`、line-clamp-2 防爆版。
+block+flex display 衝突沿用 DEV-9 移除 block。
+
 ## PAT-22 [CORE_IMMUTABLE]: DS v4.1 Morandi 色票 + module 識別色
 CSS var 全站遷移：burgundy #B71C1C→#9B5F5F、gold #D9A300→#B8A27A、dark base
 #121212→#1E1B19（禁純黑）。新增 surface-section / brand-*-surface / brand-*-soft /
