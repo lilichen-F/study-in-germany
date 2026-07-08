@@ -5,52 +5,110 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# GitHub Pages 官方部署流程所需權限
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 同時只允許一個部署，避免舊 build 覆蓋新 build
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: false  # 部署中不取消，避免半殘
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version: '22'   # 22 LTS，Node 20 已 deprecated
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Type check
+        run: npm run typecheck
+
       - name: Build
-        # Supabase 連線資訊由 repo Secrets 注入為 build-time 環境變數，
-        # 不 commit 進程式碼。Vite 只會打包 VITE_ 前綴的變數。
-        # （anon key 本來就設計為可公開，真正的權限控制在資料庫 RLS）
         env:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GITHUB_SHA: ${{ github.sha }}
         run: npm run build
 
-      - name: Upload Pages artifact
+      - name: Verify build artifacts
+        run: |
+          test -f dist/index.html || (echo "❌ dist/index.html missing" && exit 1)
+          test -d dist/assets     || (echo "❌ dist/assets missing" && exit 1)
+          echo "=== dist/ 內容 ==="
+          ls -lh dist/ dist/assets/
+          echo "=== index.html 前 30 行 ==="
+          head -30 dist/index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
-    needs: build
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: success()
+    steps:
+      - name: Wait for CDN propagation
+        run: sleep 20
+
+      - name: Smoke test deployment
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          URL="https://lilichen-f.github.io/study-in-germany/"
+          echo "=== 檢查主頁 ==="
+          CODE=$(curl -s -o /tmp/index.html -w "%{http_code}" "$URL")
+          if [ "$CODE" != "200" ]; then
+            echo "❌ HTTP $CODE"
+            exit 1
+          fi
+          echo "✅ HTTP 200"
+
+          echo "=== 檢查關鍵資產 ==="
+          JS=$(grep -oE 'assets/index-[^"]+\.js' /tmp/index.html | head -1)
+          CSS=$(grep -oE 'assets/index-[^"]+\.css' /tmp/index.html | head -1)
+          if [ -z "$JS" ] || [ -z "$CSS" ]; then
+            echo "❌ 找不到 asset 引用"
+            head -30 /tmp/index.html
+            exit 1
+          fi
+
+          for asset in "$JS" "$CSS"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "${URL}${asset}")
+            if [ "$CODE" != "200" ]; then
+              echo "❌ ${asset}: HTTP $CODE"
+              exit 1
+            fi
+            echo "✅ ${asset}: HTTP 200"
+          done
+
+          echo "=== 檢查 title ==="
+          grep -c "留德資訊" /tmp/index.html && echo "✅ title 正確" || (echo "❌ title 遺失" && exit 1)
+
+          echo ""
+          echo "🎉 部署驗證通過"

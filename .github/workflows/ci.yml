@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Build (with mock env)
+        env:
+          VITE_SUPABASE_URL: https://mock.supabase.co
+          VITE_SUPABASE_ANON_KEY: mock-anon-key
+        run: npm run build
+      - name: Bundle size report
+        run: |
+          echo "=== dist/assets/ 大小 ==="
+          ls -lh dist/assets/
+          TOTAL=$(du -sb dist/ | cut -f1)
+          echo "Total: $((TOTAL / 1024)) KB"
