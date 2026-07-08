@@ -13,6 +13,7 @@ import Board from './pages/Board';
 import Privacy from './pages/Privacy';
 import MyPosts from './pages/MyPosts';
 import Faq from './pages/Faq';
+import Edu from './pages/Edu';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/schools/:id" element={<SchoolDetail />} />
               <Route path="/board" element={<Board />} />
               <Route path="/faq" element={<Faq />} />
+              <Route path="/edu" element={<Edu />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/my-posts" element={<MyPosts />} />
               <Route path="*" element={<NotFound />} />

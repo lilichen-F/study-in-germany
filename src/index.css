@@ -4,43 +4,74 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* DS v4.0 Light (German Functional Design) */
-  --surface-canvas: 250 250 248;
-  --surface-card: 255 255 255;
-  --surface-hover: 240 240 236;
-  --border-subtle: 229 229 229;
-  --border-strong: 208 208 208;
-  --content-primary: 28 28 28;
-  --content-secondary: 102 102 102;
-  --content-muted: 153 153 153;
-  --brand-burgundy: 183 28 28;
-  --brand-burgundy-hover: 160 24 24;
-  --brand-gold: 217 163 0;
-  --brand-gold-hover: 194 146 0;
-  --state-danger: 183 28 28;
-  --state-success: 46 125 50;
+  /* DS v4.1 Morandi Light */
+  --surface-canvas: 248 246 242;
+  --surface-card: 252 251 248;
+  --surface-hover: 243 241 236;
+  --surface-section: 246 243 238;
+
+  --border-subtle: 234 230 226;
+  --border-strong: 216 211 207;
+
+  --content-primary: 59 56 54;
+  --content-secondary: 111 106 103;
+  --content-muted: 148 142 137;
+
+  --brand-burgundy: 155 95 95;
+  --brand-burgundy-hover: 139 79 79;
+  --brand-burgundy-surface: 244 236 235;
+
+  --brand-gold: 184 162 122;
+  --brand-gold-hover: 169 148 111;
+  --brand-gold-soft: 245 241 231;
+
+  --state-danger: 166 94 94;
+  --state-success: 112 128 105;
+
+  /* 功能模組識別色 · 僅圖示與識別，不作主品牌色 */
+  --module-schools: 122 140 123;
+  --module-board: 155 95 95;
+  --module-faq: 140 138 122;
+  --module-edu: 184 162 122;
+  --module-myposts: 125 122 136;
 }
 .dark {
-  --surface-canvas: 18 18 18;
-  --surface-card: 29 29 29;
-  --surface-hover: 42 42 42;
-  --border-subtle: 51 51 51;
-  --border-strong: 68 68 68;
-  --content-primary: 245 245 245;
-  --content-secondary: 176 176 176;
-  --content-muted: 122 122 122;
-  --brand-burgundy: 214 69 69;
-  --brand-burgundy-hover: 224 89 89;
-  --brand-gold: 242 201 76;
-  --brand-gold-hover: 250 211 96;
-  --state-danger: 214 69 69;
-  --state-success: 93 179 122;
+  /* DS v4.1 Morandi Dark · 禁純黑 #121212 · 改用 #1E1B19 */
+  --surface-canvas: 30 27 25;
+  --surface-card: 40 36 33;
+  --surface-hover: 48 44 41;
+  --surface-section: 35 32 30;
+
+  --border-subtle: 56 52 49;
+  --border-strong: 72 68 65;
+
+  --content-primary: 231 227 223;
+  --content-secondary: 176 172 168;
+  --content-muted: 130 126 122;
+
+  --brand-burgundy: 196 139 139;
+  --brand-burgundy-hover: 210 155 155;
+  --brand-burgundy-surface: 62 44 44;
+
+  --brand-gold: 205 187 150;
+  --brand-gold-hover: 215 197 165;
+  --brand-gold-soft: 62 55 42;
+
+  --state-danger: 196 139 139;
+  --state-success: 154 174 148;
+
+  --module-schools: 148 168 150;
+  --module-board: 196 139 139;
+  --module-faq: 170 168 150;
+  --module-edu: 205 187 150;
+  --module-myposts: 155 152 168;
 }
 
 @theme inline {
   --color-surface-canvas: rgb(var(--surface-canvas));
   --color-surface-card: rgb(var(--surface-card));
   --color-surface-hover: rgb(var(--surface-hover));
+  --color-surface-section: rgb(var(--surface-section));
   --color-border-subtle: rgb(var(--border-subtle));
   --color-border-strong: rgb(var(--border-strong));
   --color-content-primary: rgb(var(--content-primary));
@@ -48,10 +79,17 @@
   --color-content-muted: rgb(var(--content-muted));
   --color-brand-burgundy: rgb(var(--brand-burgundy));
   --color-brand-burgundy-hover: rgb(var(--brand-burgundy-hover));
+  --color-brand-burgundy-surface: rgb(var(--brand-burgundy-surface));
   --color-brand-gold: rgb(var(--brand-gold));
   --color-brand-gold-hover: rgb(var(--brand-gold-hover));
+  --color-brand-gold-soft: rgb(var(--brand-gold-soft));
   --color-state-danger: rgb(var(--state-danger));
   --color-state-success: rgb(var(--state-success));
+  --color-module-schools: rgb(var(--module-schools));
+  --color-module-board: rgb(var(--module-board));
+  --color-module-faq: rgb(var(--module-faq));
+  --color-module-edu: rgb(var(--module-edu));
+  --color-module-myposts: rgb(var(--module-myposts));
 
   --radius-card: 16px;
   --container-content: 1320px;

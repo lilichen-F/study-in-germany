@@ -1,15 +1,17 @@
+import { Link } from 'react-router-dom';
 import PortalCard from '../components/PortalCard';
 import Announcements from '../components/Announcements';
+import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import SchoolIcon from '../assets/icons/SchoolIcon';
 import BoardIcon from '../assets/icons/BoardIcon';
 import FaqIcon from '../assets/icons/FaqIcon';
 import MyPostsIcon from '../assets/icons/MyPostsIcon';
+import EduIcon from '../assets/icons/EduIcon';
 import BellIcon from '../assets/icons/BellIcon';
 
 /**
  * DS v4.0 Portal 首頁。
- * 結構：Hero → Portal (4 卡) → 最新公告 → Footer
- * 目前 Hot Schools Carousel 待 Phase B 完整實作，本輪先不放。
+ * 結構：Hero → Portal (5 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
   return (
@@ -18,7 +20,7 @@ export default function Home() {
       <section className="text-center py-8">
         <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/15
                         text-brand-burgundy text-xs font-medium">
-          留德資訊站 · v4.0
+          留德資訊站 · v4.1
         </div>
         <h1 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
           德國語校、住宿、生活資訊
@@ -33,7 +35,7 @@ export default function Home() {
       {/* Portal */}
       <section>
         <div className="text-xs text-content-muted mb-3 uppercase tracking-wider">Portal</div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           <PortalCard
             to="/schools"
             title="語言學校"
@@ -53,12 +55,29 @@ export default function Home() {
             icon={<FaqIcon className="w-full h-full" />}
           />
           <PortalCard
+            to="/edu"
+            title="學用板塊"
+            description="簽證、落地、延簽、獎學金、政策"
+            icon={<EduIcon className="w-full h-full" />}
+          />
+          <PortalCard
             to="/my-posts"
             title="我的資料"
             description="管理自己的評價與貼文"
             icon={<MyPostsIcon className="w-full h-full" />}
           />
         </div>
+      </section>
+
+      {/* Hot Schools */}
+      <section>
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="text-lg font-medium">熱門語校</h2>
+          <Link to="/schools" className="text-xs no-underline">
+            全部語校 →
+          </Link>
+        </div>
+        <HotSchoolsCarousel />
       </section>
 
       {/* Announcements */}

@@ -43,3 +43,23 @@ DevBadge 條件 `import.meta.env.DEV` 於 build 時常量摺疊，dead-code elim
 
 ## PAT-18 [CORE_IMMUTABLE]: Vite manualChunks 拆 supabase-vendor
 supabase-js 約 30+ KB gzip，獨立 chunk 允許業務代碼變動時保留 vendor cache。
+
+## PAT-22 [CORE_IMMUTABLE]: DS v4.1 Morandi 色票 + module 識別色
+CSS var 全站遷移：burgundy #B71C1C→#9B5F5F、gold #D9A300→#B8A27A、dark base
+#121212→#1E1B19（禁純黑）。新增 surface-section / brand-*-surface / brand-*-soft /
+module-{schools,board,faq,edu,myposts} 五模組識別色（僅圖示與識別用，不作主品牌色）。
+@theme inline 同步 --color-* 對接。改膚只動 :root/.dark 兩區塊。
+
+## PAT-23 [CORE_IMMUTABLE]: HotSchools 聚合於 client（無 DB 聚合函式）
+useHotSchools 撈 school_reviews(school_id, stars) 全量，於 JS Map 聚合 count/avg，
+按 review_count desc 排序（決策 4）。無評價語校 count=0 仍回傳排於後。
+不建 Postgres view/RPC（維持 supabase 檔零改動 + RLS 公開讀已足夠）。
+
+## PAT-24 [CORE_IMMUTABLE]: 全站搜尋純 client substring（search.ts）
+schools+faq+announcements 三來源 substring match，資料量 <100 筆無需 fuse.js。
+SearchModal Cmd/Ctrl+K 觸發、↑↓ 導航、Enter 前往、ESC 關閉。零新依賴。
+未來若需模糊比對再換 fuse.js（介面已抽象為 searchAll(query)）。
+
+## PAT-25 [KNOWN_ISSUE]: /edu 為 Phase B.2 骨架
+placeholder + 6 子板塊預覽卡（簽證/落地/延簽/學程/獎學金/政策）。
+Phase B.3 展開子板塊骨架、B.4-B.5 填內容。route 與 Portal 第 5 卡已接。
