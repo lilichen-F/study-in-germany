@@ -31,6 +31,7 @@ export default function Header() {
         <nav className="hidden sm:flex items-center gap-1">
           <NavLink to="/schools" className={navClass}>語校</NavLink>
           <NavLink to="/board" className={navClass}>佈告欄</NavLink>
+          <NavLink to="/faq" className={navClass}>FAQ</NavLink>
           <NavLink to="/my-posts" className={navClass}>我的</NavLink>
           <NavLink to="/privacy" className={navClass}>隱私</NavLink>
         </nav>

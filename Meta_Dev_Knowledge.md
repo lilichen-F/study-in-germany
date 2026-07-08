@@ -1,6 +1,28 @@
 # Meta_Dev_Knowledge — study-in-germany
 
-> PAT-01..05 不存在於本 repo（屬外部專案編號序），標記 N/A-external，編號自 06 起用。
+> PAT-01..05 於 Phase A.5 依實際專案歷史補齊（原標 N/A-external，2026-07-08 修正）。
+
+## PAT-01 [CORE_IMMUTABLE]: HashRouter + PKCE OAuth callback 相容性
+根因：GH Pages `/study-in-germany/` 子路徑，PKCE `?code=` 於 query，
+HashRouter `#/` 於 fragment，兩者不衝突但 `redirectTo` 必須顯式指定
+`window.location.origin + window.location.pathname`。
+
+## PAT-02 [CORE_IMMUTABLE]: PostgREST 無法 auto-embed auth.users FK
+根因：school_reviews.user_id / listings.user_id 外鍵指向 auth.users 而非
+public.profiles。前端以 attachProfiles() 於 types.ts 批次補齊。
+
+## PAT-03 [DEPRECATE_MARK]: listings_public_read policy 對本人也生效
+`expires_at > NOW()` 條件使本人於 /my-posts 也看不到過期貼文。
+若需放寬：USING (expires_at > NOW() OR auth.uid() = user_id)。
+
+## PAT-04 [CORE_IMMUTABLE]: GH Pages base 子路徑
+vite.config.ts base 必須等於 repo 名稱（本專案採 base './' 相對路徑等效）。改 repo 名要同步：base、index.html favicon href、
+Supabase Redirect URLs whitelist。
+
+## PAT-05 [CORE_IMMUTABLE]: build-time env 注入
+.env.local 僅本機用。GH Actions 於 build 前將 SUPABASE_URL/SUPABASE_ANON_KEY 注入為
+VITE_* 環境變數。anon key 進 bundle 為預期（RLS 才是權限層）。
+絕不 commit .env.local。
 
 - PAT-06 [CORE_IMMUTABLE]: ThemeProvider CSS var 驅動主題。本專案為 Tailwind **v4**：以 `@theme inline { --color-x: rgb(var(--x)); }` + `@custom-variant dark (&:where(.dark, .dark *))` 實作（v3 的 `rgb(var(--x) / <alpha-value>)` config 語法不適用；opacity modifier 由 v4 color-mix 處理）。
 - PAT-07 [CORE_IMMUTABLE]: 評分維度用 JSONB `stars` 儲存（必含 `overall`，DB CHECK 強制），加維度不改 schema——只改前端 UI + `RatingDimension` Type Union。

@@ -1,24 +1,72 @@
-import { Link } from 'react-router-dom';
-import FAQ from '../components/FAQ';
+import PortalCard from '../components/PortalCard';
+import Announcements from '../components/Announcements';
+import SchoolIcon from '../assets/icons/SchoolIcon';
+import BoardIcon from '../assets/icons/BoardIcon';
+import FaqIcon from '../assets/icons/FaqIcon';
+import MyPostsIcon from '../assets/icons/MyPostsIcon';
 
+/**
+ * DS v4.0 Portal 首頁。
+ * 結構：Hero → Portal (4 卡) → 最新公告 → Footer
+ * 目前 Hot Schools Carousel 待 Phase B 完整實作，本輪先不放。
+ */
 export default function Home() {
   return (
-    <div className="space-y-12">
-      <section className="card text-center py-12 px-6">
-        <h1 className="text-3xl font-semibold text-content-primary">留德資訊平台</h1>
-        <p className="mx-auto mt-3 max-w-xl text-content-secondary">
-          由留德學生社群共同維護的資訊站 —
-          真實的語言學校評價、二手交易與找房佈告欄，幫你少走冤枉路。
+    <div className="space-y-16">
+      {/* Hero */}
+      <section className="text-center py-8">
+        <div className="inline-block px-3 py-1 rounded-full bg-brand-gold/15
+                        text-brand-burgundy text-xs font-medium">
+          留德資訊站 · v4.0
+        </div>
+        <h1 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
+          德國語校、住宿、生活資訊
+          <span className="text-brand-burgundy">.</span>
+        </h1>
+        <p className="mt-3 text-content-secondary max-w-xl mx-auto">
+          給留德新手與在德華人的三個小工具：語校真實評價、生活佈告欄、常見問答。
+          內容全公開，寫入需登入以確保問責。
         </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Link to="/schools" className="btn-primary no-underline">瀏覽語言學校</Link>
-          <Link to="/board" className="btn-ghost no-underline">逛佈告欄</Link>
+      </section>
+
+      {/* Portal */}
+      <section>
+        <div className="text-xs text-content-muted mb-3 uppercase tracking-wider">Portal</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <PortalCard
+            to="/schools"
+            title="語言學校"
+            description="查看語校資料、學生評價、學費資訊"
+            icon={<SchoolIcon className="w-full h-full" />}
+          />
+          <PortalCard
+            to="/board"
+            title="生活佈告欄"
+            description="出租、求租、二手交易"
+            icon={<BoardIcon className="w-full h-full" />}
+          />
+          <PortalCard
+            to="/faq"
+            title="常見問答"
+            description="簽證、健保、封鎖帳戶、生活疑問"
+            icon={<FaqIcon className="w-full h-full" />}
+          />
+          <PortalCard
+            to="/my-posts"
+            title="我的資料"
+            description="管理自己的評價與貼文"
+            icon={<MyPostsIcon className="w-full h-full" />}
+          />
         </div>
       </section>
 
+      {/* Announcements */}
       <section>
-        <h2 className="mb-4 text-xl font-medium text-content-primary">常見問題</h2>
-        <FAQ />
+        <div className="flex items-baseline justify-between mb-3">
+          <h2 className="text-lg font-medium">最新公告</h2>
+          <span className="text-xs text-content-muted">最近 5 則</span>
+        </div>
+        <Announcements />
       </section>
     </div>
   );

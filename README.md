@@ -63,3 +63,16 @@ npm run dev
 
 anon key 由 workflow 注入為 build-time 環境變數，不 commit 進程式碼；
 它本來就設計為可公開（權限控制在 RLS），Secrets 化是為了避免散落與方便輪替。
+
+## Phase A.5 · Non-DB Preparation
+
+新增（零 DB 依賴，可獨立部署）：
+- 4 座城市幾何 SVG（Berlin / Frankfurt / Munich / Düsseldorf）+ fallback
+- 6 個功能圖示（Schools / Board / FAQ / MyPosts / Search / Bell）
+- Portal 首頁結構（Hero + 4 卡 + Announcements）
+- /faq 獨立路由
+- ErrorBoundary + Skeleton loaders
+- announcements.json 種子（3 筆）
+- favicon.svg（酒紅底 + 金字「留」）
+
+未動：Supabase / OAuth / Storage / schema。
