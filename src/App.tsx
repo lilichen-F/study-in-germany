@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import MockBanner from './components/MockBanner';
 import OfflineBanner from './components/OfflineBanner';
 import DevBadge from './components/DevBadge';
+import PrintHeader from './components/PrintHeader';
 import Home from './pages/Home';
 import Schools from './pages/Schools';
 import SchoolDetail from './components/SchoolDetail';
@@ -30,6 +31,7 @@ export default function App() {
         <OfflineBanner />
         <Header />
         <main id="main-content" className="flex-1 container-content py-8">
+          <PrintHeader />
           <ErrorBoundary>
             <Routes>
               <Route path="/" element={<Home />} />

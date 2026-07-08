@@ -142,3 +142,65 @@
     @apply max-w-content w-full mx-auto px-4;
   }
 }
+
+@media print {
+  /* 隱藏互動元素 */
+  header, footer, nav, button,
+  .btn, .btn-primary, .btn-ghost, .btn-danger,
+  [role="alert"], [role="status"] {
+    display: none !important;
+  }
+
+  /* 純黑白高對比 */
+  :root {
+    --surface-canvas: 255 255 255;
+    --surface-card: 255 255 255;
+    --surface-hover: 245 245 245;
+    --content-primary: 0 0 0;
+    --content-secondary: 60 60 60;
+    --content-muted: 100 100 100;
+    --brand-burgundy: 0 0 0;
+    --brand-gold: 100 100 100;
+    --border-subtle: 200 200 200;
+    --border-strong: 100 100 100;
+  }
+  .dark {
+    /* 列印時強制淺色 */
+    --surface-canvas: 255 255 255;
+    --surface-card: 255 255 255;
+    --content-primary: 0 0 0;
+  }
+
+  body { background: white !important; color: black !important; }
+
+  /* 卡片扁平化 */
+  .card, .card-interactive {
+    border: 1px solid rgb(200 200 200) !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 12pt;
+  }
+
+  /* 保留連結 URL（頁尾自動附上）*/
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: rgb(80 80 80);
+  }
+  /* 站內連結不附路徑 */
+  a[href^="#"]::after,
+  a[href^="/"]::after { content: ""; }
+
+  /* 避免 SVG 過度佔版 */
+  svg { max-height: 4cm; }
+
+  /* 段落標題不孤行 */
+  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+
+  /* 頁邊距 */
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+}
