@@ -32,3 +32,14 @@ VITE_* 環境變數。anon key 進 bundle 為預期（RLS 才是權限層）。
 - PAT-11 [KNOWN_ISSUE]: `deletePhoto` 為 best-effort，失敗不阻斷 row 刪除 → 孤兒照片會累積 → 記於 DEBT。
 - PAT-12 [KNOWN_ISSUE]: tsconfig `verbatimModuleSyntax: true`——所有 type-only import（ReactNode/FormEvent 等）必須 `import type`，否則編譯失敗。外來 spec 程式碼須先過此檢查。
 - PAT-13 [CORE_IMMUTABLE]: Tailwind v4 `@apply` 不能引用自訂 component class（v3 可）——共用基底改用群組選擇器 `.btn, .btn-primary, ... { @apply ... }`。
+
+## PAT-16 [CORE_IMMUTABLE]: 錯誤翻譯層集中於 errorMessages.ts
+所有 Supabase 錯誤透過 translateError() 過濾，避免生 raw 錯誤直接展示給使用者。
+未命中的 code 保留原文，raw 訊息一律 console.error 供除錯。
+
+## PAT-17 [CORE_IMMUTABLE]: DevBadge / OfflineBanner 於 production 自動剝離
+DevBadge 條件 `import.meta.env.DEV` 於 build 時常量摺疊，dead-code elimination
+會移除整個元件，不影響 bundle。（OfflineBanner 為 runtime 條件，production 保留——離線提示為正式功能。）
+
+## PAT-18 [CORE_IMMUTABLE]: Vite manualChunks 拆 supabase-vendor
+supabase-js 約 30+ KB gzip，獨立 chunk 允許業務代碼變動時保留 vendor cache。

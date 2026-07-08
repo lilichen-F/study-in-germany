@@ -1,0 +1,64 @@
+# 本地開發指南
+
+## 首次啟動
+
+```powershell
+cd C:\Projects\study-in-germany
+npm install
+Copy-Item .env.example .env.local
+# 編輯 .env.local 填入 SUPABASE URL / anon key
+npm run dev
+```
+
+瀏覽器打開 `http://localhost:5173/`（本專案 base 為 './'，dev server 無子路徑）。
+
+## Mock Mode（DB 未就緒或 OAuth 待修時）
+
+```powershell
+Add-Content -Path .env.local -Value "VITE_MOCK_MODE=1"
+npm run dev
+```
+
+頁面頂端會出現金色 Mock Banner。
+關閉：從 .env.local 移除該行即可。
+
+## DevBadge
+左下角有 `dev` 折疊按鈕，展開顯示 build 版本、mock 狀態、主題、網路。
+僅 dev build 顯示，production build 自動移除。
+
+## 建置驗證
+
+```powershell
+npm run typecheck   # tsc -b（noEmit 已於 tsconfig 設定）
+npm run build       # tsc -b + vite build
+npm run preview     # 檢視 dist/
+```
+
+## 分支結構
+- `main`: Phase A baseline，已部署 GH Pages
+- `phase-a5-prep`: Portal + SVG + FAQ 拆頁
+- `phase-a75-blocked-period`: Mock Mode + a11y polish
+- `phase-a100-wiring`: 元件接線 + 錯誤翻譯 + Dev Tooling
+
+合併時序（DB + OAuth 綠燈後）：
+
+```
+phase-a100-wiring → main（fast-forward，各 phase 分支為線性繼承鏈）
+```
+
+## 疑難排解
+
+### `Invalid API key`
+`.env.local` 未填、或填錯 SUPABASE URL / ANON KEY。
+
+### `row violates row-level security policy`
+未登入時嘗試寫入。或 RLS policy 條件不符。
+
+### `column stars_teaching does not exist` / `column "stars" does not exist`
+DB schema 尚未遷移至 v4。依序執行 `supabase/migrate_v2_to_v4.sql` → `supabase/schema.sql`。
+
+### OAuth `Unable to exchange external code`
+Supabase 端的 Google Client Secret 不正確或已失效。修法：Google Cloud Console
+該 OAuth 用戶端「新增密鑰」取得 GOCSPX-* → 貼回 Supabase Authentication →
+Providers → Google → Save。另確認 Supabase URL Configuration 的 Redirect URLs
+含正式站與 localhost:5173。

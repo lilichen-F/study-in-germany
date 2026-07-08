@@ -7,6 +7,9 @@ import type { School, SchoolReview } from '../lib/types';
 import AuthGate from './AuthGate';
 import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
+import { SkeletonList } from './Skeleton';
+import { useToast } from '../lib/toast';
+import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_REVIEWS } from '../lib/mockData';
 
@@ -14,6 +17,7 @@ export default function SchoolDetail() {
   const { id } = useParams<{ id: string }>();
   const school = (schools as School[]).find((s) => s.id === id);
 
+  const { push } = useToast();
   const [reviews, setReviews] = useState<SchoolReview[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -34,13 +38,16 @@ export default function SchoolDetail() {
       .eq('school_id', id)
       .order('created_at', { ascending: false });
     if (error) {
-      setErr(error.message);
+      const friendly = translateError(error);
+      setErr(friendly.message);
+      push('error', `讀取評價失敗：${friendly.message}`);
+      console.error('[SchoolDetail] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
       return;
     }
     setReviews(await attachProfiles((data ?? []) as SchoolReview[]));
     setLoading(false);
-  }, [id]);
+  }, [id, push]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -78,7 +85,7 @@ export default function SchoolDetail() {
       <section className="space-y-3">
         <h2 className="text-lg font-medium">學生評價</h2>
         {loading ? (
-          <div className="text-sm text-content-muted">載入中…</div>
+          <SkeletonList n={2} />
         ) : err ? (
           <div className="text-sm text-state-danger">讀取失敗：{err}</div>
         ) : (

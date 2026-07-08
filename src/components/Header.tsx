@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../lib/useAuth';
 import { useTheme } from '../lib/theme';
+import SearchIcon from '../assets/icons/SearchIcon';
 
 export default function Header() {
   const { user, loading, signInWithGoogle, signOut } = useAuth();
@@ -37,6 +38,15 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => alert('搜尋功能於 Phase B 上線')}
+            aria-label="搜尋（未上線）"
+            title="搜尋（未上線）"
+            className="btn-ghost text-xs px-2.5 py-1.5"
+          >
+            <SearchIcon className="w-4 h-4" />
+          </button>
           <button
             onClick={cycleTheme}
             aria-label={`主題：${themeLabel}`}

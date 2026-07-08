@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthGate from '../components/AuthGate';
+import EmptyState from '../components/EmptyState';
+import { SkeletonList } from '../components/Skeleton';
+import { useToast } from '../lib/toast';
+import { translateError } from '../lib/errorMessages';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { LISTING_TYPE_LABEL } from '../lib/types';
@@ -15,6 +19,7 @@ function schoolName(schoolId: string): string {
 
 function MyPostsContent() {
   const { user } = useAuth();
+  const { push } = useToast();
   const [reviews, setReviews] = useState<SchoolReview[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,14 +49,17 @@ function MyPostsContent() {
         .order('created_at', { ascending: false }),
     ]);
     if (reviewsRes.error || listingsRes.error) {
-      setErr(reviewsRes.error?.message ?? listingsRes.error?.message ?? '載入失敗');
+      const friendly = translateError(reviewsRes.error ?? listingsRes.error);
+      setErr(friendly.message);
+      push('error', `讀取發文失敗：${friendly.message}`);
+      console.error('[MyPosts] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
       return;
     }
     setReviews((reviewsRes.data ?? []) as SchoolReview[]);
     setListings((listingsRes.data ?? []) as Listing[]);
     setLoading(false);
-  }, [user]);
+  }, [user, push]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -70,18 +78,23 @@ function MyPostsContent() {
     setListings((prev) => prev.filter((x) => x.id !== l.id));
   };
 
-  if (loading) return <div className="text-sm text-content-muted">載入中…</div>;
+  if (loading) return <SkeletonList n={2} />;
   if (err) return <div className="text-sm text-state-danger">載入失敗：{err}</div>;
 
   return (
     <div className="space-y-10">
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">我的評價（{reviews.length}）</h2>
+        <h2 className="text-lg font-medium">我的語校評價（{reviews.length}）</h2>
         {reviews.length === 0 ? (
-          <p className="text-sm text-content-muted">
-            還沒有發表過評價。
-            <Link to="/schools" className="ml-1 underline">去看看學校列表</Link>
-          </p>
+          <EmptyState
+            title="尚未發表評價"
+            description="於語校詳情頁留下你的第一則心得。"
+            action={
+              <Link to="/schools" className="btn-ghost no-underline inline-flex text-xs">
+                去看看學校列表
+              </Link>
+            }
+          />
         ) : (
           <div className="space-y-3">
             {reviews.map((r) => (
@@ -115,10 +128,15 @@ function MyPostsContent() {
       <section className="space-y-3">
         <h2 className="text-lg font-medium">我的佈告欄貼文（{listings.length}）</h2>
         {listings.length === 0 ? (
-          <p className="text-sm text-content-muted">
-            還沒有刊登過貼文。
-            <Link to="/board" className="ml-1 underline">去佈告欄刊登</Link>
-          </p>
+          <EmptyState
+            title="尚未刊登貼文"
+            description="出租、求租或二手交易資訊都可在佈告欄刊登。"
+            action={
+              <Link to="/board" className="btn-ghost no-underline inline-flex text-xs">
+                去佈告欄刊登
+              </Link>
+            }
+          />
         ) : (
           <div className="space-y-3">
             {listings.map((l) => (

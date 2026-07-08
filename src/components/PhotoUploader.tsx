@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { PHOTO_CONFIG, compressImage, uploadPhoto, deletePhoto } from '../lib/storage';
 import { useAuth } from '../lib/useAuth';
+import { translateError } from '../lib/errorMessages';
 
 interface Props {
   value: string[];
@@ -30,7 +31,9 @@ export default function PhotoUploader({ value, onChange, disabled }: Props) {
         const url = await uploadPhoto(user.id, blob);
         added.push(url);
       } catch (e) {
-        setErr((e as Error).message);
+        const friendly = translateError(e);
+        setErr(friendly.message);
+        console.error('[PhotoUploader]', friendly.raw);
       }
     }
     setUploading(false);

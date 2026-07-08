@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useAuth } from '../lib/useAuth';
+import { useToast } from '../lib/toast';
 import { MOCK_MODE } from '../lib/mockMode';
 
 interface Props {
@@ -21,16 +23,7 @@ export default function AuthGate({ children, message = '請先登入才能進行
   }
 
   if (MOCK_MODE) {
-    return (
-      <div className="card text-center py-8 space-y-2">
-        <div className="text-sm text-content-secondary">
-          Mock Mode 下寫入功能已停用。
-        </div>
-        <div className="text-xs text-content-muted">
-          關閉方式：移除 .env.local 中的 <code>VITE_MOCK_MODE=1</code>
-        </div>
-      </div>
-    );
+    return <MockGate />;
   }
 
   if (!user) {
@@ -45,4 +38,21 @@ export default function AuthGate({ children, message = '請先登入才能進行
   }
 
   return <>{children}</>;
+}
+
+function MockGate() {
+  const { push } = useToast();
+  useEffect(() => {
+    push('info', 'Mock Mode：資料為示例，寫入停用');
+  }, [push]);
+  return (
+    <div className="card text-center py-8 space-y-2">
+      <div className="text-sm text-content-secondary">
+        Mock Mode 下寫入功能已停用。
+      </div>
+      <div className="text-xs text-content-muted">
+        關閉方式：移除 .env.local 中的 <code>VITE_MOCK_MODE=1</code>
+      </div>
+    </div>
+  );
 }

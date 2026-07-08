@@ -5,12 +5,18 @@ import { LISTING_TYPE_LABEL } from '../lib/types';
 import BoardList from '../components/BoardList';
 import BoardForm from '../components/BoardForm';
 import AuthGate from '../components/AuthGate';
+import EmptyState from '../components/EmptyState';
+import { SkeletonList } from '../components/Skeleton';
+import BoardIcon from '../assets/icons/BoardIcon';
+import { useToast } from '../lib/toast';
+import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
 
 type Filter = 'all' | ListingType;
 
 export default function Board() {
+  const { push } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -30,13 +36,16 @@ export default function Board() {
       .select('*')
       .order('created_at', { ascending: false });
     if (error) {
-      setErr(error.message);
+      const friendly = translateError(error);
+      setErr(friendly.message);
+      push('error', `讀取佈告欄失敗：${friendly.message}`);
+      console.error('[Board] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
       return;
     }
     setListings((data ?? []) as Listing[]);
     setLoading(false);
-  }, []);
+  }, [push]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -76,9 +85,15 @@ export default function Board() {
 
       <section>
         {loading ? (
-          <div className="text-sm text-content-muted">載入中…</div>
+          <SkeletonList n={3} />
         ) : err ? (
           <div className="text-sm text-state-danger">讀取失敗：{err}</div>
+        ) : listings.length === 0 ? (
+          <EmptyState
+            icon={<BoardIcon className="w-full h-full" />}
+            title="目前沒有貼文"
+            description="登入後可刊登第一則出租、求租或二手交易資訊。"
+          />
         ) : (
           <BoardList listings={filtered} onDeleted={load} />
         )}

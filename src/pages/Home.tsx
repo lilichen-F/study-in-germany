@@ -4,6 +4,7 @@ import SchoolIcon from '../assets/icons/SchoolIcon';
 import BoardIcon from '../assets/icons/BoardIcon';
 import FaqIcon from '../assets/icons/FaqIcon';
 import MyPostsIcon from '../assets/icons/MyPostsIcon';
+import BellIcon from '../assets/icons/BellIcon';
 
 /**
  * DS v4.0 Portal 首頁。
@@ -64,7 +65,10 @@ export default function Home() {
       <section>
         <div className="flex items-baseline justify-between mb-3">
           <h2 className="text-lg font-medium">最新公告</h2>
-          <span className="text-xs text-content-muted">最近 5 則</span>
+          <div className="flex items-center gap-2 text-content-muted">
+            <BellIcon className="w-4 h-4" />
+            <span className="text-xs">最近 5 則</span>
+          </div>
         </div>
         <Announcements />
       </section>

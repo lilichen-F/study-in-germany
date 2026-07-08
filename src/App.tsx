@@ -3,6 +3,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import MockBanner from './components/MockBanner';
+import OfflineBanner from './components/OfflineBanner';
+import DevBadge from './components/DevBadge';
 import Home from './pages/Home';
 import Schools from './pages/Schools';
 import SchoolDetail from './components/SchoolDetail';
@@ -25,6 +27,7 @@ export default function App() {
           跳至主內容
         </a>
         <MockBanner />
+        <OfflineBanner />
         <Header />
         <main id="main-content" className="flex-1 container-content py-8">
           <ErrorBoundary>
@@ -41,6 +44,7 @@ export default function App() {
           </ErrorBoundary>
         </main>
         <Footer />
+        <DevBadge />
       </div>
     </HashRouter>
   );

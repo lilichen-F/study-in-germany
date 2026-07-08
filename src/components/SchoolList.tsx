@@ -1,24 +1,24 @@
 import { Link } from 'react-router-dom';
 import schools from '../data/schools.json';
 import type { School } from '../lib/types';
+import { CityIllustration } from '../assets/cities';
 
 export default function SchoolList() {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {(schools as School[]).map((school) => (
-        <Link
-          key={school.id}
-          to={`/schools/${school.id}`}
-          className="card-interactive block no-underline"
-        >
-          <h3 className="font-semibold text-content-primary">{school.name_zh}</h3>
-          <p className="text-sm text-content-muted">{school.name_de}</p>
-          <p className="mt-1 text-sm text-content-secondary">
-            {school.city} · {school.level}
-          </p>
-          {school.note && (
-            <p className="mt-2 line-clamp-2 text-sm text-content-secondary">{school.note}</p>
-          )}
+      {(schools as School[]).map((s) => (
+        <Link key={s.id} to={`/schools/${s.id}`} className="card-interactive block no-underline">
+          <div className="w-full h-24 mb-3 text-brand-burgundy overflow-hidden rounded-lg
+                          bg-surface-hover flex items-center justify-center">
+            <CityIllustration cityKey={s.city_key} className="w-full h-full opacity-70" />
+          </div>
+          <div className="text-sm text-content-muted mb-1">{s.city}</div>
+          <div className="font-semibold text-content-primary">{s.name_zh}</div>
+          <div className="text-xs text-content-secondary mt-0.5">{s.name_de}</div>
+          <div className="mt-3 flex items-center justify-between text-xs">
+            <span className="text-brand-gold">{s.level}</span>
+            <span className="text-content-muted">查看評價 →</span>
+          </div>
         </Link>
       ))}
     </div>

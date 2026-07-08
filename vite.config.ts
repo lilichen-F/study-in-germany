@@ -13,4 +13,20 @@ export default defineConfig({
       (process.env.GITHUB_SHA?.slice(0, 7) ?? 'local')
     ),
   },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        // Vite 8（Rolldown）僅支援函式形式的 manualChunks（物件形式型別已移除）
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('@supabase')) return 'supabase-vendor';
+          if (id.includes('react')) return 'react-vendor';
+          return undefined;
+        },
+      },
+    },
+  },
 })
