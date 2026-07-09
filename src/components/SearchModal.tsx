@@ -12,6 +12,7 @@ const KIND_LABEL: Record<SearchHit['kind'], string> = {
   school: '語校',
   faq: 'FAQ',
   announcement: '公告',
+  edu: '學用',
 };
 
 export default function SearchModal({ open, onClose }: Props) {

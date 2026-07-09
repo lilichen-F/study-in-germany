@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
 import EduIcon from '../assets/icons/EduIcon';
+import { EDU_TOPICS } from '../data/edu/config';
+
+const ICON_MAP: Record<string, string> = {
+  visa: '🛂',
+  arrival: '🏠',
+  renewal: '🔄',
+  application: '🎓',
+  scholarship: '💰',
+  policy: '📜',
+};
 
 /**
- * Phase B.2 · /edu 骨架 placeholder
- * Phase B.3 會展開為 6 子板塊：
- *   簽證 / 落地 / 延簽 / 學程 / 獎學金 / 政策
+ * DS v4.1 · Edu Hub · 學用板塊入口
+ * 六子板塊卡片矩陣（3×2 或 2×3 依螢幕）
+ * 每卡進入獨立 /edu/:slug 頁面
  */
 export default function Edu() {
   return (
@@ -13,46 +23,50 @@ export default function Edu() {
         <div className="text-xs text-content-muted uppercase tracking-wider mb-2">
           German Study Hub
         </div>
-        <h1 className="text-2xl font-semibold flex items-center gap-3">
-          <span className="text-module-edu w-8 h-8 inline-flex">
+        <h1 className="text-2xl sm:text-3xl font-semibold flex items-center gap-3">
+          <span className="text-module-edu w-8 h-8 sm:w-10 sm:h-10 inline-flex">
             <EduIcon className="w-full h-full" />
           </span>
           學用板塊
         </h1>
-        <p className="text-sm text-content-secondary mt-2 max-w-2xl leading-relaxed">
-          給留德新手與正在申請中的你——把簽證、落地、延簽、學程申請、獎學金、
-          教育政策六個主題整理成可查、可讀、可帶著走的實用筆記。
+        <p className="text-sm text-content-secondary mt-3 max-w-2xl leading-relaxed">
+          給留德新手與正在申請中的你——簽證、落地、延簽、學程申請、獎學金、教育政策
+          六個主題整理成可查、可讀、可帶著走的實用筆記。內容以官方公開資料為基礎，
+          正式辦理前請務必確認最新政策。
         </p>
       </div>
 
-      <div className="card bg-surface-section space-y-3">
-        <div className="text-sm text-content-primary font-medium">
-          🚧 內容正在整理中
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {EDU_TOPICS.map((t) => (
+          <Link
+            key={t.slug}
+            to={`/edu/${t.slug}`}
+            className="card-interactive p-5 no-underline aspect-[4/3]
+                       flex flex-col justify-between"
+          >
+            <div className="text-2xl" aria-hidden>{ICON_MAP[t.icon]}</div>
+            <div>
+              <div className="font-semibold text-content-primary">{t.title}</div>
+              <div className="text-xs text-content-muted mt-1 leading-relaxed">
+                {t.hint}
+              </div>
+              <div className="pt-2 text-xs text-brand-burgundy font-medium">
+                進入 →
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="card bg-brand-gold-soft border-brand-gold/30">
+        <div className="text-sm text-content-primary font-medium mb-2">
+          📝 貢獻你的經驗
         </div>
         <p className="text-sm text-content-secondary leading-relaxed">
-          此板塊將於 Phase B.3 開放六個子板塊骨架、Phase B.4-B.5 逐批填充內容。
-          若你希望某個主題優先，或有想貢獻的心得，請於
+          內容仍在持續補充中。若你有實用資訊或想校正某段，請於
           <Link to="/board" className="mx-1">佈告欄</Link>
-          留言告訴我，或直接開 GitHub issue。
+          留言，或直接開 GitHub issue。留言功能將於後續版本上線。
         </p>
-        <div className="pt-2 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-          {[
-            { label: '簽證流程', hint: 'Sprach / Studien / Aupair / Ausbildung' },
-            { label: '落地指南', hint: 'Anmeldung · Konto · KV · SIM' },
-            { label: '延簽流程', hint: 'Aufenthaltstitel 續簽' },
-            { label: '學程申請', hint: 'Kolleg · Bachelor · Master · PhD' },
-            { label: '獎學金', hint: 'DAAD · Erasmus · 教育部' },
-            { label: '教育政策', hint: 'Bologna · DSH · 學費' },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="p-3 rounded-lg border border-border-subtle bg-surface-card"
-            >
-              <div className="font-medium text-content-primary">{s.label}</div>
-              <div className="text-content-muted mt-0.5">{s.hint}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
