@@ -4,6 +4,7 @@ import { useAuth } from '../lib/useAuth';
 import { useTheme } from '../lib/theme';
 import SearchIcon from '../assets/icons/SearchIcon';
 import SearchModal from './SearchModal';
+import Logo from '../assets/branding/Logo';
 
 export default function Header() {
   const { user, loading, signInWithGoogle, signOut } = useAuth();
@@ -40,8 +41,16 @@ export default function Header() {
     <>
       <header className="border-b border-border-subtle bg-surface-card">
         <div className="container-content h-14 flex items-center justify-between">
-          <Link to="/" className="font-semibold text-content-primary">
-            留德資訊<span className="text-brand-burgundy">.</span>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 hover:no-underline
+                       transition-transform duration-150 hover:scale-[1.02]"
+            aria-label="留德資訊首頁"
+          >
+            <Logo className="w-8 h-8 shrink-0" />
+            <span className="hidden sm:inline font-semibold text-content-primary tracking-tight">
+              留德資訊
+            </span>
           </Link>
 
           <nav className="hidden sm:flex items-center gap-1">
