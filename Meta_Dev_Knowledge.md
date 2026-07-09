@@ -88,8 +88,29 @@ Edu 板塊採 `import md from './x.md?raw'` 純字串 import + 自寫輕量 rend
 FAQ = 快速常問（新手第一次會問的 5 題）；Edu = 深入流程手冊（各子主題 400-800 字）。
 兩者互相引導，避免內容重疊。深度問題於 FAQ 頁底部指引至 Edu 對應子板塊。
 
-## PAT-28 [CORE_IMMUTABLE]: dangerouslySetInnerHTML 於 Edu Topic 使用
-本站唯一使用 dangerouslySetInnerHTML 的位置：src/pages/EduTopic.tsx。
-輸入源是可信的（src/data/edu/*.md 為 static asset），不從使用者輸入吃內容。
-markdown.ts 的 inline() 對文字先 escapeHtml() 再套白名單標籤，無 raw HTML 通道。
-若日後開放使用者 commit MD（如貢獻 PR），需審核流程或用 sanitizer。
+## PAT-28 [DEPRECATE_MARK]: dangerouslySetInnerHTML（Phase B.3 EduTopic，C.1 已移除）
+B.3 EduTopic 曾以 dangerouslySetInnerHTML 渲染 MD。C.1 改 workflow 結構化渲染後，
+全站已無 dangerouslySetInnerHTML。若未來 markdown.ts 重新啟用（PAT-31），此風險註記復活：
+輸入須為可信 static asset、inline() 先 escapeHtml 再套白名單、開放使用者 commit 需 sanitizer。
+
+## PAT-29 [CORE_IMMUTABLE]: Edu Workflow 資料契約
+src/data/edu/workflow.ts 定義 WorkflowStep / WorkflowTopic 型別。
+6 主題檔（visa/arrival/renewal/application/scholarship/policy.ts）匯出 WorkflowTopic 常數。
+加維度只需擴 WorkflowStep interface；TypeScript 型別檢查會攔截漏填。
+若 spec 再變（如加 estimated_cost），改 interface 一處，6 檔全部 type-check。
+
+## PAT-30 [CORE_IMMUTABLE]: Edu Geometry Icon 系統
+6 個 SVG 於 src/assets/icons/edu/*.tsx，與 CityIllustration 同語系：
+viewBox 60×60、currentColor 對接主題、fill/opacity 組合而非漸層、5-10 個幾何 shape、
+module-edu 色彩統一驅動。未來加主題只需加 SVG + 於 index.tsx REGISTRY 註冊。
+（index.tsx 用 `import type { FC }`，非 React.FC，避免 verbatimModuleSyntax 失敗，DEV-34。）
+
+## PAT-31 [DEPRECATE_MARK]: markdown.ts 與 vite-env.d.ts .md?raw
+Phase B.3 引入 · Phase C.1 已無業務使用（Edu 改 workflow 型別，config.ts + 6 MD 已刪）。
+保留 markdown.ts 與 .md?raw 宣告供未來 /about、/changelog 等純文字頁使用。
+若 3 個月後仍無使用，可移除。
+
+## PAT-32 [CORE_IMMUTABLE]: Workflow Card Accordion pattern
+每 WorkflowCard 五區固定：STEP/Title/Meta/Outcome/CTA。
+展開後四區塊：Documents/Procedure/Common Mistakes/Official Sources。
+「官方資源」用 bg-brand-gold-soft 特別 highlight（DS v4.2 §十三 官方資訊優先原則）。

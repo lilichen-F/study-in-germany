@@ -2,22 +2,22 @@ import schoolsData from '../data/schools.json';
 import faqData from '../data/faq.json';
 import announcementsData from '../data/announcements.json';
 import type { School, FaqItem } from './types';
-import { EDU_TOPICS } from '../data/edu/config';
-import visaMd from '../data/edu/visa.md?raw';
-import arrivalMd from '../data/edu/arrival.md?raw';
-import renewalMd from '../data/edu/renewal.md?raw';
-import applicationMd from '../data/edu/application.md?raw';
-import scholarshipMd from '../data/edu/scholarship.md?raw';
-import policyMd from '../data/edu/policy.md?raw';
+import { visaWorkflow } from '../data/edu/visa';
+import { arrivalWorkflow } from '../data/edu/arrival';
+import { renewalWorkflow } from '../data/edu/renewal';
+import { applicationWorkflow } from '../data/edu/application';
+import { scholarshipWorkflow } from '../data/edu/scholarship';
+import { policyWorkflow } from '../data/edu/policy';
+import type { WorkflowTopic } from '../data/edu/workflow';
 
-const EDU_CONTENT: Record<string, string> = {
-  visa: visaMd,
-  arrival: arrivalMd,
-  renewal: renewalMd,
-  application: applicationMd,
-  scholarship: scholarshipMd,
-  policy: policyMd,
-};
+const EDU_WORKFLOWS: WorkflowTopic[] = [
+  visaWorkflow,
+  arrivalWorkflow,
+  renewalWorkflow,
+  applicationWorkflow,
+  scholarshipWorkflow,
+  policyWorkflow,
+];
 
 interface Announcement {
   id: string; date: string; title: string; body: string;
@@ -80,23 +80,52 @@ export function searchAll(query: string): SearchHit[] {
     }
   }
 
-  for (const t of EDU_TOPICS) {
-    const content = EDU_CONTENT[t.slug] ?? '';
-    const hay = `${t.title} ${t.hint} ${content}`.toLowerCase();
-    if (hay.includes(q)) {
-      // 抽最先命中所在段落
-      const idx = content.toLowerCase().indexOf(q);
-      const snippet =
-        idx >= 0
-          ? content.slice(Math.max(0, idx - 20), idx + 80).replace(/[#\n]/g, ' ')
-          : t.hint;
+  // Edu · 掃 workflow 資料
+  for (const w of EDU_WORKFLOWS) {
+    // 主題本身
+    if (
+      w.title.toLowerCase().includes(q) ||
+      w.subtitle.toLowerCase().includes(q) ||
+      w.description.toLowerCase().includes(q)
+    ) {
       hits.push({
         kind: 'edu',
-        id: t.slug,
-        title: `${t.title} · ${t.hint.split('·')[0].trim()}`,
-        subtitle: snippet.trim().slice(0, 80) + '…',
-        url: `/edu/${t.slug}`,
+        id: w.slug,
+        title: `${w.title} · ${w.subtitle}`,
+        subtitle: w.description.slice(0, 80) + '…',
+        url: `/edu/${w.slug}`,
       });
+    }
+
+    // 每個 step
+    for (const s of w.steps) {
+      const hay = [
+        s.title_zh,
+        s.title_de ?? '',
+        s.meta.location ?? '',
+        s.meta.timing ?? '',
+        s.outcome.join(' '),
+        s.detail.documents.join(' '),
+        s.detail.procedure.join(' '),
+        s.detail.common_mistakes.join(' '),
+      ].join(' ').toLowerCase();
+
+      if (hay.includes(q)) {
+        // 抽最先命中所在段落
+        const parts = [
+          s.title_zh,
+          s.outcome.join(' · '),
+          s.detail.procedure.join(' · '),
+        ].filter(Boolean);
+        const snippet = parts.find((p) => p.toLowerCase().includes(q)) ?? parts[0];
+        hits.push({
+          kind: 'edu',
+          id: `${w.slug}-${s.step}`,
+          title: `${w.title} STEP ${s.step} · ${s.title_zh}`,
+          subtitle: snippet.slice(0, 80) + (snippet.length > 80 ? '…' : ''),
+          url: `/edu/${w.slug}#step-${s.step}`,
+        });
+      }
     }
   }
 

@@ -1,30 +1,49 @@
 import { Link, useParams } from 'react-router-dom';
-import { EDU_TOPICS } from '../data/edu/config';
-import { renderMarkdown } from '../lib/markdown';
+import { useEffect, useState } from 'react';
+import { EduTopicIcon } from '../assets/icons/edu';
+import { visaWorkflow } from '../data/edu/visa';
+import { arrivalWorkflow } from '../data/edu/arrival';
+import { renewalWorkflow } from '../data/edu/renewal';
+import { applicationWorkflow } from '../data/edu/application';
+import { scholarshipWorkflow } from '../data/edu/scholarship';
+import { policyWorkflow } from '../data/edu/policy';
+import type { WorkflowTopic } from '../data/edu/workflow';
+import WorkflowTimeline from '../components/edu/WorkflowTimeline';
+import WorkflowCard from '../components/edu/WorkflowCard';
 
-// MD import · Vite ?raw 契約
-import visaMd from '../data/edu/visa.md?raw';
-import arrivalMd from '../data/edu/arrival.md?raw';
-import renewalMd from '../data/edu/renewal.md?raw';
-import applicationMd from '../data/edu/application.md?raw';
-import scholarshipMd from '../data/edu/scholarship.md?raw';
-import policyMd from '../data/edu/policy.md?raw';
-
-const MD_MAP: Record<string, string> = {
-  visa: visaMd,
-  arrival: arrivalMd,
-  renewal: renewalMd,
-  application: applicationMd,
-  scholarship: scholarshipMd,
-  policy: policyMd,
+const TOPIC_MAP: Record<string, WorkflowTopic> = {
+  visa: visaWorkflow,
+  arrival: arrivalWorkflow,
+  renewal: renewalWorkflow,
+  application: applicationWorkflow,
+  scholarship: scholarshipWorkflow,
+  policy: policyWorkflow,
 };
 
+const OTHER_TOPICS = [
+  { slug: 'visa', title: '簽證' },
+  { slug: 'arrival', title: '落地' },
+  { slug: 'renewal', title: '延簽' },
+  { slug: 'application', title: '學程' },
+  { slug: 'scholarship', title: '獎學金' },
+  { slug: 'policy', title: '政策' },
+];
+
+/**
+ * DS v4.2 · EduTopic
+ * §六 資訊架構：Hero → 流程總覽 → Workflow Cards → 常見錯誤 → 官方資源
+ * 「常見錯誤」與「官方資源」已內建於每張 Card 的 Accordion，避免重複。
+ */
 export default function EduTopic() {
   const { slug } = useParams<{ slug: string }>();
-  const topic = EDU_TOPICS.find((t) => t.slug === slug);
-  const md = slug ? MD_MAP[slug] : null;
+  const topic = slug ? TOPIC_MAP[slug] : null;
+  const [currentStep, setCurrentStep] = useState<number | undefined>(undefined);
 
-  if (!topic || !md) {
+  useEffect(() => {
+    setCurrentStep(undefined);
+  }, [slug]);
+
+  if (!topic) {
     return (
       <div className="py-16 text-center text-content-secondary">
         找不到這個主題。
@@ -33,26 +52,81 @@ export default function EduTopic() {
     );
   }
 
+  const handleStepClick = (step: number) => {
+    setCurrentStep(step);
+    const el = document.getElementById(`step-${step}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Breadcrumb */}
       <div>
         <Link to="/edu" className="text-xs no-underline">
           ← 回學用板塊
         </Link>
       </div>
 
-      {/* 內容源為 static asset（src/data/edu/*.md），非使用者輸入 · 見 PAT-28 */}
-      <article
-        className="max-w-3xl"
-        dangerouslySetInnerHTML={{ __html: renderMarkdown(md) }}
-      />
-
-      <div className="pt-6 border-t border-border-subtle max-w-3xl">
-        <div className="text-xs text-content-muted">
-          內容以 2024/25 年度公開資料為基礎，僅供參考，正式辦理前請確認官方最新公告。
+      {/* Hero */}
+      <header className="flex items-start gap-4">
+        <div className="text-module-edu w-14 h-14 sm:w-16 sm:h-16 shrink-0">
+          <EduTopicIcon slug={topic.slug} className="w-full h-full" />
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {EDU_TOPICS.filter((t) => t.slug !== slug).map((t) => (
+        <div>
+          <div className="text-xs text-content-muted uppercase tracking-wider mb-1">
+            {topic.subtitle}
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-content-primary">
+            {topic.title}
+          </h1>
+          <p className="text-sm text-content-secondary mt-2 max-w-2xl leading-relaxed">
+            {topic.description}
+          </p>
+        </div>
+      </header>
+
+      {/* 流程總覽 */}
+      <section aria-label="流程總覽">
+        <div className="text-xs text-content-muted uppercase tracking-wider mb-3">
+          流程總覽
+        </div>
+        <WorkflowTimeline
+          steps={topic.steps}
+          currentStep={currentStep}
+          onStepClick={handleStepClick}
+        />
+      </section>
+
+      {/* Workflow Cards */}
+      <section className="space-y-4">
+        {topic.steps.map((s) => (
+          <WorkflowCard key={s.step} step={s} />
+        ))}
+      </section>
+
+      {/* General notes */}
+      {topic.general_notes && topic.general_notes.length > 0 && (
+        <section className="card bg-surface-section border-border-subtle">
+          <div className="text-xs font-semibold text-content-muted uppercase tracking-wider mb-2">
+            說明
+          </div>
+          <ul className="space-y-1.5 text-sm text-content-secondary">
+            {topic.general_notes.map((n, i) => (
+              <li key={i} className="pl-4 border-l-2 border-brand-gold/50">
+                {n}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* 跨主題導航 */}
+      <section className="pt-4 border-t border-border-subtle">
+        <div className="text-xs text-content-muted mb-3">其他主題</div>
+        <div className="flex flex-wrap gap-2">
+          {OTHER_TOPICS.filter((t) => t.slug !== slug).map((t) => (
             <Link
               key={t.slug}
               to={`/edu/${t.slug}`}
@@ -64,7 +138,7 @@ export default function EduTopic() {
             </Link>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
