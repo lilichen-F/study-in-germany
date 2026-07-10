@@ -8,7 +8,10 @@
     "level": "A1–C2",
     "website": "https://www.goethe.de/ins/de/de/sta/ber.html",
     "note": "官方德國文化中心，教學品質穩定，證書國際認可度最高，適合需要 APS 或簽證用語言證明的學生。約 €1,200–1,500 / 4 週密集班。",
-    "accommodation": null
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": ["Goethe-Zertifikat"],
+    "price_hint": "€1,200–1,500 / 4 週密集班"
   },
   {
     "id": "goethe-muenchen",
@@ -19,7 +22,10 @@
     "level": "A1–C2",
     "website": "https://www.goethe.de/ins/de/de/sta/mue.html",
     "note": "慕尼黑校區，鄰近大學區，設備新，寄宿家庭與宿舍資源多，但生活費在全德屬最高一級。約 €1,300–1,600 / 4 週密集班。",
-    "accommodation": "提供寄宿家庭與宿舍安排資源"
+    "accommodation": "提供寄宿家庭與宿舍安排資源",
+    "founded_year": null,
+    "accreditation": ["Goethe-Zertifikat"],
+    "price_hint": "€1,300–1,600 / 4 週密集班"
   },
   {
     "id": "did-frankfurt",
@@ -30,7 +36,10 @@
     "level": "A1–C1",
     "website": "https://www.did.de",
     "note": "連鎖語言學校，價格中等，開課頻率高（每週一皆可插班），適合時程彈性的申請者。約 €800–1,100 / 4 週密集班。",
-    "accommodation": null
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": "€800–1,100 / 4 週密集班"
   },
   {
     "id": "fu-sprachenzentrum",
@@ -41,7 +50,10 @@
     "level": "A1–C1",
     "website": "https://www.sprachenzentrum.fu-berlin.de",
     "note": "大學附設語言中心，價格最低（約 €300–600 / 學期），但名額有限且通常需持有大學入學許可或交換身分。",
-    "accommodation": null
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": "€300–600 / 學期"
   },
   {
     "id": "carl-duisberg-koeln",
@@ -51,6 +63,176 @@
     "level": "A1–C2",
     "website": "https://www.carl-duisberg.de",
     "note": "老牌語言機構，TestDaF 考場之一，考前衝刺班口碑好，宿舍可代訂。約 €900–1,250 / 4 週密集班。",
-    "accommodation": "可代訂宿舍"
+    "accommodation": "可代訂宿舍",
+    "founded_year": null,
+    "accreditation": ["TestDaF"],
+    "price_hint": "€900–1,250 / 4 週密集班"
+  },
+  {
+    "id": "did-berlin",
+    "name_zh": "did 德語學院 柏林",
+    "name_de": "did deutsch-institut Berlin",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C2",
+    "website": "https://www.did.de/en/berlin",
+    "note": "連鎖語言學校柏林分校，位於市中心 Berlin-Mitte，設備新（含電子白板），提供城市導覽等文化活動。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "goethe-frankfurt",
+    "name_zh": "歌德學院 法蘭克福",
+    "name_de": "Goethe-Institut Frankfurt",
+    "city": "Frankfurt am Main",
+    "city_key": "frankfurt",
+    "level": "A1–C2",
+    "website": "https://www.goethe.de/ins/de/de/ort/fra.html",
+    "note": "官方德國文化中心法蘭克福分校，鄰近 Konstablerwache 交通樞紐，提供新移民免費融入活動。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": ["Goethe-Zertifikat"],
+    "price_hint": null
+  },
+  {
+    "id": "goethe-duesseldorf",
+    "name_zh": "歌德學院 杜塞道夫",
+    "name_de": "Goethe-Institut Düsseldorf",
+    "city": "Düsseldorf",
+    "city_key": "duesseldorf",
+    "level": "A1–C2",
+    "website": "https://www.goethe.de/ins/de/de/ort/due.html",
+    "note": "官方德國文化中心杜塞道夫分校，鄰近中央車站，提供 A1–C2 官方認證課程。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": ["Goethe-Zertifikat"],
+    "price_hint": null
+  },
+  {
+    "id": "iik-duesseldorf",
+    "name_zh": "IIK 杜塞道夫國際交流學院",
+    "name_de": "IIK Düsseldorf",
+    "city": "Düsseldorf",
+    "city_key": "duesseldorf",
+    "level": "A1–C2",
+    "website": "https://www.iik-duesseldorf.de/en/",
+    "note": "1989 年由杜塞道夫大學衍生成立的非營利機構，主打學術德語、大學預備課程與職業德語。",
+    "accommodation": null,
+    "founded_year": 1989,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "inlingua-berlin",
+    "name_zh": "inlingua 柏林",
+    "name_de": "inlingua Berlin",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C2",
+    "website": "https://www.inlingua-berlin.de/",
+    "note": "國際連鎖語言學校柏林分校，telc / TestDaF / DTZ 官方考場，位於 Kleiststraße。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": ["telc", "TestDaF", "DTZ"],
+    "price_hint": null
+  },
+  {
+    "id": "inlingua-munich",
+    "name_zh": "inlingua 慕尼黑",
+    "name_de": "inlingua München",
+    "city": "München",
+    "city_key": "munich",
+    "level": "A1–C2",
+    "website": "https://www.inlingua-muenchen.de/",
+    "note": "國際連鎖語言學校慕尼黑分校，位於 Sendlinger Tor 鬧區，提供實體與線上課程。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "berlitz-berlin",
+    "name_zh": "Berlitz 柏林",
+    "name_de": "Berlitz Berlin",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C2",
+    "website": "https://www.berlitz.com/de-de/sprachschulen/berlin",
+    "note": "國際品牌語言學校，柏林三據點（Mitte / Charlottenburg / Reinickendorf），Mitte 據點提供 BAMF 補助融入課程。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "fu-heidelberg",
+    "name_zh": "F+U 教育集團 海德堡",
+    "name_de": "F+U Academy of Languages Heidelberg",
+    "city": "Heidelberg",
+    "level": "A1–C2",
+    "website": "https://www.fuu.de/sprachen/",
+    "note": "海德堡舊城中心語言學院，年服務逾 12,000 名學生（含柏林分校），提供多種密集與晚間課程。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "neue-schule-berlin",
+    "name_zh": "DIE NEUE SCHULE 柏林",
+    "name_de": "DIE NEUE SCHULE",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C1",
+    "website": "https://www.neueschule.de/",
+    "note": "1984 年成立，柏林規模最大、最知名語言學校之一，全外師教學，31 間教室。",
+    "accommodation": null,
+    "founded_year": 1984,
+    "accreditation": null,
+    "price_hint": null
+  },
+  {
+    "id": "sprachenatelier-berlin",
+    "name_zh": "Sprachenatelier 柏林",
+    "name_de": "Sprachenatelier Berlin",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C2",
+    "website": "https://www.sprachenatelier-berlin.de/en/",
+    "note": "柏林獨立語言暨藝術文化學院，telc 官方考場，柏林參議院教育局與 FaDaF 認證。",
+    "accommodation": null,
+    "founded_year": null,
+    "accreditation": ["telc", "FaDaF"],
+    "price_hint": null
+  },
+  {
+    "id": "gls-berlin",
+    "name_zh": "GLS 德語學校 柏林",
+    "name_de": "GLS Sprachenzentrum Berlin",
+    "city": "Berlin",
+    "city_key": "berlin",
+    "level": "A1–C2",
+    "website": "https://www.gls-german-courses.de/",
+    "note": "1983 年成立，柏林自有校園（含合作飯店住宿），TestDaF 與 telc 官方考場，多次獲 Star School Germany 獎。",
+    "accommodation": "自有校園含合作飯店住宿選項",
+    "founded_year": 1983,
+    "accreditation": ["TestDaF", "telc"],
+    "price_hint": null
+  },
+  {
+    "id": "sprachcaffe-frankfurt",
+    "name_zh": "Sprachcaffe 法蘭克福",
+    "name_de": "Sprachcaffe Frankfurt",
+    "city": "Frankfurt am Main",
+    "city_key": "frankfurt",
+    "level": "A1–C2",
+    "website": "https://www.sprachcaffe-frankfurt.com/en/",
+    "note": "國際連鎖語言學校，法蘭克福 Sachsenhausen 區高樓層教室，經營逾 35 年。",
+    "accommodation": "提供學生宿舍與寄宿家庭",
+    "founded_year": null,
+    "accreditation": null,
+    "price_hint": null
   }
 ]

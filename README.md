@@ -79,4 +79,8 @@ VITE_MOCK_MODE=1
 
 ## 授權
 
-尚未指定授權條款（無 LICENSE 檔）。
+MIT License，詳見 [LICENSE](./LICENSE) 檔案。
+
+**開源範圍**：目前 v0.7.x 全部程式碼皆 MIT 開源，含 UI 元件、資料契約、workflow 資料。
+
+**未來規劃**：若日後推出付費進階功能（如 admin dashboard、詳細分析、匯出功能等），將另存為閉源專案，不納入本 repo。

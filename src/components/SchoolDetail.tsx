@@ -200,6 +200,28 @@ export default function SchoolDetail() {
           <ReviewForm schoolId={school.id} onSubmitted={load} />
         </AuthGate>
       </section>
+
+      {/* 提交建議 · GitHub Issues 整合（PAT-52） */}
+      <section className="card bg-brand-gold-soft border-brand-gold/30">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="text-sm font-medium text-content-primary">
+              📝 資訊有誤或想補充？
+            </div>
+            <div className="text-xs text-content-muted mt-1 leading-relaxed">
+              歡迎回報學校資訊錯誤、住宿情況、或補充其他細節。
+            </div>
+          </div>
+          <a
+            href={`https://github.com/lilichen-F/study-in-germany/issues/new?title=${encodeURIComponent(`[語校建議] ${school.name_zh}`)}&labels=school-suggestion&body=${encodeURIComponent(`## 學校\n${school.name_zh} (${school.id})\n\n## 建議類型\n- [ ] 資訊有誤（哪一項欄位錯了？）\n- [ ] 補充資訊（缺哪些細節？）\n- [ ] 我曾就讀 · 分享實際經驗\n\n## 詳細內容\n\n\n\n## 佐證來源（有的話）\n\n`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost text-xs no-underline shrink-0"
+          >
+            提交建議 →
+          </a>
+        </div>
+      </section>
     </div>
   );
 }

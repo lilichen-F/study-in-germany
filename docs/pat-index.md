@@ -52,6 +52,9 @@
 | PAT-48 | KNOWN_ISSUE | 討論區於 UI 端 fake（title「[討論] 」前綴標記，待 Phase W schema migration） |
 | PAT-49 | CORE_IMMUTABLE | StarSlider 簡化為 1-5 整星（toggle 清除） |
 | PAT-50 | CORE_IMMUTABLE | 語校 accommodation 欄位（string \| null，保守判斷） |
+| PAT-51 | CORE_IMMUTABLE | schools.json 擴充至 17 所（WebSearch 逐校查證，不確定一律 null） |
+| PAT-52 | CORE_IMMUTABLE | 使用者建議系統：GitHub Issues 整合（零 DB / 零新服務） |
+| PAT-53 | CORE_IMMUTABLE | LICENSE 策略：MIT，未來付費功能另存閉源專案 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
