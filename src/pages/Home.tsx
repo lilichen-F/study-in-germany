@@ -38,7 +38,7 @@ export default function Home() {
           <PortalCard
             to="/faq"
             title="常見問答"
-            description="簽證、健保、封鎖帳戶、生活疑問"
+            description="簽證、健保、限制提領帳戶、生活疑問"
             icon={<FaqIcon className="w-full h-full" />}
           />
           <PortalCard

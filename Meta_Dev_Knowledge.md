@@ -146,3 +146,18 @@ ProcedureItem 型別可為 string 或 { text, items[] }。
 ## PAT-38 [CORE_IMMUTABLE]: 限制提領帳戶用詞統一
 全站不使用「封鎖帳戶」，一律「限制提領帳戶」。
 Sperrkonto 於視覺上為「限制提領帳戶（Sperrkonto）」形式首次出現，之後只用中文。
+
+## PAT-39 [CORE_IMMUTABLE]: 全站德文首次原則(擴展 PAT-37)
+從單一 topic 檔內首次原則擴展到全站 UI 資產：
+- 每 UI 頁、每資料檔內首次出現德文專有名詞才附中文說明或於 title_de 呈現
+- 之後於同一頁 / 同一檔的 procedure / common_mistakes / description / body 內僅用中文
+- 但保留：title_de 欄位、官方機構名於 location、官方連結顯示名、documents 內正式表單名
+- FAQ 頁、Portal 描述、Announcements、其他 UI 板塊皆遵守此原則
+
+## PAT-40 [CORE_IMMUTABLE]: 全站繁體用語掃描原則
+本站語言環境為台灣繁體中文。所有 UI 文案、資料檔內容、錯誤訊息、Toast 一律用：
+- 台灣繁體字型、詞彙
+- 應用程式（非 app 大陸用法，但 "app" 縮寫可用）
+- 網路（非網絡）、伺服器（非服務器）、電子郵件（非郵件）、帳戶（非賬戶）
+- 履歷（非簡歷）、品質（非質量）、介面（非界面）、使用者（非用戶）、造訪（非訪問）
+新資料加入時遵守此約束。若引用外部資料，引用時翻譯為繁體。
