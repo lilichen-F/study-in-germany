@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import type { Recommendation } from '../lib/recommendation';
+import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import generalData from '../data/recommendations/general.json';
 import visaData from '../data/recommendations/visa.json';
 import arrivalData from '../data/recommendations/arrival.json';
@@ -40,7 +41,9 @@ export default function RecommendationCategory() {
       </div>
 
       <header className="flex items-start gap-4">
-        <div className="text-4xl" aria-hidden>{meta.emoji}</div>
+        <div className="text-module-recommendation w-14 h-14 sm:w-16 sm:h-16 shrink-0">
+          <RecommendationCategoryIcon slug={meta.key} className="w-full h-full" />
+        </div>
         <div>
           <div className="text-xs text-content-muted uppercase tracking-wider mb-1">
             {meta.subtitle}

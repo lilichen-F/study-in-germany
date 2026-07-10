@@ -34,6 +34,11 @@
   --module-faq: 140 138 122;
   --module-edu: 184 162 122;
   --module-myposts: 125 122 136;
+
+  /* 推薦專區模組識別色（Phase I） */
+  --module-general: 168 148 138;
+  --module-taiwan: 130 148 158;
+  --module-recommendation: 184 162 122;
 }
 .dark {
   /* DS v4.1 Morandi Dark · 禁純黑 #121212 · 改用 #1E1B19 */
@@ -65,6 +70,10 @@
   --module-faq: 170 168 150;
   --module-edu: 205 187 150;
   --module-myposts: 155 152 168;
+
+  --module-general: 190 176 168;
+  --module-taiwan: 158 172 180;
+  --module-recommendation: 205 187 150;
 }
 
 @theme inline {
@@ -90,6 +99,9 @@
   --color-module-faq: rgb(var(--module-faq));
   --color-module-edu: rgb(var(--module-edu));
   --color-module-myposts: rgb(var(--module-myposts));
+  --color-module-general: rgb(var(--module-general));
+  --color-module-taiwan: rgb(var(--module-taiwan));
+  --color-module-recommendation: rgb(var(--module-recommendation));
 
   --radius-card: 16px;
   --container-content: 1320px;

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import RecommendationIcon from '../assets/icons/RecommendationIcon';
+import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import generalData from '../data/recommendations/general.json';
 import visaData from '../data/recommendations/visa.json';
@@ -22,8 +23,8 @@ const SUGGEST_ISSUE_URL = `https://github.com/lilichen-F/study-in-germany/issues
 ).toString()}`;
 
 /**
- * DS v4.2 · 推薦專區 Hub
- * 6 個子分類卡矩陣（3×2 或 2×3 依螢幕）
+ * DS v4.2 · 推薦專區 Hub · 對齊 Edu Hub 佈局（PAT-64）
+ * 6 個子分類卡矩陣 · 圖示置中 · 文字置中
  */
 export default function Recommendation() {
   return (
@@ -33,7 +34,7 @@ export default function Recommendation() {
           Recommendations
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold flex items-center gap-3">
-          <span className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10 inline-flex">
+          <span className="text-module-recommendation w-8 h-8 sm:w-10 sm:h-10 inline-flex">
             <RecommendationIcon className="w-full h-full" />
           </span>
           推薦專區
@@ -53,10 +54,16 @@ export default function Recommendation() {
             className="card-interactive block p-5 no-underline aspect-[4/3]
                        flex flex-col justify-between"
           >
-            <div className="text-3xl" aria-hidden>{c.emoji}</div>
-            <div>
-              <div className="font-semibold text-content-primary">{c.title}</div>
-              <div className="text-xs text-content-muted mt-1 leading-relaxed">
+            <div className="text-module-recommendation w-20 h-20 sm:w-24 sm:h-24
+                            mt-auto mb-3 mx-auto flex items-center justify-center">
+              <RecommendationCategoryIcon slug={c.key} className="w-full h-full" />
+            </div>
+
+            <div className="space-y-1 text-center">
+              <div className="text-base font-semibold text-content-primary">
+                {c.title}
+              </div>
+              <div className="text-xs text-content-muted italic">
                 {c.subtitle}
               </div>
               <div className="pt-2 flex items-center justify-between text-xs">

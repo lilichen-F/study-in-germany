@@ -313,3 +313,26 @@ Phase H 建檔時以 WebSearch 逐一查證較不確定的項目：
 按子分類拆為 6 個 JSON 檔（general/visa/arrival/edu/scholarship/taiwan）於 src/data/recommendations/。
 Hub 頁自動 count items · 子分類頁載入單一 JSON。
 未來加分類 · 於 RECOMMENDATION_CATEGORIES 追加 + 新增對應 JSON 檔。
+
+## PAT-62 [CORE_IMMUTABLE]: Recommendation 沿用 Edu Icon 資源
+Recommendation 6 分類中 4 個（visa/arrival/edu/scholarship）沿用 Edu 現有 SVG。
+只新增 2 個 SVG：GeneralIcon（星形 + 光芒）· TaiwanIcon（島輪廓 + 星）。
+共用機制：assets/icons/recommendation/index.tsx registry 從 assets/icons/edu/ 引入沿用者。
+避免重複造輪子、圖示風格一致。
+
+## PAT-63 [CORE_IMMUTABLE]: Module Color 保守統一策略（非動態 class）
+本專案 module-* CSS var 目前只綁定 5 大版塊（schools/board/faq/edu/myposts）+ Phase I
+新增 3 個（general/taiwan/recommendation），並未涵蓋 Edu 子主題等級的顏色（無
+module-visa/module-arrival/module-scholarship）。Recommendation Hub 與子頁的圖示
+一律用 `text-module-recommendation` 統一金色（非依 category key 動態組字串
+`text-module-${key}`），因為：(1) 該組 class 大多不存在、(2) Tailwind v4 於
+build time 靜態掃描原始碼字串才能產生對應 utility，動態字串組合會被跳過。
+若未來要差異化各分類顏色，需先在 index.css 補齊對應 --module-* var，
+並在程式碼內用靜態 literal class name（如 switch/case 或常量 map）而非樣板字串。
+
+## PAT-64 [CORE_IMMUTABLE]: Recommendation Hub 佈局對齊 Edu
+sm:grid-cols-2 lg:grid-cols-3 · 卡片 aspect-[4/3] · icon w-20 sm:w-24 mx-auto · 文字 text-center
+與 EduHub 完全一致 · 使用者於兩板塊間切換有一致的視覺體驗。
+子分類頁 header 亦改用 SVG（w-14 sm:w-16）對齊 EduTopic 的 hero pattern，
+取代原本的 emoji 大字級顯示（emoji 僅保留於底部「其他分類」次要導覽）。
+若日後 Edu 佈局變、Recommendation 應同步跟隨。
