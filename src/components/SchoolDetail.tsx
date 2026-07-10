@@ -13,6 +13,9 @@ import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
 import { SkeletonList } from './Skeleton';
 import { CityIllustration } from '../assets/cities';
+import { RATING_DIMENSIONS } from '../lib/ratings';
+import type { RatingDimension } from '../lib/ratings';
+import RatingBreakdown from './RatingBreakdown';
 
 const list = schools as School[];
 
@@ -77,6 +80,20 @@ export default function SchoolDetail() {
         ) / 10
       : null;
 
+  // 計算 6 維平均（overall + 5 維）
+  const avgBreakdown: Partial<Record<RatingDimension | 'overall', number>> = {};
+  if (reviews.length > 0) {
+    const dims: (RatingDimension | 'overall')[] = ['overall', ...RATING_DIMENSIONS.map((d) => d.key)];
+    for (const dim of dims) {
+      const values = reviews
+        .map((r) => r.stars[dim])
+        .filter((v): v is number => typeof v === 'number' && v > 0);
+      if (values.length > 0) {
+        avgBreakdown[dim] = Math.round((values.reduce((s, v) => s + v, 0) / values.length) * 10) / 10;
+      }
+    }
+  }
+
   return (
     <div className="space-y-8">
       {/* Banner 區塊 · 城市 SVG 全寬大版 */}
@@ -132,6 +149,18 @@ export default function SchoolDetail() {
                 </a>
               )}
             </div>
+
+            {reviews.length > 0 && (
+              <details className="mt-3">
+                <summary className="text-xs text-content-secondary cursor-pointer
+                                    hover:text-content-primary transition-colors">
+                  展開 6 維評分
+                </summary>
+                <div className="mt-3 pt-3 border-t border-border-subtle max-w-md">
+                  <RatingBreakdown stars={avgBreakdown} />
+                </div>
+              </details>
+            )}
           </div>
         </div>
       </section>

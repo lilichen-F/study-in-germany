@@ -176,3 +176,23 @@ Phase U 修為 sleep 90 秒 · 減少誤報。若仍有誤報 · 考慮改為 po
 MVP 期間穩定 > 新版本。dependabot.yml 對 npm 與 github-actions 皆 ignore major bump。
 Minor / patch 仍會自動提 PR · 安全性更新不受影響。
 3-6 個月後可視情況解除此限制。
+
+## PAT-44 [CORE_IMMUTABLE]: 6 維評分系統
+DB 端 stars JSONB 存 { overall, teaching, environment, material, admin, transport, price }。
+UI 端使用者只選 5 維（teaching / environment / material / admin / transport / price）。
+Overall 由 calculateOverall(stars) 於 client 計算為 5 維平均、四捨五入到 0.5。
+不允許使用者手動輸入 overall(避免與 5 維邏輯矛盾)。
+注意：src/lib/types.ts 的 RatingDimension(7 值，含 overall，受保護檔)與
+src/lib/ratings.ts 的 RatingDimension(6 值，不含 overall，新檔)為同名不同型別，
+分屬不同模組、無交叉 import，字面量子集吻合，故無實際衝突；未來若需在同一檔案
+內同時使用兩者，須以 import 別名區分。
+
+## PAT-45 [CORE_IMMUTABLE]: RatingBreakdown 兩種 mode
+- compact=true: review card 內 · 一行 · 已填維度用「教學 4.5」形式
+- compact=false: SchoolDetail Banner · 全 5 維 bar chart · 未填顯示「—」
+兩 mode 共用同一元件 · props 控制。
+
+## PAT-46 [CORE_IMMUTABLE]: StarSlider 半星支援
+純 SVG · 每星拆為左右兩半 button（clipPath: inset）。
+左半→x.5、右半→x.0。點清除按鈕即可撤銷。
+hover preview 於 UI 顯示但不 commit。
