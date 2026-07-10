@@ -7,6 +7,7 @@ import { renewalWorkflow } from '../data/edu/renewal';
 import { applicationWorkflow } from '../data/edu/application';
 import { scholarshipWorkflow } from '../data/edu/scholarship';
 import { policyWorkflow } from '../data/edu/policy';
+import { exitWorkflow } from '../data/edu/exit';
 import type { WorkflowTopic } from '../data/edu/workflow';
 import WorkflowTimeline from '../components/edu/WorkflowTimeline';
 import WorkflowCard from '../components/edu/WorkflowCard';
@@ -18,6 +19,7 @@ const TOPIC_MAP: Record<string, WorkflowTopic> = {
   application: applicationWorkflow,
   scholarship: scholarshipWorkflow,
   policy: policyWorkflow,
+  exit: exitWorkflow,
 };
 
 const OTHER_TOPICS = [
@@ -27,6 +29,7 @@ const OTHER_TOPICS = [
   { slug: 'application', title: '學程' },
   { slug: 'scholarship', title: '獎學金' },
   { slug: 'policy', title: '政策' },
+  { slug: 'exit', title: '離開指南' },
 ];
 
 /**

@@ -8,6 +8,7 @@ import { renewalWorkflow } from '../data/edu/renewal';
 import { applicationWorkflow } from '../data/edu/application';
 import { scholarshipWorkflow } from '../data/edu/scholarship';
 import { policyWorkflow } from '../data/edu/policy';
+import { exitWorkflow } from '../data/edu/exit';
 import type { WorkflowTopic } from '../data/edu/workflow';
 
 const EDU_WORKFLOWS: WorkflowTopic[] = [
@@ -17,6 +18,7 @@ const EDU_WORKFLOWS: WorkflowTopic[] = [
   applicationWorkflow,
   scholarshipWorkflow,
   policyWorkflow,
+  exitWorkflow,
 ];
 
 interface Announcement {

@@ -114,3 +114,19 @@ Phase B.3 引入 · Phase C.1 已無業務使用（Edu 改 workflow 型別，con
 每 WorkflowCard 五區固定：STEP/Title/Meta/Outcome/CTA。
 展開後四區塊：Documents/Procedure/Common Mistakes/Official Sources。
 「官方資源」用 bg-brand-gold-soft 特別 highlight（DS v4.2 §十三 官方資訊優先原則）。
+
+## PAT-33 [CORE_IMMUTABLE]: 台灣繁體用語約束
+所有 UI 文案 · workflow 資料 · 公告內容一律用台灣繁體用語。
+避免大陸慣用語(政治導向 → 政黨背景;方便快捷 → 方便快速)。
+德文一律降為 title_de 副標 · 小字 italic 呈現。
+新內容加入時遵守此約束。
+
+## PAT-34 [CORE_IMMUTABLE]: Exit workflow 是完整離境流程
+9 個 step 涵蓋離境全程:通知移民局 → 註銷戶籍 → 解除電視稅 → 解除保險 →
+關閉帳戶 → 取回 Sperrkonto → 稅務結算 → 解除電信 → 整理教育文件。
+不含只有部分留人適用的事項(如「以後如何返德」)· 該類主題可另做「返德指南」板塊。
+
+## PAT-35 [CORE_IMMUTABLE]: APS 台灣豁免明確化
+application step 2 明列:台灣學生一般不需 APS。
+例外情況:於中國大陸受教育的台灣學生 · 或行政疏失時的補件。
+從此 · workflow 資料檔不再假設「所有華人需 APS」。

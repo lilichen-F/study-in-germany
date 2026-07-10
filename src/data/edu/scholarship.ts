@@ -59,7 +59,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
       detail: {
         documents: [
           '護照',
-          'CV（德/英）',
+          '履歷（德/英）',
           '動機信（1500-2500 字）',
           '推薦信 2 封',
           '學位證書 + 成績',
@@ -91,7 +91,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         documents: [
           '報名表',
           '學位證 + 成績',
-          '英文/德文 CV',
+          '英文/德文 履歷',
           '中文動機信',
           '推薦信 2 封',
           '語言證書',
@@ -124,7 +124,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         procedure: [
           'DAAD：以德/英文面試，內容環繞研究計畫',
           '教育部：以中文為主，內容包含時事與回國計畫',
-          '基金會：通常需理念討論、社會議題',
+          '基金會：可能涉及政黨/理念認同討論、社會議題',
           '準備 3-5 個熟悉的自問問題',
         ],
         common_mistakes: [

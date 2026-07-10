@@ -6,6 +6,7 @@ import { renewalWorkflow } from '../data/edu/renewal';
 import { applicationWorkflow } from '../data/edu/application';
 import { scholarshipWorkflow } from '../data/edu/scholarship';
 import { policyWorkflow } from '../data/edu/policy';
+import { exitWorkflow } from '../data/edu/exit';
 
 const TOPICS = [
   visaWorkflow,
@@ -14,6 +15,7 @@ const TOPICS = [
   applicationWorkflow,
   scholarshipWorkflow,
   policyWorkflow,
+  exitWorkflow,
 ];
 
 /**

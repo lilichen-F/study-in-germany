@@ -5,6 +5,7 @@ import RenewalIcon from './RenewalIcon';
 import ApplicationIcon from './ApplicationIcon';
 import ScholarshipIcon from './ScholarshipIcon';
 import PolicyIcon from './PolicyIcon';
+import ExitIcon from './ExitIcon';
 
 const REGISTRY: Record<string, FC<{ className?: string }>> = {
   visa: VisaIcon,
@@ -13,6 +14,7 @@ const REGISTRY: Record<string, FC<{ className?: string }>> = {
   application: ApplicationIcon,
   scholarship: ScholarshipIcon,
   policy: PolicyIcon,
+  exit: ExitIcon,
 };
 
 export function EduTopicIcon({
