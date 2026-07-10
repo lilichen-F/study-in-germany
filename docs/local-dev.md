@@ -35,16 +35,17 @@ npm run preview     # 檢視 dist/
 ```
 
 ## 分支結構
-- `main`: Phase A baseline，已部署 GH Pages
-- `phase-a5-prep`: Portal + SVG + FAQ 拆頁
-- `phase-a75-blocked-period`: Mock Mode + a11y polish
-- `phase-a100-wiring`: 元件接線 + 錯誤翻譯 + Dev Tooling
 
-合併時序（DB + OAuth 綠燈後）：
+`main` 為已部署 GH Pages 的穩定線（現行 v0.7.0）。每個 Phase 從 `main` 開新分支
+（`phase-<name>`），typecheck + build 綠燈、瀏覽器驗證過，push 後由需求方（Lily）
+目視驗收才 `git merge --ff-only` 進 main，**不自動合併**。
 
 ```
-phase-a100-wiring → main（fast-forward，各 phase 分支為線性繼承鏈）
+main ← phase-<name>（單分支 ff）
 ```
+
+若 Phase 之間有依賴（如 B.1/B.2 需先整合），視情況建立中繼整合分支再 ff 進 main，
+細節見對應 Phase 的完成報告與 `work/activity.log`（gitignored，本機開發歷程紀錄）。
 
 ## 疑難排解
 

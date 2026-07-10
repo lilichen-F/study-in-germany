@@ -1,107 +1,82 @@
-# 留德資訊 MVP（v2）
+# 留德資訊站
 
-德國留學資訊平台：語言學校評價、二手交易與找房佈告欄。
-v2 在純靜態原型上加入 **Google OAuth 登入** 與 **資料庫層級權限控制（Supabase RLS）**。
+德國留學生活資訊入口 · MVP · 現行版本 v0.7.0
 
-## 技術棧
+- **線上**：https://lilichen-f.github.io/study-in-germany/
+- **技術棧**：Vite + React 19 + TypeScript + Tailwind CSS v4 + react-router-dom（HashRouter）+ Supabase（Auth / Postgres / Storage）
+- **設計系統**：DS v4.1 Morandi 色票 + DS v4.2 Workflow Pattern（Edu 板塊）
 
-Vite + React 19 + TypeScript + Tailwind CSS v4 + react-router-dom（HashRouter）+ Supabase（Auth + Postgres）
+## 功能
 
-## 文件
+### 路由
 
-- [15 分鐘上手](docs/onboarding-15min.md)
-- [本地開發指南](docs/local-dev.md)
-- [PAT 快速索引](docs/pat-index.md)
-- [Meta_Dev_Knowledge](Meta_Dev_Knowledge.md) — 完整 PAT 明細
-- [Meta_User_Feedback](Meta_User_Feedback.md) — 需求方回饋累積
+| 路徑 | 頁面 |
+|---|---|
+| `/` | Portal 首頁（Hero + 5 卡 + 熱門語校 + 最新公告） |
+| `/schools` | 語校列表 |
+| `/schools/:id` | 語校詳情（含 6 維評價 breakdown、住宿資訊） |
+| `/board` | 生活佈告欄（4 類：二手交易 / 出租 / 求租 / 討論區） |
+| `/faq` | 常見問答（5 題快速常問） |
+| `/edu` | 學用板塊 Hub（7 大主題） |
+| `/edu/:slug` | 各主題 Workflow（`visa` `arrival` `renewal` `application` `scholarship` `policy` `exit`） |
+| `/my-posts` | 個人資料管理 |
+| `/privacy` | 隱私政策 |
 
-## 權限模型
+### 核心功能
 
-| 操作 | 訪客 | 登入者 |
-|------|------|--------|
-| 瀏覽評價 / 貼文 | ✅ | ✅ |
-| 新增評價 / 貼文 | ❌ | ✅（只能以自己的 user_id） |
-| 修改評價 | ❌ | ❌（DB 層禁止，維持公信力） |
-| 修改 / 刪除貼文 | ❌ | ✅（僅限本人） |
-| 刪除評價 | ❌ | ✅（僅限本人） |
+- **6 維評分系統** — 教學品質 / 學習環境 / 教材 / 行政效率 / 交通便利性 / 性價比，使用者填其中任意幾維，overall 於 client 自動計算（`src/lib/ratings.ts`）
+- **Edu Workflow** — 7 主題、共 53 個 step，Priority Badge + Accordion 展開（文件 / 流程 / 常見錯誤 / 官方資源）
+- **生活佈告欄 4 類** — 二手交易 / 出租 / 求租 / 討論區（討論區目前於 UI 端以 title 前綴標記，DB 層仍為既有 3 類 CHECK constraint，見 `Meta_Dev_Knowledge.md` PAT-48）
+- **全站搜尋** — Cmd/Ctrl+K，client-side substring 掃描 schools + faq + announcements + 7 個 Edu 主題
+- **深淺主題** — Morandi 對稱色票，system 偏好 + localStorage 覆寫
+- **繁體中文（台灣）** — 全站台灣用語，德文專有名詞僅首次出現附中文說明
 
-所有權限由 Postgres **Row Level Security** 強制執行（見 `supabase/schema.sql`），
-前端的 `AuthGate` 只是 UX 引導 — 繞過前端直接打 API 一樣會被資料庫拒絕。
+所有寫入操作（評價 / 貼文）皆由 Postgres Row Level Security 於資料庫層強制執行，前端 `AuthGate` 僅為 UX 引導。
 
-## DS v4.0 追加 (Phase A)
-
-| # | 追加項 | 實作 |
-|---|---|---|
-| 7 | 主題雙軌 | ThemeProvider · system pref · localStorage 覆寫 |
-| 8 | German palette | src/index.css CSS vars（Tailwind v4 @theme inline） |
-| 9 | 6 維評分基礎 | JSONB stars column · Phase A 開放 overall/teaching/environment |
-| 10 | listings 3 類 | secondhand / rental_offer / rental_seek |
-| 11 | 照片上傳 | Storage bucket + RLS + client 壓縮（1600px/JPEG q0.85/6 張上限） |
-
-## 初次設定
-
-### 1. Supabase
-
-1. 建立 Supabase 專案，到 **SQL Editor** 執行 `supabase/schema.sql`（一次即可）。
-   **既有 v2 DB（本專案現況）**：先執行 `supabase/migrate_v2_to_v4.sql`（DROP v2 空表），再執行 `schema.sql`。
-   - Storage → 檢查 bucket `listings` 已建（schema.sql 執行完應自動建）
-   - Storage → Policies 確認四條 policy 已生效（若 SQL 建立遇權限錯誤，改用 Dashboard Policies UI）
-2. **Authentication → Providers → Google**：啟用並填入 Google Cloud Console 的
-   OAuth Client ID / Secret（Google 端的 Authorized redirect URI 填
-   `https://<project-ref>.supabase.co/auth/v1/callback`）。
-3. **Authentication → URL Configuration**：
-   - Site URL：`https://<你的帳號>.github.io/study-in-germany/`
-   - Redirect URLs 加入上述網址與 `http://localhost:5173`（本地開發用）。
-
-### 2. 本地開發
+## 開始使用
 
 ```bash
-cp .env.example .env.local   # 填入 Supabase URL 與 anon key
 npm install
-npm run dev
+npm run dev        # http://localhost:5173/
+npm run build      # production build（tsc -b + vite build）
+npm run typecheck  # tsc -b（noEmit）
 ```
 
-### 3. GitHub Pages 部署
+環境變數（複製 `.env.example` 為 `.env.local`）：
 
-1. Repo **Settings → Secrets and variables → Actions** 新增兩個 Secret：
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-2. Repo **Settings → Pages → Source** 選 **GitHub Actions**。
-3. Push 到 `main` 即自動 build + deploy（見 `.github/workflows/deploy.yml`）。
+```
+VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<anon key>
+```
 
-anon key 由 workflow 注入為 build-time 環境變數，不 commit 進程式碼；
-它本來就設計為可公開（權限控制在 RLS），Secrets 化是為了避免散落與方便輪替。
+DB / OAuth 未就緒時可另加一行進入 Mock Mode（不打 Supabase，改用 `src/lib/mockData.ts`）：
 
-## Phase A.5 · Non-DB Preparation
+```
+VITE_MOCK_MODE=1
+```
 
-新增（零 DB 依賴，可獨立部署）：
-- 4 座城市幾何 SVG（Berlin / Frankfurt / Munich / Düsseldorf）+ fallback
-- 6 個功能圖示（Schools / Board / FAQ / MyPosts / Search / Bell）
-- Portal 首頁結構（Hero + 4 卡 + Announcements）
-- /faq 獨立路由
-- ErrorBoundary + Skeleton loaders
-- announcements.json 種子（3 筆）
-- favicon.svg（酒紅底 + 金字「留」）
+首次 Supabase 設定、GitHub Pages 部署步驟見 [docs/local-dev.md](docs/local-dev.md)。
 
-未動：Supabase / OAuth / Storage / schema。
+## 開發文件
 
-## Phase B.2 · DS v4.1 Morandi + HotSchools + Search + Portal 5-card
+- [15 分鐘上手](docs/onboarding-15min.md) — 新開發者最短路徑
+- [本地開發指南](docs/local-dev.md) — 環境設定、疑難排解
+- [PAT 快速索引](docs/pat-index.md) — 50 條架構決策速查表
+- [Meta_Dev_Knowledge.md](Meta_Dev_Knowledge.md) — PAT 完整明細
+- [Meta_User_Feedback.md](Meta_User_Feedback.md) — 需求方回饋累積
 
-- Morandi 色票遷移（burgundy #9B5F5F / gold #B8A27A / dark #1E1B19，禁純黑）
-- 新 token：surface-section、brand-*-surface/soft、module-* 五模組識別色
-- HotSchools Carousel（scroll-snap 純 CSS，評價數 desc 排序）
-- 全站搜尋 modal（zero-dep substring，Cmd/Ctrl+K）
-- Portal 4→5 卡（新增「學用板塊」/edu 骨架）
+## 受保護檔案
 
-功能零變動、DB 零觸碰、依賴零新增。
+以下檔案動了需重跑整輪 governance，一般開發勿直接修改：
 
-## Phase B.1 · Visual Overhaul（已整合入 phase-b-integrated）
+- `src/lib/supabase.ts` / `useAuth.ts` / `storage.ts` / `types.ts`
+- `supabase/*.sql`
 
-- Home Hero 幾何城市天際線（Berlin/Munich/Frankfurt/Duesseldorf 拼組）
-- SchoolDetail Banner 化（全寬城市 SVG + 漸層 overlay）
-- PortalCard 4:3 aspect 硬鎖 + icon 尺寸提升
+## CI / CD
 
-## Phase B · 整合分支（phase-b-integrated）
+- GitHub Actions：`build` → `deploy`（GitHub Pages）→ `verify`（smoke test）
+- Dependabot：monthly，npm + github-actions 兩生態系，忽略 major bump（見 PAT-43）
 
-B.1（Hero/Banner/4:3）與 B.2（Morandi/HotSchools/Search/5卡）合流。
-整合時補回 B.1 banner 版漏失的 SchoolDetail MOCK_MODE fallback。
+## 授權
+
+尚未指定授權條款（無 LICENSE 檔）。

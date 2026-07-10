@@ -20,6 +20,38 @@
 | PAT-16 | CORE_IMMUTABLE | 錯誤翻譯層 errorMessages.ts |
 | PAT-17 | CORE_IMMUTABLE | DevBadge production 自動剝離（OfflineBanner 為 runtime 保留） |
 | PAT-18 | CORE_IMMUTABLE | Vite manualChunks: react-vendor / supabase-vendor |
+| PAT-19 | CORE_IMMUTABLE | Hero 天際線 4 城 SVG 橫向拼組（flex-1 min-w-0，opacity 淺/深模式區分） |
+| PAT-20 | CORE_IMMUTABLE | SchoolDetail Banner overlay 漸層蓋層（保留 MOCK_MODE fallback） |
+| PAT-21 | CORE_IMMUTABLE | PortalCard 4:3 aspect 硬鎖 |
+| PAT-22 | CORE_IMMUTABLE | DS v4.1 Morandi 色票 + module 識別色遷移 |
+| PAT-23 | CORE_IMMUTABLE | HotSchools 聚合於 client（無 DB 聚合函式/view） |
+| PAT-24 | CORE_IMMUTABLE | 全站搜尋純 client substring（search.ts，零新依賴） |
+| PAT-25 | KNOWN_ISSUE | /edu 為 Phase B.2 骨架（已於 C.1 展開為 workflow，見 PAT-29） |
+| PAT-26 | DEPRECATE_MARK | MD 契約 Vite ?raw import（Phase D 稽核降級，0 實際使用） |
+| PAT-27 | CORE_IMMUTABLE | FAQ 與 Edu 資訊層級分工（快速常問 vs 深入流程手冊） |
+| PAT-28 | DEPRECATE_MARK | dangerouslySetInnerHTML（C.1 已移除，風險註記保留供未來復活參考） |
+| PAT-29 | CORE_IMMUTABLE | Edu Workflow 資料契約（workflow.ts 型別 + 7 主題檔） |
+| PAT-30 | CORE_IMMUTABLE | Edu Geometry Icon 系統（viewBox 60×60，REGISTRY 註冊） |
+| PAT-31 | DEPRECATE_MARK | markdown.ts 與 .md?raw 宣告（C.1 後無業務使用，保留供未來純文字頁） |
+| PAT-32 | CORE_IMMUTABLE | WorkflowCard Accordion 五區固定 pattern |
+| PAT-33 | CORE_IMMUTABLE | 台灣繁體用語約束（避免大陸慣用語） |
+| PAT-34 | CORE_IMMUTABLE | Exit workflow 完整離境流程（9 step） |
+| PAT-35 | CORE_IMMUTABLE | APS 台灣豁免明確化 |
+| PAT-36 | CORE_IMMUTABLE | WorkflowStep procedure 支援 nested（string \| { text, items[] }） |
+| PAT-37 | CORE_IMMUTABLE | 德文專有名詞首次出現原則 |
+| PAT-38 | CORE_IMMUTABLE | 限制提領帳戶用詞統一（不用「封鎖帳戶」） |
+| PAT-39 | CORE_IMMUTABLE | 全站德文首次原則（擴展 PAT-37 至全站範圍） |
+| PAT-40 | CORE_IMMUTABLE | 全站繁體用語掃描原則 |
+| PAT-41 | CORE_IMMUTABLE | theme-color 淺深雙軌（index.html media query） |
+| PAT-42 | KNOWN_ISSUE | GH Pages CDN propagation 時序（deploy.yml sleep 90s） |
+| PAT-43 | CORE_IMMUTABLE | Dependabot major bump 保守策略（ignore major，minor/patch 照常） |
+| PAT-44 | CORE_IMMUTABLE | 6 維評分系統（5 維使用者選填，overall 自動計算） |
+| PAT-45 | CORE_IMMUTABLE | RatingBreakdown 兩種 mode（compact 一行 / bar-chart 全維） |
+| PAT-46 | DEPRECATE_MARK | StarSlider 半星支援（Phase V 已移除，改整星見 PAT-49） |
+| PAT-47 | CORE_IMMUTABLE | Edu 卡片圖案尺寸 w-20 sm:w-24（置中 layout） |
+| PAT-48 | KNOWN_ISSUE | 討論區於 UI 端 fake（title「[討論] 」前綴標記，待 Phase W schema migration） |
+| PAT-49 | CORE_IMMUTABLE | StarSlider 簡化為 1-5 整星（toggle 清除） |
+| PAT-50 | CORE_IMMUTABLE | 語校 accommodation 欄位（string \| null，保守判斷） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
