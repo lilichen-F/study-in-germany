@@ -37,12 +37,21 @@ export default function ReviewForm({ schoolId, onSubmitted }: Props) {
 
     setSubmitting(true);
 
+    // UI 顯示 overall 為 x.x（保留 1 位小數）
+    // DB 端 stars JSONB 內數字 round 為整數避免 CHECK 拒絕（PAT-65）
+    const roundedStars: Record<string, number> = {};
+    for (const [key, value] of Object.entries(stars)) {
+      if (typeof value === 'number' && value > 0) {
+        roundedStars[key] = Math.round(value);
+      }
+    }
+
     const payload = {
       school_id: schoolId,
       user_id: user.id,
       stars: {
-        overall,
-        ...stars,
+        overall: Math.round(overall),
+        ...roundedStars,
       },
       comment_text: comment.trim(),
     };

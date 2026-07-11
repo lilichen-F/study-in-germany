@@ -336,3 +336,11 @@ sm:grid-cols-2 lg:grid-cols-3 · 卡片 aspect-[4/3] · icon w-20 sm:w-24 mx-aut
 子分類頁 header 亦改用 SVG（w-14 sm:w-16）對齊 EduTopic 的 hero pattern，
 取代原本的 emoji 大字級顯示（emoji 僅保留於底部「其他分類」次要導覽）。
 若日後 Edu 佈局變、Recommendation 應同步跟隨。
+
+## PAT-65 [CORE_IMMUTABLE]: 6 維評分 DB CHECK 硬限 integer
+DB 端 school_reviews.stars JSONB 於某處 CHECK constraint 要求 integer 值。
+Client 端 calculateOverall 於 Phase V 改為保留 1 位小數 · 造成 insert 時 400/500
+（`invalid input syntax for type integer: "3.5"`）。
+Phase J-1 修法：ReviewForm 送出前於 client-side 用 Math.round 全部值取整。
+UI 顯示保留 1 位小數（好 UX）· DB 存純整數（好一致）。
+若日後 DB CHECK 放寬 · 可回退此 round 動作。
