@@ -87,6 +87,8 @@
 | PAT-84 | CORE_IMMUTABLE | useBadges Hook：lazy sync 徽章至 profiles.badges |
 | PAT-85 | CORE_IMMUTABLE | Cross-cutting Profile 顯示不用 PostgREST embed（同 PAT-02 限制） |
 | PAT-86 | CORE_IMMUTABLE | 徽章 vs 頭框關係（多徽章、單頭框） |
+| PAT-87 | CORE_IMMUTABLE | schools.json 擴充至 27 所（Batch 1，10 校已核實） |
+| PAT-88 | CORE_IMMUTABLE | Header 導覽簡化：更多/我的 hierarchical dropdown |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

@@ -29,6 +29,13 @@ export default function Header() {
         : 'text-content-secondary hover:text-content-primary hover:bg-surface-hover'
     }`;
 
+  const dropdownLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `block px-3 py-2 rounded-lg text-sm no-underline transition-colors ${
+      isActive
+        ? 'text-brand-burgundy'
+        : 'text-content-secondary hover:text-content-primary hover:bg-surface-hover'
+    }`;
+
   const cycleTheme = () => {
     const next = preference === 'light' ? 'dark' : preference === 'dark' ? 'system' : 'light';
     setPreference(next);
@@ -58,10 +65,36 @@ export default function Header() {
             <NavLink to="/board" className={navClass}>佈告欄</NavLink>
             <NavLink to="/edu" className={navClass}>學用</NavLink>
             <NavLink to="/recommendation" className={navClass}>推薦</NavLink>
-            <NavLink to="/faq" className={navClass}>FAQ</NavLink>
-            <NavLink to="/my-posts" className={navClass}>我的</NavLink>
-            <NavLink to="/my-profile" className={navClass}>編輯個人資料</NavLink>
-            <NavLink to="/privacy" className={navClass}>隱私</NavLink>
+
+            {/* 更多：常見問答 / 隱私政策（PAT-88） */}
+            <div className="relative group">
+              <button type="button" className={navClass({ isActive: false })}>
+                更多 ▾
+              </button>
+              <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                <div className="min-w-[10rem] rounded-lg border border-border-subtle
+                                bg-surface-card shadow-lg p-1.5">
+                  <NavLink to="/faq" className={dropdownLinkClass}>常見問答</NavLink>
+                  <NavLink to="/privacy" className={dropdownLinkClass}>隱私政策</NavLink>
+                </div>
+              </div>
+            </div>
+
+            {/* 我的：貼文 / 編輯個人資料（登入後才顯示，PAT-88） */}
+            {user && (
+              <div className="relative group">
+                <button type="button" className={navClass({ isActive: false })}>
+                  我的 ▾
+                </button>
+                <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                  <div className="min-w-[10rem] rounded-lg border border-border-subtle
+                                  bg-surface-card shadow-lg p-1.5">
+                    <NavLink to="/my-posts" className={dropdownLinkClass}>我的貼文</NavLink>
+                    <NavLink to="/my-profile" className={dropdownLinkClass}>編輯個人資料</NavLink>
+                  </div>
+                </div>
+              </div>
+            )}
           </nav>
 
           <div className="flex items-center gap-2">
