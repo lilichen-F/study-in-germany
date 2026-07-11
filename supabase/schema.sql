@@ -222,3 +222,15 @@ DROP POLICY IF EXISTS "avatars_public_read" ON storage.objects;
 CREATE POLICY "avatars_public_read" ON storage.objects
   FOR SELECT
   USING (bucket_id = 'avatars');
+
+-- ==========================================
+-- Phase J-4 · user_submissions 加 target_category
+-- 使用者提交推薦時 · 選擇要展示在哪個 recommendation subcategory
+-- NULL 表示無指定分類（各版面通用）
+-- ==========================================
+
+ALTER TABLE public.user_submissions ADD COLUMN IF NOT EXISTS target_category TEXT;
+ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_category_check
+  CHECK (target_category IS NULL OR target_category IN (
+    'general', 'visa', 'arrival', 'edu', 'scholarship', 'taiwan'
+  ));

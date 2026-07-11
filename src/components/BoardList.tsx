@@ -3,14 +3,17 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { deletePhoto } from '../lib/storage';
 import PhotoGallery from './PhotoGallery';
+import UserAvatar from './UserAvatar';
+import type { BadgeId } from '../lib/badges';
 import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
 
 interface Props {
   listings: Listing[];
   onDeleted?: () => void;
+  badgesMap?: Map<string, BadgeId[]>;
 }
 
-export default function BoardList({ listings, onDeleted }: Props) {
+export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
   const { user } = useAuth();
 
   if (listings.length === 0) {
@@ -71,6 +74,20 @@ export default function BoardList({ listings, onDeleted }: Props) {
             {!kindIsDiscussion && l.photo_urls.length > 0 && (
               <div className="mt-3">
                 <PhotoGallery photos={l.photo_urls} />
+              </div>
+            )}
+
+            {l.profile && (
+              <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border-subtle">
+                <UserAvatar
+                  avatarUrl={l.profile.avatar_url}
+                  displayName={l.profile.display_name}
+                  badges={badgesMap?.get(l.user_id) ?? []}
+                  size="sm"
+                />
+                <div className="text-xs text-content-primary">
+                  {l.profile.display_name ?? '匿名'}
+                </div>
               </div>
             )}
 

@@ -102,7 +102,8 @@ export default function RecommendationCategory() {
 
       <UserSubmissionsList
         submissionType="new_recommendation"
-        title="使用者提交的推薦"
+        targetCategory={meta.key}
+        title={`使用者提交的${meta.title}`}
         emptyMessage="還沒有使用者提交推薦"
       />
 

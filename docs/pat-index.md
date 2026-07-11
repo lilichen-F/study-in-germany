@@ -80,6 +80,13 @@
 | PAT-77 | CORE_IMMUTABLE | display_name 3 種選項（google/anonymous/custom） |
 | PAT-78 | CORE_IMMUTABLE | Board contact_info 改為 optional |
 | PAT-79 | CORE_IMMUTABLE | useContributions Hook（Phase K-2 徽章判定資料源） |
+| PAT-80 | CORE_IMMUTABLE | user_submissions target_category：Recommendation 真分類化 |
+| PAT-81 | CORE_IMMUTABLE | 徽章系統：7 個徽章 + 3 級頭框 |
+| PAT-82 | CORE_IMMUTABLE | Badge SVG：Edu Geometry 語系（6 新畫 + 1 沿用） |
+| PAT-83 | CORE_IMMUTABLE | UserAvatar + BadgeChip 通用元件 |
+| PAT-84 | CORE_IMMUTABLE | useBadges Hook：lazy sync 徽章至 profiles.badges |
+| PAT-85 | CORE_IMMUTABLE | Cross-cutting Profile 顯示不用 PostgREST embed（同 PAT-02 限制） |
+| PAT-86 | CORE_IMMUTABLE | 徽章 vs 頭框關係（多徽章、單頭框） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

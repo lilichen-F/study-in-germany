@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Listing } from '../lib/types';
+import { attachProfiles } from '../lib/types';
 import BoardList from '../components/BoardList';
 import BoardForm from '../components/BoardForm';
 import AuthGate from '../components/AuthGate';
@@ -12,6 +13,8 @@ import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
 import { boardTypeOf, isDiscussion, BOARD_TYPE_LABEL } from '../lib/board';
+import { fetchBadgesMap } from '../lib/badges';
+import type { BadgeId } from '../lib/badges';
 
 type MainFilter = 'all' | 'secondhand' | 'rental_offer' | 'rental_seek' | 'discussion';
 type SubFilter = 'all_discussion' | 'discussion' | 'discussion_study' | 'discussion_longterm';
@@ -34,6 +37,7 @@ const SUB_FILTERS: { key: SubFilter; label: string }[] = [
 export default function Board() {
   const { push } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
+  const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
@@ -60,7 +64,9 @@ export default function Board() {
       setLoading(false);
       return;
     }
-    setListings((data ?? []) as Listing[]);
+    const withProfiles = await attachProfiles((data ?? []) as Listing[]);
+    setListings(withProfiles);
+    setBadgesMap(await fetchBadgesMap(withProfiles.map((l) => l.user_id)));
     setLoading(false);
   }, [push]);
 
@@ -133,7 +139,7 @@ export default function Board() {
             description="登入後可刊登第一則出租、求租或二手交易資訊。"
           />
         ) : (
-          <BoardList listings={filtered} onDeleted={load} />
+          <BoardList listings={filtered} onDeleted={load} badgesMap={badgesMap} />
         )}
       </section>
 

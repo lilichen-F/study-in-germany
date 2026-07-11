@@ -3,6 +3,7 @@ import RecommendationIcon from '../assets/icons/RecommendationIcon';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import SubmissionForm from '../components/SubmissionForm';
+import UserSubmissionsList from '../components/UserSubmissionsList';
 import generalData from '../data/recommendations/general.json';
 import visaData from '../data/recommendations/visa.json';
 import arrivalData from '../data/recommendations/arrival.json';
@@ -98,6 +99,11 @@ export default function Recommendation() {
           </div>
         </details>
       </section>
+
+      <UserSubmissionsList
+        submissionType="new_recommendation"
+        title="尚未分類的使用者推薦"
+      />
     </div>
   );
 }

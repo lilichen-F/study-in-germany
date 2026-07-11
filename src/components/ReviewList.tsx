@@ -1,7 +1,11 @@
+import { useEffect, useState } from 'react';
 import type { SchoolReview } from '../lib/types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import RatingBreakdown from './RatingBreakdown';
+import UserAvatar from './UserAvatar';
+import { fetchBadgesMap } from '../lib/badges';
+import type { BadgeId } from '../lib/badges';
 
 interface Props {
   reviews: SchoolReview[];
@@ -10,6 +14,16 @@ interface Props {
 
 export default function ReviewList({ reviews, onDeleted }: Props) {
   const { user } = useAuth();
+  const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
+
+  useEffect(() => {
+    const userIds = reviews.map((r) => r.user_id);
+    if (userIds.length === 0) {
+      setBadgesMap(new Map());
+      return;
+    }
+    fetchBadgesMap(userIds).then(setBadgesMap);
+  }, [reviews]);
 
   if (reviews.length === 0) {
     return (
@@ -32,16 +46,12 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
         <div key={r.id} className="card">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
-              {r.profile?.avatar_url ? (
-                <img
-                  src={r.profile.avatar_url}
-                  alt=""
-                  className="w-8 h-8 rounded-full"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-surface-hover" />
-              )}
+              <UserAvatar
+                avatarUrl={r.profile?.avatar_url}
+                displayName={r.profile?.display_name}
+                badges={badgesMap.get(r.user_id) ?? []}
+                size="sm"
+              />
               <div className="min-w-0">
                 <div className="text-sm text-content-primary truncate">
                   {r.profile?.display_name ?? '匿名使用者'}

@@ -6,12 +6,16 @@ export type SubmissionType =
 
 export type SubmissionStatus = 'pending' | 'approved' | 'rejected' | 'archived';
 
+export type RecommendationCategoryTarget =
+  | 'general' | 'visa' | 'arrival' | 'edu' | 'scholarship' | 'taiwan';
+
 export interface UserSubmission {
   id: number;
   user_id: string | null;
   submission_type: SubmissionType;
   target_id: string | null;
   target_url: string | null;
+  target_category: RecommendationCategoryTarget | null;
   title: string;
   content: string;
   status: SubmissionStatus;

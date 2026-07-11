@@ -6,6 +6,10 @@ import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
 import type { UserProfile, DisplayNameOption } from '../lib/profile';
 import { computeDisplayName } from '../lib/profile';
+import { useBadges } from '../lib/useBadges';
+import { useContributions } from '../lib/useContributions';
+import { BadgeChip } from '../components/UserAvatar';
+import { ALL_BADGES } from '../lib/badges';
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -27,6 +31,12 @@ export default function MyProfile() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   const googleName = (user?.user_metadata?.full_name as string | undefined) ?? null;
+
+  const { counts } = useContributions(user?.id ?? null);
+  const { badges } = useBadges({
+    userId: user?.id ?? null,
+    registrationSeq: profile?.registration_seq ?? null,
+  });
 
   useEffect(() => {
     if (!user) {
@@ -250,11 +260,61 @@ export default function MyProfile() {
         </button>
       </form>
 
-      {/* 貢獻統計 · Phase K-2 顯示 · Phase K-1 為 placeholder */}
-      <div className="card">
-        <div className="text-sm text-content-muted italic">
-          🏆 貢獻統計與徽章將於後續版本上線
+      <div className="card space-y-4">
+        <h2 className="text-lg font-semibold text-content-primary">
+          貢獻統計
+        </h2>
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <div className="text-xs text-content-muted">評價</div>
+            <div className="text-lg font-semibold text-content-primary">
+              {counts.reviews}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-content-muted">貼文</div>
+            <div className="text-lg font-semibold text-content-primary">
+              {counts.listings}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-content-muted">提交</div>
+            <div className="text-lg font-semibold text-content-primary">
+              {counts.submissions}
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div className="card space-y-4">
+        <h2 className="text-lg font-semibold text-content-primary">
+          我的徽章
+        </h2>
+        {badges.length === 0 ? (
+          <p className="text-sm text-content-muted italic">
+            尚未獲得徽章 · 開始提交評價、貼文、建議即可累積
+          </p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {badges.map((bid) => (
+              <BadgeChip key={bid} badgeId={bid} />
+            ))}
+          </div>
+        )}
+
+        <details className="pt-3 border-t border-border-subtle">
+          <summary className="cursor-pointer text-xs text-content-muted hover:text-content-primary">
+            查看所有徽章與條件
+          </summary>
+          <div className="mt-3 space-y-2">
+            {ALL_BADGES.map((b) => (
+              <div key={b.id} className="flex items-start gap-3 text-sm">
+                <BadgeChip badgeId={b.id} />
+                <span className="text-content-muted">{b.description}</span>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
     </div>
   );

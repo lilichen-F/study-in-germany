@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
+import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 
 interface Props {
   submissionType: 'school_edit' | 'new_school' | 'new_recommendation' | 'general_feedback';
@@ -25,6 +26,7 @@ export default function SubmissionForm({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [url, setUrl] = useState('');
+  const [targetCategory, setTargetCategory] = useState(''); // '' = 未選
   const [submitting, setSubmitting] = useState(false);
 
   const canSubmit = title.trim().length >= 2 && content.trim().length >= 5;
@@ -40,6 +42,7 @@ export default function SubmissionForm({
       submission_type: submissionType,
       target_id: targetId ?? null,
       target_url: url.trim() || null,
+      target_category: targetCategory || null,
       title: title.trim(),
       content: content.trim(),
     });
@@ -58,6 +61,7 @@ export default function SubmissionForm({
     setTitle('');
     setContent('');
     setUrl('');
+    setTargetCategory('');
     onSubmitted?.();
   };
 
@@ -108,6 +112,28 @@ export default function SubmissionForm({
                      focus:outline-none focus:border-brand-burgundy"
         />
       </div>
+
+      {submissionType === 'new_recommendation' && (
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-content-primary">
+            分類 <span className="text-content-muted">（選填 · 選擇要顯示的板塊）</span>
+          </label>
+          <select
+            value={targetCategory}
+            onChange={(e) => setTargetCategory(e.target.value)}
+            className="w-full px-3 py-2 rounded-lg
+                       bg-surface-canvas border border-border-subtle
+                       text-sm text-content-primary
+                       focus:outline-none focus:border-brand-burgundy
+                       hover:border-brand-gold transition-colors"
+          >
+            <option value="">未指定分類（顯示於推薦專區主頁）</option>
+            {RECOMMENDATION_CATEGORIES.map((c) => (
+              <option key={c.key} value={c.key}>{c.title}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="space-y-1.5">
         <label className="text-sm font-medium text-content-primary">
