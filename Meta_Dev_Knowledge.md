@@ -344,3 +344,25 @@ Client 端 calculateOverall 於 Phase V 改為保留 1 位小數 · 造成 inser
 Phase J-1 修法：ReviewForm 送出前於 client-side 用 Math.round 全部值取整。
 UI 顯示保留 1 位小數（好 UX）· DB 存純整數（好一致）。
 若日後 DB CHECK 放寬 · 可回退此 round 動作。
+
+## PAT-66 [CORE_IMMUTABLE]: Edu 資料來源合併原則
+移除「資料來源」重複區塊 · 統一為「主要資料來源」(原「官方資源」)。
+保留連結按鈕形式 · 底部追加審核日期。若 official_sources 為空則整區塊不渲染。
+
+## PAT-67 [CORE_IMMUTABLE]: user_submissions 表 · 4 種提交類型
+於 supabase/schema.sql 新加 public.user_submissions 表（沿用全站 public. schema 前綴慣例）·
+允許匿名 insert。
+- school_edit / new_school / new_recommendation / general_feedback
+狀態 · pending / approved / rejected / archived · 預設 pending。
+public read only 顯示 pending + approved。
+Lily 於 Supabase Dashboard 手動審核。SQL 需 Lily 於 Supabase SQL Editor 手動執行
+（Claude Code 只寫入 schema.sql 檔案文字，不執行）。
+
+## PAT-68 [DEPRECATE_MARK]: PAT-52 GitHub Issues 建議系統
+Phase J-2 起 · SchoolDetail 提交建議 · Schools 提交新校 · Recommendation 提交推薦全部改為
+user_submissions form。GitHub Issues 入口仍可手動使用（repo 本身），但 UI 不再引導。
+
+## PAT-69 [CORE_IMMUTABLE]: SubmissionForm 通用元件
+一個元件應對 4 種提交類型 · 透過 submissionType prop 切換。
+UI 明標「使用者提交 · 未審核」badge。未登入也可提交（user_id 存 null，
+RLS `user_submissions_anon_insert` policy 允許任何人 insert）。

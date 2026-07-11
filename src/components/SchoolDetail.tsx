@@ -16,6 +16,7 @@ import { CityIllustration } from '../assets/cities';
 import { RATING_DIMENSIONS } from '../lib/ratings';
 import type { RatingDimension } from '../lib/ratings';
 import RatingBreakdown from './RatingBreakdown';
+import SubmissionForm from './SubmissionForm';
 
 const list = schools as School[];
 
@@ -219,26 +220,30 @@ export default function SchoolDetail() {
         </AuthGate>
       </section>
 
-      {/* 提交建議 · GitHub Issues 整合（PAT-52） */}
+      {/* 提交建議 · user_submissions form（PAT-67/68/69） */}
       <section className="card bg-brand-gold-soft border-brand-gold/30">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="text-sm font-medium text-content-primary">
-              📝 資訊有誤或想補充？
+        <details>
+          <summary className="cursor-pointer flex items-center justify-between gap-3
+                              hover:text-brand-burgundy transition-colors">
+            <div>
+              <div className="text-sm font-medium text-content-primary">
+                📝 資訊有誤或想補充？
+              </div>
+              <div className="text-xs text-content-muted mt-1 leading-relaxed">
+                歡迎回報學校資訊錯誤、住宿情況、或補充其他細節。
+              </div>
             </div>
-            <div className="text-xs text-content-muted mt-1 leading-relaxed">
-              歡迎回報學校資訊錯誤、住宿情況、或補充其他細節。
-            </div>
+            <span className="text-xs text-brand-burgundy shrink-0">展開 →</span>
+          </summary>
+          <div className="pt-4 mt-3 border-t border-border-subtle">
+            <SubmissionForm
+              submissionType="school_edit"
+              targetId={school.id}
+              titlePlaceholder={`關於 ${school.name_zh} 的建議`}
+              contentPlaceholder="請描述你想補充或更正的內容"
+            />
           </div>
-          <a
-            href={`https://github.com/lilichen-F/study-in-germany/issues/new?title=${encodeURIComponent(`[語校建議] ${school.name_zh}`)}&labels=school-suggestion&body=${encodeURIComponent(`## 學校\n${school.name_zh} (${school.id})\n\n## 建議類型\n- [ ] 資訊有誤（哪一項欄位錯了？）\n- [ ] 補充資訊（缺哪些細節？）\n- [ ] 我曾就讀 · 分享實際經驗\n\n## 詳細內容\n\n\n\n## 佐證來源（有的話）\n\n`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-ghost text-xs no-underline shrink-0"
-          >
-            提交建議 →
-          </a>
-        </div>
+        </details>
       </section>
     </div>
   );

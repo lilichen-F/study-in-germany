@@ -57,7 +57,7 @@ export const applicationWorkflow: WorkflowTopic = {
         'DAAD 課程搜尋 官方資訊',
         'uni-assist 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -103,7 +103,7 @@ export const applicationWorkflow: WorkflowTopic = {
       references: [
         'APS 說明 · 台灣學生豁免 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -131,7 +131,7 @@ export const applicationWorkflow: WorkflowTopic = {
         'TestDaF 官方 官方資訊',
         'telc 官方 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -166,7 +166,7 @@ export const applicationWorkflow: WorkflowTopic = {
       references: [
         'DAAD 課程資料庫 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -194,7 +194,7 @@ export const applicationWorkflow: WorkflowTopic = {
       references: [
         'uni-assist 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -216,7 +216,7 @@ export const applicationWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 7,
@@ -238,7 +238,7 @@ export const applicationWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

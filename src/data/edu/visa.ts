@@ -42,7 +42,7 @@ export const visaWorkflow: WorkflowTopic = {
         '德國聯邦外交部簽證資訊 官方資訊',
         '德國在台協會 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -73,7 +73,7 @@ export const visaWorkflow: WorkflowTopic = {
         'DAAD 語校搜尋 官方資訊',
         'uni-assist 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -129,7 +129,7 @@ export const visaWorkflow: WorkflowTopic = {
         'Coracle 官方資訊',
         'Deutsche Bank Sperrkonto 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -192,7 +192,7 @@ export const visaWorkflow: WorkflowTopic = {
         'Care Concept 官方資訊',
         'TK 公保 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -225,7 +225,7 @@ export const visaWorkflow: WorkflowTopic = {
       references: [
         '德國在台協會 · 簽證預約 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -274,7 +274,7 @@ export const visaWorkflow: WorkflowTopic = {
       references: [
         '在台協會簽證文件清單 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 7,
@@ -320,7 +320,7 @@ export const visaWorkflow: WorkflowTopic = {
       references: [
         '德國在台協會 · 位置 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 8,
@@ -343,7 +343,7 @@ export const visaWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

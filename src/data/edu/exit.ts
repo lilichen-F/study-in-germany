@@ -32,7 +32,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'Berlin Ausländerbehörde 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -64,7 +64,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'Berlin Abmeldung 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -90,7 +90,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'Rundfunkbeitrag · 註銷 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -118,7 +118,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'TK 註銷保單 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -148,7 +148,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'N26 關閉指南 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -178,7 +178,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'Fintiba 離境 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 7,
@@ -221,7 +221,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'ELSTER 稅務系統 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 8,
@@ -259,7 +259,7 @@ export const exitWorkflow: WorkflowTopic = {
       references: [
         'O2 解約流程 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 9,
@@ -288,7 +288,7 @@ export const exitWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

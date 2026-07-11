@@ -33,7 +33,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         'DAAD 獎學金資料庫 官方資訊',
         '教育部學海計畫 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -56,7 +56,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -91,7 +91,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
       references: [
         'DAAD 申請 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -127,7 +127,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
       references: [
         '教育部公費留學 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -149,7 +149,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -171,7 +171,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

@@ -30,7 +30,7 @@ export const renewalWorkflow: WorkflowTopic = {
       references: [
         'Berlin 移民局 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -53,7 +53,7 @@ export const renewalWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -74,7 +74,7 @@ export const renewalWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -105,7 +105,7 @@ export const renewalWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -127,7 +127,7 @@ export const renewalWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -148,7 +148,7 @@ export const renewalWorkflow: WorkflowTopic = {
         official_sources: [],
       },
       references: [],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 7,
@@ -173,7 +173,7 @@ export const renewalWorkflow: WorkflowTopic = {
       references: [
         'Make it in Germany · Bluecard 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 8,
@@ -229,7 +229,7 @@ export const renewalWorkflow: WorkflowTopic = {
       references: [
         'BAMF · Fiktionsbescheinigung 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

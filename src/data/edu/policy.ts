@@ -66,7 +66,7 @@ export const policyWorkflow: WorkflowTopic = {
         'Bologna Process 官方 官方資訊',
         'DAAD · 學分認可 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -96,7 +96,7 @@ export const policyWorkflow: WorkflowTopic = {
       references: [
         'DAAD 語言證書比較 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -122,7 +122,7 @@ export const policyWorkflow: WorkflowTopic = {
       references: [
         'DAAD 學費資訊 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -178,7 +178,7 @@ export const policyWorkflow: WorkflowTopic = {
         'BIBB 職業教育 官方資訊',
         'IHK · Duale Studium 職缺 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -257,7 +257,7 @@ export const policyWorkflow: WorkflowTopic = {
         'anabin 資料庫 官方資訊',
         'Anerkennung in Deutschland 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -283,7 +283,7 @@ export const policyWorkflow: WorkflowTopic = {
       references: [
         'BAMF 學生工作規則 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

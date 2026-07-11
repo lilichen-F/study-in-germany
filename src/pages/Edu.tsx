@@ -72,6 +72,14 @@ export default function Edu() {
         </div>
       </section>
 
+      <div className="pt-8 border-t border-border-subtle">
+        <p className="text-xs text-content-muted text-center">
+          本站學用板塊內容最後審核於 2026-07-11 ·
+          <br className="sm:hidden" />
+          正式使用請至各官方連結查詢最新資訊
+        </p>
+      </div>
+
       <section className="card bg-brand-gold-soft border-brand-gold/30 max-w-3xl">
         <div className="text-sm font-medium text-content-primary mb-2">
           📝 貢獻你的經驗

@@ -63,7 +63,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         'immobilienscout24 官方資訊',
         'Studentenwerk 學生宿舍 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 2,
@@ -125,7 +125,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       references: [
         '德國租屋法規 · Mieterschutzbund 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 3,
@@ -185,7 +185,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       references: [
         'Meldegesetz 戶籍法概覽 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 4,
@@ -220,7 +220,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         'Berlin Bürgeramt 官方資訊',
         'München Bürgerbüro 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 5,
@@ -248,7 +248,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         'N26 官方資訊',
         'Sparkasse 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 6,
@@ -276,7 +276,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         'TK 公保 官方資訊',
         'AOK 公保 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 7,
@@ -301,7 +301,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       references: [
         'Bundeszentralamt für Steuern 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 8,
@@ -327,7 +327,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       references: [
         'Aldi Talk 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
     {
       step: 9,
@@ -353,7 +353,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       references: [
         'Rundfunkbeitrag 官方資訊',
       ],
-      updated_at: '2024-01',
+      updated_at: '2026-07-11',
     },
   ],
   general_notes: [

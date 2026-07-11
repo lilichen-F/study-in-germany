@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import RecommendationIcon from '../assets/icons/RecommendationIcon';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
+import SubmissionForm from '../components/SubmissionForm';
 import generalData from '../data/recommendations/general.json';
 import visaData from '../data/recommendations/visa.json';
 import arrivalData from '../data/recommendations/arrival.json';
@@ -17,10 +18,6 @@ const COUNT_MAP: Record<string, number> = {
   scholarship: scholarshipData.length,
   taiwan: taiwanData.length,
 };
-
-const SUGGEST_ISSUE_URL = `https://github.com/lilichen-F/study-in-germany/issues/new?${new URLSearchParams(
-  { title: '[推薦] ', labels: 'recommendation' }
-).toString()}`;
 
 /**
  * DS v4.2 · 推薦專區 Hub · 對齊 Edu Hub 佈局（PAT-64）
@@ -77,22 +74,30 @@ export default function Recommendation() {
         ))}
       </div>
 
-      <div className="card bg-brand-gold-soft border-brand-gold/30 max-w-2xl">
-        <div className="text-sm font-medium text-content-primary mb-2">
-          📝 有推薦想貢獻？
-        </div>
-        <p className="text-sm text-content-secondary leading-relaxed">
-          歡迎於{' '}
-          <a
-            href={SUGGEST_ISSUE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub Issue
-          </a>{' '}
-          提交你認為有用的工具、方案、平台。審核後會加入清單。
-        </p>
-      </div>
+      {/* 提交推薦 · user_submissions form（PAT-67/68/69） */}
+      <section className="card bg-brand-gold-soft border-brand-gold/30 max-w-2xl">
+        <details>
+          <summary className="cursor-pointer flex items-center justify-between gap-3
+                              hover:text-brand-burgundy transition-colors">
+            <div>
+              <div className="text-sm font-medium text-content-primary">
+                📝 有推薦想貢獻？
+              </div>
+              <div className="text-xs text-content-muted mt-1 leading-relaxed">
+                歡迎提交你認為有用的工具、方案、平台。
+              </div>
+            </div>
+            <span className="text-xs text-brand-burgundy shrink-0">展開 →</span>
+          </summary>
+          <div className="pt-4 mt-3 border-t border-border-subtle">
+            <SubmissionForm
+              submissionType="new_recommendation"
+              titlePlaceholder="推薦名稱"
+              contentPlaceholder="推薦的類別、用途、官網、你的體驗"
+            />
+          </div>
+        </details>
+      </section>
     </div>
   );
 }

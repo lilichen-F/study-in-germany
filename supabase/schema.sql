@@ -104,3 +104,45 @@ CREATE POLICY "listings_photo_own_delete" ON storage.objects
 CREATE POLICY "listings_photo_public_read" ON storage.objects
   FOR SELECT
   USING (bucket_id = 'listings');
+
+-- ==========================================
+-- Phase J-2 · user_submissions 表
+-- 使用者主動提交的建議、新學校、新推薦、通用回饋
+-- Lily 於 Supabase Dashboard 手動審核（無 client-side admin UI）
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS public.user_submissions (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  submission_type TEXT NOT NULL
+    CHECK (submission_type IN (
+      'school_edit',
+      'new_school',
+      'new_recommendation',
+      'general_feedback'
+    )),
+  target_id TEXT,
+  title TEXT NOT NULL CHECK (char_length(title) >= 2 AND char_length(title) <= 100),
+  content TEXT NOT NULL CHECK (char_length(content) >= 5 AND char_length(content) <= 2000),
+  status TEXT NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'approved', 'rejected', 'archived')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  reviewed_at TIMESTAMPTZ,
+  reviewer_note TEXT
+);
+
+CREATE INDEX IF NOT EXISTS user_submissions_created_at_idx
+  ON public.user_submissions (created_at DESC);
+CREATE INDEX IF NOT EXISTS user_submissions_status_type_idx
+  ON public.user_submissions (status, submission_type);
+
+ALTER TABLE public.user_submissions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "user_submissions_anon_insert" ON public.user_submissions
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "user_submissions_public_read_visible" ON public.user_submissions
+  FOR SELECT USING (status IN ('pending', 'approved'));
+
+CREATE POLICY "user_submissions_author_delete_pending" ON public.user_submissions
+  FOR DELETE USING (auth.uid() = user_id AND status = 'pending');

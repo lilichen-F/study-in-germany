@@ -145,40 +145,29 @@ export default function WorkflowCard({ step }: Props) {
             </section>
           )}
 
-          {/* 官方資源 */}
-          {step.detail.official_sources.length > 0 && (
-            <section className="bg-brand-gold-soft rounded-lg p-3">
-              <h4 className="text-sm font-semibold text-content-primary mb-2">官方資源</h4>
+          {/* 主要資料來源 */}
+          {step.detail.official_sources && step.detail.official_sources.length > 0 && (
+            <section className="pt-3 border-t border-border-subtle">
+              <h4 className="text-sm font-semibold text-content-primary mb-2">
+                主要資料來源
+              </h4>
               <ul className="space-y-1">
                 {step.detail.official_sources.map((s, i) => (
-                  <li key={i} className="text-sm">
+                  <li key={i}>
                     <a
                       href={s.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-brand-burgundy hover:text-brand-burgundy-hover"
+                      className="text-sm text-brand-burgundy no-underline
+                                 hover:text-brand-burgundy-hover"
                     >
                       {s.name} ↗
                     </a>
                   </li>
                 ))}
               </ul>
-            </section>
-          )}
-
-          {/* 資料來源 */}
-          {step.references && step.references.length > 0 && (
-            <section className="pt-3 border-t border-border-subtle">
-              <h4 className="text-sm font-semibold text-content-primary mb-2">
-                資料來源
-              </h4>
-              <ul className="space-y-1 pl-4 list-disc text-sm text-content-secondary">
-                {step.references.map((ref, i) => (
-                  <li key={i}>{ref}</li>
-                ))}
-              </ul>
               {step.updated_at && (
-                <div className="mt-2 text-xs text-content-muted">
+                <div className="mt-3 pt-2 border-t border-border-subtle text-xs text-content-muted">
                   本步驟資訊最後審核於 {step.updated_at}
                 </div>
               )}
