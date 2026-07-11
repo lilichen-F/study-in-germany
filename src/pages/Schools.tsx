@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import SchoolList from '../components/SchoolList';
 import SubmissionForm from '../components/SubmissionForm';
+import UserSubmissionsList from '../components/UserSubmissionsList';
 import schoolsData from '../data/schools.json';
 import type { School } from '../lib/types';
 
@@ -93,6 +94,12 @@ export default function Schools() {
           />
         </div>
       </details>
+
+      <UserSubmissionsList
+        submissionType="new_school"
+        title="使用者建議的新學校"
+        emptyMessage="還沒有使用者建議 · 你可以第一個提交"
+      />
     </div>
   );
 }

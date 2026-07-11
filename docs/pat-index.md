@@ -65,6 +65,15 @@
 | PAT-62 | CORE_IMMUTABLE | Recommendation 沿用 Edu Icon（僅新畫 General/Taiwan） |
 | PAT-63 | CORE_IMMUTABLE | Module Color 保守統一策略（避免動態 class 被 purge） |
 | PAT-64 | CORE_IMMUTABLE | Recommendation Hub 佈局對齊 Edu |
+| PAT-65 | CORE_IMMUTABLE | 6 維評分 DB CHECK 硬限 integer，client-side round 修 500 錯誤 |
+| PAT-66 | CORE_IMMUTABLE | Edu 資料來源合併：官方資源→主要資料來源，刪除重複區塊 |
+| PAT-67 | CORE_IMMUTABLE | user_submissions 表：4 種提交類型，Lily 手動審核 |
+| PAT-68 | DEPRECATE_MARK | PAT-52 GitHub Issues 建議系統（改用 user_submissions form） |
+| PAT-69 | CORE_IMMUTABLE | SubmissionForm 通用元件（4 類型共用） |
+| PAT-70 | CORE_IMMUTABLE | user_submissions default status 改 approved（即時顯示） |
+| PAT-71 | CORE_IMMUTABLE | UserSubmissionsList 通用元件（含已知分類篩選落差） |
+| PAT-72 | CORE_IMMUTABLE | listings type 擴為 6 類（含 3 個 discussion 子類） |
+| PAT-73 | CORE_IMMUTABLE | Board Hierarchical Filter UI（討論展開次級篩選） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

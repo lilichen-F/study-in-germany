@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { deletePhoto } from '../lib/storage';
 import PhotoGallery from './PhotoGallery';
-import { boardTypeOf, isDiscussion, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
+import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
 
 interface Props {
   listings: Listing[];
@@ -35,8 +35,8 @@ export default function BoardList({ listings, onDeleted }: Props) {
     <div className="space-y-3">
       {listings.map((l) => {
         const kind = boardTypeOf(l);
-        const kindIsDiscussion = isDiscussion(l);
-        const displayTitle = kindIsDiscussion ? stripDiscussionPrefix(l.title) : l.title;
+        const kindIsDiscussion = isDiscussionType(kind);
+        const displayTitle = isDiscussion(l) ? stripDiscussionPrefix(l.title) : l.title;
 
         return (
           <div

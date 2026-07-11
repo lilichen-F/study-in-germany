@@ -12,16 +12,32 @@ import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
 import { boardTypeOf, isDiscussion, BOARD_TYPE_LABEL } from '../lib/board';
-import type { BoardType } from '../lib/board';
 
-type Filter = 'all' | BoardType;
+type MainFilter = 'all' | 'secondhand' | 'rental_offer' | 'rental_seek' | 'discussion';
+type SubFilter = 'all_discussion' | 'discussion' | 'discussion_study' | 'discussion_longterm';
+
+const MAIN_FILTERS: { key: MainFilter; label: string }[] = [
+  { key: 'all', label: '全部' },
+  { key: 'secondhand', label: BOARD_TYPE_LABEL.secondhand },
+  { key: 'rental_offer', label: BOARD_TYPE_LABEL.rental_offer },
+  { key: 'rental_seek', label: BOARD_TYPE_LABEL.rental_seek },
+  { key: 'discussion', label: '討論' },
+];
+
+const SUB_FILTERS: { key: SubFilter; label: string }[] = [
+  { key: 'all_discussion', label: '全部討論' },
+  { key: 'discussion', label: '一般' },
+  { key: 'discussion_study', label: '學習' },
+  { key: 'discussion_longterm', label: '長居' },
+];
 
 export default function Board() {
   const { push } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
-  const [filter, setFilter] = useState<Filter>('all');
+  const [mainFilter, setMainFilter] = useState<MainFilter>('all');
+  const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -51,43 +67,58 @@ export default function Board() {
   useEffect(() => { load(); }, [load]);
 
   const filtered = listings.filter((l) => {
-    if (filter === 'all') return true;
-    if (filter === 'discussion') return isDiscussion(l);
+    if (mainFilter === 'all') return true;
+    if (mainFilter === 'discussion') {
+      if (subFilter === 'all_discussion') return isDiscussion(l);
+      return boardTypeOf(l) === subFilter;
+    }
     if (isDiscussion(l)) return false;
-    return boardTypeOf(l) === filter;
+    return boardTypeOf(l) === mainFilter;
   });
-
-  const filters: { key: Filter; label: string }[] = [
-    { key: 'all', label: '全部' },
-    { key: 'secondhand', label: BOARD_TYPE_LABEL.secondhand },
-    { key: 'rental_offer', label: BOARD_TYPE_LABEL.rental_offer },
-    { key: 'rental_seek', label: BOARD_TYPE_LABEL.rental_seek },
-    { key: 'discussion', label: BOARD_TYPE_LABEL.discussion },
-  ];
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">生活佈告欄</h1>
         <p className="text-sm text-content-secondary mt-1">
-          二手交易、出租、求租、討論區。貼文預設 60 天後自動下架。
+          二手交易、出租、求租、討論（一般／學習／長居）。貼文預設 60 天後自動下架。
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 text-xs">
-        {filters.map((f) => (
-          <button
-            key={f.key}
-            onClick={() => setFilter(f.key)}
-            className={`px-3 py-1.5 rounded-lg border transition-colors ${
-              filter === f.key
-                ? 'border-brand-burgundy text-brand-burgundy bg-brand-burgundy/5'
-                : 'border-border-subtle text-content-secondary hover:border-border-strong'
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          {MAIN_FILTERS.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setMainFilter(f.key)}
+              className={`px-3 py-1.5 rounded-lg border transition-colors ${
+                mainFilter === f.key
+                  ? 'border-brand-burgundy text-brand-burgundy bg-brand-burgundy/5'
+                  : 'border-border-subtle text-content-secondary hover:border-border-strong'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {mainFilter === 'discussion' && (
+          <div className="pl-4 border-l-2 border-brand-gold/30 flex flex-wrap gap-2">
+            {SUB_FILTERS.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setSubFilter(f.key)}
+                className={`text-xs px-2.5 py-1 rounded transition-colors ${
+                  subFilter === f.key
+                    ? 'text-brand-burgundy font-medium'
+                    : 'text-content-muted hover:text-content-secondary'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <section>

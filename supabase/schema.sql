@@ -146,3 +146,32 @@ CREATE POLICY "user_submissions_public_read_visible" ON public.user_submissions
 
 CREATE POLICY "user_submissions_author_delete_pending" ON public.user_submissions
   FOR DELETE USING (auth.uid() = user_id AND status = 'pending');
+
+-- ==========================================
+-- Phase J-3 · user_submissions default status 改為 approved
+-- 使用者提交即時顯示 · 保留 status 欄位（未來恢復審核可）
+-- ==========================================
+
+ALTER TABLE public.user_submissions
+  ALTER COLUMN status SET DEFAULT 'approved';
+
+-- 現有 pending 提交批次更新為 approved（讓現有測試提交也顯示）
+-- 若您想手動決定既有 pending 的處置、註解掉此行
+UPDATE public.user_submissions
+  SET status = 'approved'
+  WHERE status = 'pending';
+
+-- ==========================================
+-- Phase J-3 · listings type 擴展 · 加 discussion 子類
+-- ==========================================
+
+ALTER TABLE public.listings DROP CONSTRAINT IF EXISTS listings_type_check;
+ALTER TABLE public.listings ADD CONSTRAINT listings_type_check
+  CHECK (type IN (
+    'secondhand',
+    'rental_offer',
+    'rental_seek',
+    'discussion',
+    'discussion_study',
+    'discussion_longterm'
+  ));

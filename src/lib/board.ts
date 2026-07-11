@@ -1,28 +1,52 @@
-export type BoardType = 'secondhand' | 'rental_offer' | 'rental_seek' | 'discussion';
+export type BoardType =
+  | 'secondhand'
+  | 'rental_offer'
+  | 'rental_seek'
+  | 'discussion'
+  | 'discussion_study'
+  | 'discussion_longterm';
 
 export const BOARD_TYPE_LABEL: Record<BoardType, string> = {
   secondhand: '二手交易',
   rental_offer: '出租',
   rental_seek: '求租',
-  discussion: '討論區',
+  discussion: '一般討論',
+  discussion_study: '學習討論',
+  discussion_longterm: '長居討論',
 };
 
 export const BOARD_TYPE_HINT: Record<BoardType, string> = {
   secondhand: '物品買賣',
   rental_offer: '有房出租',
   rental_seek: '找房需求',
-  discussion: '話題交流、經驗分享、疑難雜症',
+  discussion: '一般話題交流',
+  discussion_study: '學校、考試、學術等學習相關',
+  discussion_longterm: '簽證、居留、工作、生活等長居相關',
 };
 
 /**
- * 由於 DB listings.type CHECK 只允 3 類、
- * discussion 於 UI 端用 title 開頭「[討論]」作為標記，
- * 存 DB 時 type = 'secondhand'（未來 Phase W 再做 schema migration）
+ * Phase V 遺留：DB listings.type CHECK 當時只允 3 類，
+ * discussion 於 UI 端用 title 開頭「[討論]」作為標記、存 DB 時 type='secondhand'。
+ * Phase J-3 起 listings.type CHECK 已擴展為 6 類（含 3 個 discussion 子類），
+ * 新貼文直接存真實 type，不再需要 title prefix hack；
+ * 此常量與 isDiscussion() 的 prefix 判斷僅保留供「舊資料」向下相容顯示。
  */
 export const DISCUSSION_TITLE_PREFIX = '[討論] ';
 
+/** hierarchical discussion 子類清單 */
+export const DISCUSSION_TYPES: BoardType[] = [
+  'discussion',
+  'discussion_study',
+  'discussion_longterm',
+];
+
+export function isDiscussionType(type: string): type is BoardType {
+  return (DISCUSSION_TYPES as string[]).includes(type);
+}
+
+/** 判斷是否為討論類（含 Phase V 舊資料的 title prefix 與 Phase J-3 起的真實 type） */
 export function isDiscussion(listing: { title: string; type: string }): boolean {
-  return listing.title.startsWith(DISCUSSION_TITLE_PREFIX);
+  return listing.title.startsWith(DISCUSSION_TITLE_PREFIX) || isDiscussionType(listing.type);
 }
 
 export function stripDiscussionPrefix(title: string): string {
@@ -30,6 +54,6 @@ export function stripDiscussionPrefix(title: string): string {
 }
 
 export function boardTypeOf(listing: { title: string; type: string }): BoardType {
-  if (isDiscussion(listing)) return 'discussion';
+  if (listing.title.startsWith(DISCUSSION_TITLE_PREFIX)) return 'discussion';
   return listing.type as BoardType;
 }

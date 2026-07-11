@@ -2,8 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
-import type { ListingType } from '../lib/types';
-import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, DISCUSSION_TITLE_PREFIX } from '../lib/board';
+import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType } from '../lib/board';
 import type { BoardType } from '../lib/board';
 import PrivacyNotice from './PrivacyNotice';
 import PhotoUploader from './PhotoUploader';
@@ -12,7 +11,9 @@ interface Props {
   onSubmitted?: () => void;
 }
 
-const BOARD_TYPES: BoardType[] = ['secondhand', 'rental_offer', 'rental_seek', 'discussion'];
+const MAIN_CATEGORIES: BoardType[] = ['secondhand', 'rental_offer', 'rental_seek', 'discussion'];
+
+const DISCUSSION_SUBCATEGORIES: BoardType[] = ['discussion', 'discussion_study', 'discussion_longterm'];
 
 export default function BoardForm({ onSubmitted }: Props) {
   const { user } = useAuth();
@@ -27,7 +28,7 @@ export default function BoardForm({ onSubmitted }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const isDiscussion = type === 'discussion';
+  const isDiscussion = isDiscussionType(type);
 
   const canSubmit =
     consent &&
@@ -45,15 +46,13 @@ export default function BoardForm({ onSubmitted }: Props) {
     setSubmitting(true);
     setErr(null);
 
-    // discussion 類·DB listings.type CHECK 只允 3 類·存 DB 時 type 降級為 secondhand·title 加前綴標記（PAT-48）
-    const submitType: ListingType = isDiscussion ? 'secondhand' : type;
-    const submitTitle = isDiscussion ? `${DISCUSSION_TITLE_PREFIX}${title.trim()}` : title.trim();
-
+    // Phase J-3 起 listings.type CHECK 已含 discussion 子類，直接存真實 type，
+    // 不再需要 Phase V 的 title prefix hack（PAT-72）
     const { error } = await supabase.from('listings').insert({
       user_id: user.id,
-      type: submitType,
+      type,
       region: isDiscussion ? '' : region.trim(),
-      title: submitTitle,
+      title: title.trim(),
       description: description.trim(),
       price: isDiscussion ? null : price.trim() || null,
       contact_info: contact.trim(),
@@ -74,23 +73,53 @@ export default function BoardForm({ onSubmitted }: Props) {
       <div className="space-y-2">
         <div className="label">類型</div>
         <div className="grid grid-cols-2 gap-2">
-          {BOARD_TYPES.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setType(t)}
-              className={`p-3 rounded-lg border text-left transition-colors ${
-                type === t
-                  ? 'border-brand-burgundy bg-brand-burgundy-surface text-brand-burgundy'
-                  : 'border-border-subtle hover:border-brand-gold text-content-secondary'
-              }`}
-            >
-              <div className="text-sm font-medium">{BOARD_TYPE_LABEL[t]}</div>
-              <div className="text-xs text-content-muted mt-0.5">{BOARD_TYPE_HINT[t]}</div>
-            </button>
-          ))}
+          {MAIN_CATEGORIES.map((t) => {
+            const isThisSelected = t === type || (t === 'discussion' && isDiscussion);
+            return (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setType(t)}
+                className={`p-3 rounded-lg border text-left transition-colors ${
+                  isThisSelected
+                    ? 'border-brand-burgundy bg-brand-burgundy-surface text-brand-burgundy'
+                    : 'border-border-subtle hover:border-brand-gold text-content-secondary'
+                }`}
+              >
+                <div className="text-sm font-medium">
+                  {t === 'discussion' ? '討論' : BOARD_TYPE_LABEL[t]}
+                </div>
+                <div className="text-xs text-content-muted mt-0.5">
+                  {t === 'discussion' ? '話題交流、經驗分享、疑難雜症' : BOARD_TYPE_HINT[t]}
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
+
+      {isDiscussion && (
+        <div className="space-y-2 pt-2 pl-4 border-l-2 border-brand-gold/30">
+          <label className="text-sm text-content-muted">討論子類</label>
+          <div className="space-y-1.5">
+            {DISCUSSION_SUBCATEGORIES.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setType(t)}
+                className={`w-full text-left p-2.5 rounded-lg border transition-colors ${
+                  type === t
+                    ? 'border-brand-burgundy bg-brand-burgundy-surface text-brand-burgundy'
+                    : 'border-border-subtle hover:border-brand-gold text-content-secondary'
+                }`}
+              >
+                <div className="text-sm font-medium">{BOARD_TYPE_LABEL[t]}</div>
+                <div className="text-xs text-content-muted mt-0.5">{BOARD_TYPE_HINT[t]}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {!isDiscussion && (
         <div className="grid sm:grid-cols-2 gap-4">

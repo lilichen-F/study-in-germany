@@ -17,6 +17,7 @@ import { RATING_DIMENSIONS } from '../lib/ratings';
 import type { RatingDimension } from '../lib/ratings';
 import RatingBreakdown from './RatingBreakdown';
 import SubmissionForm from './SubmissionForm';
+import UserSubmissionsList from './UserSubmissionsList';
 
 const list = schools as School[];
 
@@ -244,6 +245,12 @@ export default function SchoolDetail() {
             />
           </div>
         </details>
+        <UserSubmissionsList
+          submissionType="school_edit"
+          targetId={school.id}
+          title="使用者提交的建議"
+          emptyMessage="還沒有使用者提交建議"
+        />
       </section>
     </div>
   );

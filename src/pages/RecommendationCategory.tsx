@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import type { Recommendation } from '../lib/recommendation';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
+import UserSubmissionsList from '../components/UserSubmissionsList';
 import generalData from '../data/recommendations/general.json';
 import visaData from '../data/recommendations/visa.json';
 import arrivalData from '../data/recommendations/arrival.json';
@@ -98,6 +99,12 @@ export default function RecommendationCategory() {
           </article>
         ))}
       </div>
+
+      <UserSubmissionsList
+        submissionType="new_recommendation"
+        title={`使用者提交的${meta.title}推薦`}
+        emptyMessage="還沒有使用者提交推薦"
+      />
 
       <section className="pt-4 border-t border-border-subtle">
         <div className="text-xs text-content-muted mb-3">其他分類</div>
