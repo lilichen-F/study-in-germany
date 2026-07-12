@@ -11,6 +11,7 @@ import { useContributions } from '../lib/useContributions';
 import { useFollowingList } from '../lib/useFollow';
 import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
+import { deleteAccountData } from '../lib/deleteAccount';
 
 type FeedItem =
   | { kind: 'review'; id: number; school_id: string; comment_text: string; created_at: string; user_id: string }
@@ -23,7 +24,7 @@ const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
  * 使用者可自訂 display_name · avatar_url · 查看 registration_seq
  */
 export default function MyProfile() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const { push } = useToast();
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -254,6 +255,32 @@ export default function MyProfile() {
           <p className="text-xs text-content-muted">
             留空即保留現行頭像 · 若原為 Google 頭像則繼續使用 · 檔案上限 5 MB
           </p>
+          {avatarUrl && (
+            <button
+              type="button"
+              onClick={async () => {
+                if (!confirm('確定要刪除目前的頭像嗎？')) return;
+                setAvatarUrl('');
+                setAvatarFile(null);
+                if (user) {
+                  const { error } = await supabase
+                    .from('profiles')
+                    .update({ avatar_url: null })
+                    .eq('id', user.id);
+                  if (error) {
+                    const f = translateError(error);
+                    push('error', f.message);
+                  } else {
+                    push('success', '頭像已刪除');
+                    setProfile((prev) => (prev ? { ...prev, avatar_url: null } : prev));
+                  }
+                }
+              }}
+              className="text-xs text-content-muted hover:text-state-danger transition-colors"
+            >
+              刪除目前頭像
+            </button>
+          )}
         </div>
 
         <button
@@ -320,6 +347,62 @@ export default function MyProfile() {
             ))}
           </div>
         </details>
+      </div>
+
+      <div className="card border-state-danger/30 space-y-3">
+        <h2 className="text-lg font-semibold text-state-danger">
+          刪除帳號
+        </h2>
+        <p className="text-sm text-content-secondary leading-relaxed">
+          刪除後：你的顯示名稱與頭像會立即清空、系統會將你登出。
+          你之前發表的評價、貼文、建議內容會保留（但不再顯示與你的關聯），
+          因為這些內容對其他使用者仍有參考價值。
+        </p>
+        <p className="text-xs text-content-muted leading-relaxed">
+          ⚠️ 由於技術限制，此動作無法立即刪除你的 Google 登入紀錄本身——
+          你之後仍可用同一個 Google 帳號重新登入（但會是全新的空白個人資料）。
+          如需徹底刪除所有紀錄（包含登入資料），請{' '}
+          <a
+            href="https://github.com/lilichen-F/study-in-germany/issues/new?title=%5B%E5%B8%B3%E8%99%9F%E5%88%AA%E9%99%A4%E8%AB%8B%E6%B1%82%5D&labels=account-deletion&body=%E8%AB%8B%E5%91%8A%E7%9F%A5%E4%BD%A0%E7%9A%84%E9%A1%AF%E7%A4%BA%E5%90%8D%E7%A8%B1%E6%88%96%E8%A8%BB%E5%86%8A%E6%99%82%E9%96%93%EF%BC%8C%E4%BB%A5%E4%BE%BF%E6%88%91%E5%80%91%E5%8D%94%E5%8A%A9%E7%A2%BA%E8%AA%8D%E8%BA%AB%E5%88%86%E3%80%82"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-burgundy"
+          >
+            聯繫我們處理
+          </a>
+          。
+        </p>
+        <button
+          type="button"
+          onClick={async () => {
+            const confirmed = confirm(
+              '確定要刪除帳號嗎？此動作會清空你的個人資料並登出，且無法復原。'
+            );
+            if (!confirmed) return;
+
+            if (!user) return;
+
+            const result = await deleteAccountData(user.id);
+
+            if (!result.success) {
+              push('error', '刪除失敗，請稍後再試或聯繫我們');
+              // eslint-disable-next-line no-console
+              console.error('[MyProfile] deleteAccount failed:', result.error);
+              return;
+            }
+
+            push('success', '帳號已清空，即將登出');
+
+            setTimeout(async () => {
+              await signOut();
+              window.location.href = `${window.location.origin}${window.location.pathname}#/`;
+            }, 1500);
+          }}
+          className="text-sm px-4 py-2 rounded-lg border border-state-danger
+                     text-state-danger hover:bg-state-danger/10 transition-colors"
+        >
+          刪除我的帳號
+        </button>
       </div>
 
       <FollowingFeed userId={user.id} />

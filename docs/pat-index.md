@@ -93,6 +93,8 @@
 | PAT-90 | CORE_IMMUTABLE | BadgeChip size prop（sm/md/lg） |
 | PAT-91 | CORE_IMMUTABLE | Follow 系統：user_follows + 追蹤動態牆 |
 | PAT-92 | CORE_IMMUTABLE | 檢舉系統：reports 表，僅 Dashboard 可見 |
+| PAT-93 | CORE_IMMUTABLE | 刪除大頭貼：即時 UPDATE avatar_url = null |
+| PAT-94 | CORE_IMMUTABLE | 帳號刪除：自助匿名化（非真實刪除 auth.users） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
