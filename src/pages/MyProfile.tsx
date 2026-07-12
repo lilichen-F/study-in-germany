@@ -5,7 +5,7 @@ import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
 import type { UserProfile, DisplayNameOption } from '../lib/profile';
-import { computeDisplayName } from '../lib/profile';
+import { computeDisplayName, formatAnonymousName } from '../lib/profile';
 import { useBadges } from '../lib/useBadges';
 import { useContributions } from '../lib/useContributions';
 import { useFollowingList } from '../lib/useFollow';
@@ -224,7 +224,11 @@ export default function MyProfile() {
                 <div className="flex-1">
                   <div className="text-sm text-content-primary">
                     {opt === 'google' && `使用 Google 帳號名（${googleName ?? '目前無'}）`}
-                    {opt === 'anonymous' && `匿名編號（用戶-${profile.registration_seq ?? '?'}）`}
+                    {opt === 'anonymous' && (
+                      profile.registration_seq !== null
+                        ? `匿名編號（${formatAnonymousName(profile.registration_seq)}）`
+                        : '匿名編號（序號未指派）'
+                    )}
                     {opt === 'custom' && '自訂名稱'}
                   </div>
                   {opt === 'custom' && displayOption === 'custom' && (

@@ -97,6 +97,7 @@
 | PAT-94 | CORE_IMMUTABLE | 帳號刪除：自助匿名化（非真實刪除 auth.users） |
 | PAT-95 | CORE_IMMUTABLE | 帳號軟刪除：7 天寬限期恢復機制（DeletionRestoreBanner） |
 | PAT-96 | KNOWN_ISSUE | 刪除頭貼按鈕條件顯示（avatarUrl 有值才顯示，非 bug） |
+| PAT-97 | CORE_IMMUTABLE | 匿名顯示名稱格式：User_{9位數字補零} |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

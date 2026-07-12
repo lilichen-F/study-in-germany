@@ -606,3 +606,12 @@ SQL（ALTER profiles 加 deletion_requested_at）需 Lily 手動於 Supabase SQL
 「刪除目前頭像」按鈕僅在 avatarUrl 有值時顯示，屬預期設計（Phase O pre-flight 複查
 MyProfile.tsx 現行程式碼，確認條件正確綁定 avatarUrl state、非 stale closure 或錯誤
 prop，非 bug）。若帳號已無頭像（例如剛完成過帳號刪除流程），該按鈕自然不出現。
+
+## PAT-97 [CORE_IMMUTABLE]: 匿名顯示名稱格式 · User_{9位數字補零}
+formatAnonymousName(seq) 統一產生格式：`User_` + 9 位數字補零。
+例：seq=1 → "User_000000001"，seq=42 → "User_000000042"。
+取代原本的「用戶-{seq}」格式。集中於 src/lib/profile.ts，
+MyProfile.tsx 的 radio 預覽文字與 computeDisplayName() 皆呼叫同一函式，避免格式漂移。
+**注意**：既有已選用匿名選項的使用者，其 profiles.display_name 內已存的舊格式
+字串（「用戶-N」）不會回溯更新，需該使用者重新於 /my-profile 選取匿名選項並
+按儲存才會套用新格式（純顯示層格式變更，非資料遷移，符合零 DB 觸碰的硬性約束）。
