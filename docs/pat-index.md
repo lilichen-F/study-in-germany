@@ -95,6 +95,8 @@
 | PAT-92 | CORE_IMMUTABLE | 檢舉系統：reports 表，僅 Dashboard 可見 |
 | PAT-93 | CORE_IMMUTABLE | 刪除大頭貼：即時 UPDATE avatar_url = null |
 | PAT-94 | CORE_IMMUTABLE | 帳號刪除：自助匿名化（非真實刪除 auth.users） |
+| PAT-95 | CORE_IMMUTABLE | 帳號軟刪除：7 天寬限期恢復機制（DeletionRestoreBanner） |
+| PAT-96 | KNOWN_ISSUE | 刪除頭貼按鈕條件顯示（avatarUrl 有值才顯示，非 bug） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

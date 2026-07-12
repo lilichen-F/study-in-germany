@@ -13,6 +13,7 @@ import Board from './pages/Board';
 import Privacy from './pages/Privacy';
 import MyPosts from './pages/MyPosts';
 import MyProfile from './pages/MyProfile';
+import DeletionRestoreBanner from './components/DeletionRestoreBanner';
 import Faq from './pages/Faq';
 import Edu from './pages/Edu';
 import EduTopic from './pages/EduTopic';
@@ -35,6 +36,7 @@ export default function App() {
         <MockBanner />
         <OfflineBanner />
         <Header />
+        <DeletionRestoreBanner />
         <main id="main-content" className="flex-1 container-content py-8">
           <PrintHeader />
           <ErrorBoundary>

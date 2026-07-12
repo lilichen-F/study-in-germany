@@ -590,3 +590,19 @@ Edge Function，超出本 MVP 範圍）。採用策略：
   `${origin}${pathname}#/`（與 useAuth.ts 既有 `redirectTo` 組法一致，PAT-01）
 此為 MVP 階段務實妥協，非長期最終方案。若使用者量成長，應評估建 Edge Function
 處理真正的 GDPR「被遺忘權」刪除請求。
+
+## PAT-95 [CORE_IMMUTABLE]: 帳號軟刪除 · 7 天寬限期恢復機制
+profiles.deletion_requested_at（TIMESTAMPTZ nullable）記錄刪除請求時間。
+computeDeletionStatus() 計算是否在 7 天寬限期內。
+DeletionRestoreBanner 掛載於 App.tsx 全站層級（Header 之後、main 之前）、登入時偵測並提示。
+恢復邏輯：用 Google OAuth user_metadata（full_name/avatar_url，Header.tsx 既有同一存取
+路徑，pre-flight 已確認欄位名正確）重建 profile，因為 Google 帳號本身資訊不受 profiles
+清空影響、每次登入都會重新提供。
+超過 7 天：finalizeDeletion() 靜默清除 deletion_requested_at、不再提示
+（technical note：auth.users 本身仍未被刪除，只是不再提示使用者）。
+SQL（ALTER profiles 加 deletion_requested_at）需 Lily 手動於 Supabase SQL Editor 執行。
+
+## PAT-96 [KNOWN_ISSUE]: 刪除頭貼按鈕條件顯示
+「刪除目前頭像」按鈕僅在 avatarUrl 有值時顯示，屬預期設計（Phase O pre-flight 複查
+MyProfile.tsx 現行程式碼，確認條件正確綁定 avatarUrl state、非 stale closure 或錯誤
+prop，非 bug）。若帳號已無頭像（例如剛完成過帳號刪除流程），該按鈕自然不出現。

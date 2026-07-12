@@ -359,6 +359,11 @@ export default function MyProfile() {
           因為這些內容對其他使用者仍有參考價值。
         </p>
         <p className="text-xs text-content-muted leading-relaxed">
+          💡 <strong>7 天內可恢復</strong>：若你在 7 天內用同一個 Google 帳號重新登入，
+          系統會詢問你是否要恢復帳號（使用你的 Google 姓名與頭像重建個人資料）。
+          超過 7 天未恢復，此請求將視為定案，不再提示。
+        </p>
+        <p className="text-xs text-content-muted leading-relaxed">
           ⚠️ 由於技術限制，此動作無法立即刪除你的 Google 登入紀錄本身——
           你之後仍可用同一個 Google 帳號重新登入（但會是全新的空白個人資料）。
           如需徹底刪除所有紀錄（包含登入資料），請{' '}

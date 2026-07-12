@@ -295,3 +295,10 @@ CREATE POLICY "reports_anon_insert" ON public.reports
 
 -- 不開放公開讀（只有 Lily 於 Dashboard 用 service role 或直接登入 Supabase 看）
 -- 不建立 SELECT policy = 預設任何人都不能讀（RLS 預設封閉）
+
+-- ==========================================
+-- Phase O · profiles 加 deletion_requested_at
+-- 軟刪除 7 天寬限期機制
+-- ==========================================
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS deletion_requested_at TIMESTAMPTZ;
