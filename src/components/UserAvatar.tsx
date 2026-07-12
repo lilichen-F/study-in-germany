@@ -47,7 +47,12 @@ export default function UserAvatar({
 /**
  * DS v4.2 · 顯示徽章 chip
  */
-export function BadgeChip({ badgeId }: { badgeId: BadgeId }) {
+export function BadgeChip({
+  badgeId, size = 'md',
+}: {
+  badgeId: BadgeId;
+  size?: 'sm' | 'md' | 'lg';
+}) {
   const meta = getBadgeById(badgeId);
   if (!meta) return null;
 
@@ -57,10 +62,22 @@ export function BadgeChip({ badgeId }: { badgeId: BadgeId }) {
     general: 'bg-surface-canvas text-content-muted border-border-subtle',
   }[meta.tier];
 
+  const sizeClass = {
+    sm: 'px-2 py-0.5 text-xs gap-1',
+    md: 'px-3 py-1.5 text-sm gap-1.5',
+    lg: 'px-4 py-2 text-base gap-2',
+  }[size];
+
+  const iconSize = {
+    sm: 'w-3.5 h-3.5',
+    md: 'w-5 h-5',
+    lg: 'w-6 h-6',
+  }[size];
+
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded
-                      border text-xs ${tierClass}`}>
-      <span className="w-3.5 h-3.5">
+    <span className={`inline-flex items-center rounded-lg
+                      border font-medium ${tierClass} ${sizeClass}`}>
+      <span className={iconSize}>
         <BadgeIcon badgeId={badgeId} className="w-full h-full" />
       </span>
       <span>{meta.label}</span>

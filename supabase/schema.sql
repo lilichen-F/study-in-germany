@@ -234,3 +234,64 @@ ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_categ
   CHECK (target_category IS NULL OR target_category IN (
     'general', 'visa', 'arrival', 'edu', 'scholarship', 'taiwan'
   ));
+
+-- ==========================================
+-- Phase M · user_follows 表
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS public.user_follows (
+  id BIGSERIAL PRIMARY KEY,
+  follower_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  following_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (follower_id, following_id),
+  CHECK (follower_id != following_id)
+);
+
+CREATE INDEX IF NOT EXISTS user_follows_follower_idx ON public.user_follows (follower_id);
+CREATE INDEX IF NOT EXISTS user_follows_following_idx ON public.user_follows (following_id);
+
+ALTER TABLE public.user_follows ENABLE ROW LEVEL SECURITY;
+
+-- 任何登入者可以 follow（不可 follow 自己，CHECK 已擋）
+DROP POLICY IF EXISTS "user_follows_auth_insert" ON public.user_follows;
+CREATE POLICY "user_follows_auth_insert" ON public.user_follows
+  FOR INSERT WITH CHECK (auth.uid() = follower_id);
+
+-- 公開可讀（顯示追蹤數等）
+DROP POLICY IF EXISTS "user_follows_public_read" ON public.user_follows;
+CREATE POLICY "user_follows_public_read" ON public.user_follows
+  FOR SELECT USING (true);
+
+-- 本人可取消追蹤
+DROP POLICY IF EXISTS "user_follows_own_delete" ON public.user_follows;
+CREATE POLICY "user_follows_own_delete" ON public.user_follows
+  FOR DELETE USING (auth.uid() = follower_id);
+
+-- ==========================================
+-- Phase M · reports 表
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS public.reports (
+  id BIGSERIAL PRIMARY KEY,
+  reporter_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  target_type TEXT NOT NULL CHECK (target_type IN ('listing', 'review', 'submission')),
+  target_id TEXT NOT NULL,
+  reason TEXT NOT NULL CHECK (reason IN ('spam', 'inappropriate', 'misinformation', 'harassment', 'other')),
+  note TEXT CHECK (note IS NULL OR char_length(note) <= 500),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'dismissed')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS reports_status_idx ON public.reports (status, created_at DESC);
+CREATE INDEX IF NOT EXISTS reports_target_idx ON public.reports (target_type, target_id);
+
+ALTER TABLE public.reports ENABLE ROW LEVEL SECURITY;
+
+-- 任何人（含匿名）可檢舉
+DROP POLICY IF EXISTS "reports_anon_insert" ON public.reports;
+CREATE POLICY "reports_anon_insert" ON public.reports
+  FOR INSERT WITH CHECK (true);
+
+-- 不開放公開讀（只有 Lily 於 Dashboard 用 service role 或直接登入 Supabase 看）
+-- 不建立 SELECT policy = 預設任何人都不能讀（RLS 預設封閉）

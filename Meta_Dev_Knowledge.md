@@ -545,3 +545,22 @@ spec 範例含 `animate-in slide-in-from-top-2`（`tailwindcss-animate` plugin
 而非仰賴 HMR，避免誤判「功能沒做好」。
 Known Issue 教訓：Header 簡化改動務必同時檢查 mobile viewport 是否仍可完整
 導覽、不能只驗證 desktop。
+
+## PAT-90 [CORE_IMMUTABLE]: BadgeChip size prop
+BadgeChip 加 size: 'sm'|'md'|'lg'。MyProfile「我的徽章」用 lg、
+評價/貼文旁小型顯示用 sm 或預設 md（「查看所有徽章與條件」collapse 內維持預設 md）。
+
+## PAT-91 [CORE_IMMUTABLE]: Follow 系統 · user_follows + 動態牆
+user_follows 表：follower_id/following_id，UNIQUE 防重複、CHECK 防自我追蹤。
+FollowButton 元件於 review/listing/submission 卡片旁顯示（排除對自己顯示）。
+MyProfile「追蹤動態」讀取所追蹤者最近 school_reviews + listings，合併排序顯示前 15 則
+（FeedItem 用 discriminated union 型別，非 spec 原提案的 `any[]`，保留型別檢查）。
+FollowButton/ReportButton 的 hover 危險色改用專案既有 Morandi token
+`text-state-danger`（非 spec 原提案的裸 Tailwind `red-500`/`red-300`，
+硬性規範「沿用 DS v4.1 Morandi tokens」不允許引入色票外的顏色）。
+
+## PAT-92 [CORE_IMMUTABLE]: 檢舉系統 · reports 表 · 無 public read
+reports 表允許匿名 insert、但**無 SELECT policy**（RLS 預設封閉）。
+只有 Lily 於 Supabase Dashboard（擁有者權限繞過 RLS）可查看。
+target_type 三種：listing/review/submission，reason 五種標準分類。
+ReportButton 為行內展開的小 form（非跳頁），送出後顯示「已檢舉」文字替代按鈕本身。

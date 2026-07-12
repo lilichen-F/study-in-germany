@@ -6,6 +6,8 @@ import type { SubmissionType, UserSubmission } from '../lib/userSubmissions';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
 import UserAvatar from './UserAvatar';
+import FollowButton from './FollowButton';
+import ReportButton from './ReportButton';
 
 interface SubmitterProfile {
   display_name: string | null;
@@ -143,6 +145,7 @@ export default function UserSubmissionsList({
                         <span className="text-xs text-content-primary">
                           {profile.display_name ?? '匿名'}
                         </span>
+                        {s.user_id && <FollowButton targetUserId={s.user_id} size="sm" />}
                       </span>
                     )}
                   </div>
@@ -150,9 +153,12 @@ export default function UserSubmissionsList({
                     {s.title}
                   </h4>
                 </div>
-                <span className="text-xs text-content-muted shrink-0">
-                  {formatDate(s.created_at)}
-                </span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-xs text-content-muted">
+                    {formatDate(s.created_at)}
+                  </span>
+                  <ReportButton targetType="submission" targetId={String(s.id)} />
+                </div>
               </div>
               <p className="text-sm text-content-secondary leading-relaxed whitespace-pre-wrap">
                 {s.content}

@@ -8,8 +8,13 @@ import type { UserProfile, DisplayNameOption } from '../lib/profile';
 import { computeDisplayName } from '../lib/profile';
 import { useBadges } from '../lib/useBadges';
 import { useContributions } from '../lib/useContributions';
+import { useFollowingList } from '../lib/useFollow';
 import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
+
+type FeedItem =
+  | { kind: 'review'; id: number; school_id: string; comment_text: string; created_at: string; user_id: string }
+  | { kind: 'listing'; id: number; title: string; type: string; created_at: string; user_id: string };
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -297,7 +302,7 @@ export default function MyProfile() {
         ) : (
           <div className="flex flex-wrap gap-2">
             {badges.map((bid) => (
-              <BadgeChip key={bid} badgeId={bid} />
+              <BadgeChip key={bid} badgeId={bid} size="lg" />
             ))}
           </div>
         )}
@@ -316,6 +321,96 @@ export default function MyProfile() {
           </div>
         </details>
       </div>
+
+      <FollowingFeed userId={user.id} />
+    </div>
+  );
+}
+
+function FollowingFeed({ userId }: { userId: string }) {
+  const { followingIds, loading: followingLoading } = useFollowingList(userId);
+  const [feed, setFeed] = useState<FeedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (followingLoading) return;
+    if (followingIds.length === 0) {
+      setLoading(false);
+      return;
+    }
+
+    (async () => {
+      const [reviewsRes, listingsRes] = await Promise.all([
+        supabase
+          .from('school_reviews')
+          .select('id, school_id, comment_text, created_at, user_id')
+          .in('user_id', followingIds)
+          .order('created_at', { ascending: false })
+          .limit(10),
+        supabase
+          .from('listings')
+          .select('id, title, type, created_at, user_id')
+          .in('user_id', followingIds)
+          .order('created_at', { ascending: false })
+          .limit(10),
+      ]);
+
+      const combined: FeedItem[] = [
+        ...((reviewsRes.data ?? []) as Omit<Extract<FeedItem, { kind: 'review' }>, 'kind'>[]).map((r) => ({ ...r, kind: 'review' as const })),
+        ...((listingsRes.data ?? []) as Omit<Extract<FeedItem, { kind: 'listing' }>, 'kind'>[]).map((l) => ({ ...l, kind: 'listing' as const })),
+      ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 15);
+
+      setFeed(combined);
+      setLoading(false);
+    })();
+  }, [followingIds, followingLoading]);
+
+  if (followingLoading || loading) {
+    return <div className="text-xs text-content-muted">載入動態…</div>;
+  }
+
+  if (followingIds.length === 0) {
+    return (
+      <div className="card">
+        <div className="text-sm text-content-muted italic">
+          你還沒有追蹤任何人 · 於評價或貼文旁點「+ 追蹤」開始
+        </div>
+      </div>
+    );
+  }
+
+  if (feed.length === 0) {
+    return (
+      <div className="card">
+        <div className="text-sm text-content-muted italic">
+          你追蹤的人還沒有新動態
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="card space-y-3">
+      <h2 className="text-lg font-semibold text-content-primary">
+        追蹤動態
+      </h2>
+      {feed.map((item) => (
+        <div key={`${item.kind}-${item.id}`} className="text-sm border-b border-border-subtle pb-2 last:border-0">
+          {item.kind === 'review' ? (
+            <span className="text-content-secondary">
+              於 <span className="text-content-primary font-medium">{item.school_id}</span> 發表了評價
+            </span>
+          ) : (
+            <span className="text-content-secondary">
+              發表了貼文「<span className="text-content-primary font-medium">{item.title}</span>」
+            </span>
+          )}
+          <div className="text-xs text-content-muted mt-0.5">
+            {new Date(item.created_at).toLocaleDateString('zh-TW')}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

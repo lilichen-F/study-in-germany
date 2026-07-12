@@ -90,6 +90,9 @@
 | PAT-87 | CORE_IMMUTABLE | schools.json 擴充至 27 所（Batch 1，10 校已核實） |
 | PAT-88 | CORE_IMMUTABLE | Header 導覽簡化：更多/我的 hierarchical dropdown |
 | PAT-89 | CORE_IMMUTABLE | Mobile 漢堡選單修復（P0，含 HMR 除錯教訓） |
+| PAT-90 | CORE_IMMUTABLE | BadgeChip size prop（sm/md/lg） |
+| PAT-91 | CORE_IMMUTABLE | Follow 系統：user_follows + 追蹤動態牆 |
+| PAT-92 | CORE_IMMUTABLE | 檢舉系統：reports 表，僅 Dashboard 可見 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

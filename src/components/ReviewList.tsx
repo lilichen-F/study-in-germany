@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import RatingBreakdown from './RatingBreakdown';
 import UserAvatar from './UserAvatar';
+import FollowButton from './FollowButton';
+import ReportButton from './ReportButton';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
 
@@ -60,6 +62,7 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
                   {new Date(r.created_at).toLocaleDateString('zh-Hant')}
                 </div>
               </div>
+              <FollowButton targetUserId={r.user_id} size="sm" />
             </div>
             <div className="flex items-center gap-3 shrink-0">
               {typeof r.stars.overall === 'number' && (
@@ -67,6 +70,7 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
                   {r.stars.overall.toFixed(1)} ★
                 </span>
               )}
+              <ReportButton targetType="review" targetId={String(r.id)} />
               {user?.id === r.user_id && (
                 <button
                   onClick={() => handleDelete(r.id)}

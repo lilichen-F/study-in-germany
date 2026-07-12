@@ -4,6 +4,8 @@ import { useAuth } from '../lib/useAuth';
 import { deletePhoto } from '../lib/storage';
 import PhotoGallery from './PhotoGallery';
 import UserAvatar from './UserAvatar';
+import FollowButton from './FollowButton';
+import ReportButton from './ReportButton';
 import type { BadgeId } from '../lib/badges';
 import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
 
@@ -88,6 +90,7 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
                 <div className="text-xs text-content-primary">
                   {l.profile.display_name ?? '匿名'}
                 </div>
+                <FollowButton targetUserId={l.user_id} size="sm" />
               </div>
             )}
 
@@ -96,11 +99,14 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
                 <span className="text-content-muted">聯絡：</span>
                 <span className="text-content-primary break-all">{l.contact_info}</span>
               </div>
-              {user?.id === l.user_id && (
-                <button onClick={() => handleDelete(l)} className="btn-danger text-xs px-2 py-1 shrink-0">
-                  刪除
-                </button>
-              )}
+              <div className="flex items-center gap-2 shrink-0">
+                <ReportButton targetType="listing" targetId={String(l.id)} />
+                {user?.id === l.user_id && (
+                  <button onClick={() => handleDelete(l)} className="btn-danger text-xs px-2 py-1">
+                    刪除
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="mt-2 text-xs text-content-muted">
