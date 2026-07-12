@@ -527,3 +527,21 @@ Tailwind 寫法更符合現行風格。
 替代導覽（無漢堡選單、無 mobile drawer）——這是既有缺口，非本輪 L.b 造成，
 spec 假設「保留現行漢堡選單邏輯」但實際上該邏輯從未存在，故本輪僅簡化
 desktop nav、未新增 mobile 導覽（超出本輪範圍）。
+
+## PAT-89 [CORE_IMMUTABLE]: Mobile 漢堡選單修復
+Phase L 簡化 Header 導覽後發現 sm:hidden 隱藏部分 nav item、但缺少對應 mobile 選單
+（PAT-88 已記錄此缺口）。Phase L-2 修復：加 hamburger button（sm:hidden 顯示）+
+全寬下拉面板（含全部導覽項目：語校/佈告欄/學用/推薦/常見問答/隱私政策，
+登入後加我的貼文/編輯個人資料）。路由變化時用 `useLocation` + `useEffect`
+統一自動關閉選單（比 spec 原提案逐個 NavLink 加 onClick 更簡潔、且能涵蓋
+瀏覽器上一頁/下一頁等非點擊觸發的路由變化）。
+spec 範例含 `animate-in slide-in-from-top-2`（`tailwindcss-animate` plugin
+語法，本專案未安裝）→ 省略，選單直接顯示/隱藏無進場動畫。
+**除錯記錄**：本輪瀏覽器驗證時第一次點擊漢堡按鈕（含原生 `.click()` 與
+`dispatchEvent(MouseEvent)`）皆未觸發 state 更新，懷疑是 Vite HMR 未正確
+套用新增 hook 後的模組（新增 useState/useEffect 改變了 hook 順序）；
+執行 `window.location.reload(true)` 硬重整後功能立即正常。
+教訓：Header 這類含多個 hook 的核心元件大改動後，瀏覽器驗證前務必硬重整
+而非仰賴 HMR，避免誤判「功能沒做好」。
+Known Issue 教訓：Header 簡化改動務必同時檢查 mobile viewport 是否仍可完整
+導覽、不能只驗證 desktop。

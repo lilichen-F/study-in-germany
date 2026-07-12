@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/useAuth';
 import { useTheme } from '../lib/theme';
 import SearchIcon from '../assets/icons/SearchIcon';
@@ -10,6 +10,8 @@ export default function Header() {
   const { user, loading, signInWithGoogle, signOut } = useAuth();
   const { preference, setPreference } = useTheme();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -21,6 +23,11 @@ export default function Header() {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, []);
+
+  // 路由變化時自動關閉 mobile 選單（PAT-89）
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `text-sm px-3 py-1.5 rounded-lg transition-colors ${
@@ -46,7 +53,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="border-b border-border-subtle bg-surface-card">
+      <header className="relative border-b border-border-subtle bg-surface-card">
         <div className="container-content h-14 flex items-center justify-between">
           <Link
             to="/"
@@ -141,8 +148,107 @@ export default function Header() {
                 Google 登入
               </button>
             )}
+
+            {/* Mobile hamburger button · 只在 sm 以下顯示（PAT-89） */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="sm:hidden p-2 rounded-lg hover:bg-surface-hover transition-colors"
+              aria-label={mobileMenuOpen ? '關閉選單' : '開啟選單'}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none"
+                     stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none"
+                     stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile 選單面板（PAT-89） */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden absolute top-full left-0 right-0
+                          bg-surface-canvas border-b border-border-subtle
+                          shadow-lg z-50">
+            <nav className="flex flex-col p-4 gap-1">
+              <NavLink
+                to="/schools"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                語校
+              </NavLink>
+              <NavLink
+                to="/board"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                佈告欄
+              </NavLink>
+              <NavLink
+                to="/edu"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                學用
+              </NavLink>
+              <NavLink
+                to="/recommendation"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                推薦
+              </NavLink>
+
+              <div className="my-2 border-t border-border-subtle" />
+
+              <NavLink
+                to="/faq"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-secondary text-sm no-underline"
+              >
+                常見問答
+              </NavLink>
+              <NavLink
+                to="/privacy"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-secondary text-sm no-underline"
+              >
+                隱私政策
+              </NavLink>
+
+              {user && (
+                <>
+                  <div className="my-2 border-t border-border-subtle" />
+                  <NavLink
+                    to="/my-posts"
+                    className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                               text-content-secondary text-sm no-underline"
+                  >
+                    我的貼文
+                  </NavLink>
+                  <NavLink
+                    to="/my-profile"
+                    className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                               text-content-secondary text-sm no-underline"
+                  >
+                    編輯個人資料
+                  </NavLink>
+                </>
+              )}
+            </nav>
+          </div>
+        )}
       </header>
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
