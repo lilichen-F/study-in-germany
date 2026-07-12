@@ -3,8 +3,8 @@ import { supabase } from '../lib/supabase';
 import type { Listing } from '../lib/types';
 import { attachProfiles } from '../lib/types';
 import BoardList from '../components/BoardList';
-import BoardForm from '../components/BoardForm';
-import AuthGate from '../components/AuthGate';
+import PostModal from '../components/PostModal';
+import FloatingActionButton from '../components/FloatingActionButton';
 import EmptyState from '../components/EmptyState';
 import { SkeletonList } from '../components/Skeleton';
 import BoardIcon from '../assets/icons/BoardIcon';
@@ -58,6 +58,7 @@ export default function Board() {
   const [err, setErr] = useState<string | null>(null);
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
   const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
+  const [postModalOpen, setPostModalOpen] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -179,12 +180,12 @@ export default function Board() {
         )}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-medium">刊登新貼文</h2>
-        <AuthGate message="請先登入才能刊登佈告欄貼文。">
-          <BoardForm onSubmitted={load} />
-        </AuthGate>
-      </section>
+      <FloatingActionButton onClick={() => setPostModalOpen(true)} />
+      <PostModal
+        open={postModalOpen}
+        onClose={() => setPostModalOpen(false)}
+        onSubmitted={load}
+      />
     </div>
   );
 }

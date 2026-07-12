@@ -99,6 +99,7 @@ export default function Header() {
                                   bg-surface-card shadow-lg p-1.5">
                     <NavLink to="/my-posts" className={dropdownLinkClass}>我的貼文</NavLink>
                     <NavLink to="/my-profile" className={dropdownLinkClass}>編輯個人資料</NavLink>
+                    <NavLink to="/following" className={dropdownLinkClass}>追蹤動態</NavLink>
                   </div>
                 </div>
               </div>
@@ -251,6 +252,13 @@ export default function Header() {
                                text-content-secondary text-sm no-underline"
                   >
                     編輯個人資料
+                  </NavLink>
+                  <NavLink
+                    to="/following"
+                    className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                               text-content-secondary text-sm no-underline"
+                  >
+                    追蹤動態
                   </NavLink>
                 </>
               )}

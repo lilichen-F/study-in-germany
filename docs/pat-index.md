@@ -106,6 +106,8 @@
 | PAT-103 | CORE_IMMUTABLE | 佈告欄租房分類重組：rental_offer/seek 歸為「租房」子類 |
 | PAT-104 | CORE_IMMUTABLE | 支持頁面：/support 鎖定 Coming Soon |
 | PAT-105 | CORE_IMMUTABLE | 站名更改：留德資訊 → 留德華（8 檔 14 處，公告歷史條目除外） |
+| PAT-106 | CORE_IMMUTABLE | 發文 FAB + Modal Pattern（Board.tsx 改浮動按鈕觸發） |
+| PAT-107 | CORE_IMMUTABLE | 追蹤動態獨立頁面：/following（抽取自 MyProfile） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
