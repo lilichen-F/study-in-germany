@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="mt-section-sm border-t border-border-subtle bg-surface-card">
       <div className="container-content flex flex-col items-center gap-2 py-6 text-sm text-content-muted sm:flex-row sm:justify-between">
         <p>
-          留德資訊 MVP — 非官方社群平台，內容由使用者提供
+          留德華 MVP — 非官方社群平台，內容由使用者提供
           <span className="ml-2 text-xs text-content-muted">
             build · {__APP_VERSION__ ?? 'dev'}
           </span>

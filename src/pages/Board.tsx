@@ -12,28 +12,36 @@ import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
-import { boardTypeOf, isDiscussion, BOARD_TYPE_LABEL } from '../lib/board';
+import { boardTypeOf, isDiscussion, isRentalType, BOARD_TYPE_LABEL } from '../lib/board';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
 
-type MainFilter = 'all' | 'secondhand' | 'rental_offer' | 'rental_seek' | 'discussion';
+type MainFilter = 'all' | 'secondhand' | 'rental' | 'discussion';
 type SubFilter =
   | 'all_discussion'
   | 'discussion'
   | 'discussion_study'
   | 'discussion_longterm'
   | 'discussion_food'
-  | 'discussion_taiwan_restaurant';
+  | 'discussion_taiwan_restaurant'
+  | 'all_rental'
+  | 'rental_offer'
+  | 'rental_seek';
 
 const MAIN_FILTERS: { key: MainFilter; label: string }[] = [
   { key: 'all', label: '全部' },
   { key: 'secondhand', label: BOARD_TYPE_LABEL.secondhand },
-  { key: 'rental_offer', label: BOARD_TYPE_LABEL.rental_offer },
-  { key: 'rental_seek', label: BOARD_TYPE_LABEL.rental_seek },
+  { key: 'rental', label: '租房' },
   { key: 'discussion', label: '討論' },
 ];
 
-const SUB_FILTERS: { key: SubFilter; label: string }[] = [
+const SUB_FILTERS_RENTAL: { key: SubFilter; label: string }[] = [
+  { key: 'all_rental', label: '全部租房' },
+  { key: 'rental_offer', label: BOARD_TYPE_LABEL.rental_offer },
+  { key: 'rental_seek', label: BOARD_TYPE_LABEL.rental_seek },
+];
+
+const SUB_FILTERS_DISCUSSION: { key: SubFilter; label: string }[] = [
   { key: 'all_discussion', label: '全部討論' },
   { key: 'discussion', label: '一般' },
   { key: 'discussion_study', label: '學習' },
@@ -91,21 +99,31 @@ export default function Board() {
 
   const filtered = visibleListings.filter((l) => {
     if (mainFilter === 'all') return true;
+    if (mainFilter === 'rental') {
+      if (subFilter === 'all_rental') return isRentalType(boardTypeOf(l));
+      return boardTypeOf(l) === subFilter;
+    }
     if (mainFilter === 'discussion') {
       if (subFilter === 'all_discussion') return isDiscussion(l);
       return boardTypeOf(l) === subFilter;
     }
-    if (isDiscussion(l)) return false;
+    if (isRentalType(boardTypeOf(l)) || isDiscussion(l)) return false;
     return boardTypeOf(l) === mainFilter;
   });
+
+  const handleMainFilterClick = (key: MainFilter) => {
+    setMainFilter(key);
+    if (key === 'rental') setSubFilter('all_rental');
+    if (key === 'discussion') setSubFilter('all_discussion');
+  };
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">生活佈告欄</h1>
         <p className="text-sm text-content-secondary mt-1">
-          二手交易、出租、求租、討論（一般／學習／長居／美食／台灣餐廳）。
-          二手交易／出租／求租 90 天後自動下架（可續期），討論類永久保留。
+          二手交易、租房（出租／求租）、討論（一般／學習／長居／美食／台灣餐廳）。
+          二手交易／租房 90 天後自動下架（可續期），討論類永久保留。
         </p>
       </div>
 
@@ -114,7 +132,7 @@ export default function Board() {
           {MAIN_FILTERS.map((f) => (
             <button
               key={f.key}
-              onClick={() => setMainFilter(f.key)}
+              onClick={() => handleMainFilterClick(f.key)}
               className={`px-3 py-1.5 rounded-lg border transition-colors ${
                 mainFilter === f.key
                   ? 'border-brand-burgundy text-brand-burgundy bg-brand-burgundy/5'
@@ -126,9 +144,9 @@ export default function Board() {
           ))}
         </div>
 
-        {mainFilter === 'discussion' && (
+        {(mainFilter === 'rental' || mainFilter === 'discussion') && (
           <div className="pl-4 border-l-2 border-brand-gold/30 flex flex-wrap gap-2">
-            {SUB_FILTERS.map((f) => (
+            {(mainFilter === 'rental' ? SUB_FILTERS_RENTAL : SUB_FILTERS_DISCUSSION).map((f) => (
               <button
                 key={f.key}
                 onClick={() => setSubFilter(f.key)}

@@ -57,6 +57,13 @@ export const EXPIRING_TYPES: BoardType[] = [
 
 export const EXPIRY_DAYS = 90;
 
+/** 租房子分類（原本平行的 rental_offer/rental_seek，Phase S 起歸為「租房」底下） */
+export const RENTAL_TYPES: BoardType[] = ['rental_offer', 'rental_seek'];
+
+export function isRentalType(type: string): type is BoardType {
+  return (RENTAL_TYPES as string[]).includes(type);
+}
+
 export function isDiscussionType(type: string): type is BoardType {
   return (DISCUSSION_TYPES as string[]).includes(type);
 }

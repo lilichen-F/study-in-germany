@@ -30,7 +30,7 @@ export default function HeroSection() {
         <div className="inline-block px-3 py-1 rounded-full
                         bg-brand-gold/15 text-brand-burgundy text-xs font-medium
                         border border-brand-gold/30">
-          留德資訊站 · v4.1
+          留德華站 · v4.1
         </div>
         <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight leading-tight">
           德國語校、住宿、生活資訊

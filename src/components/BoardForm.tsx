@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
-import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType, EXPIRING_TYPES, EXPIRY_DAYS } from '../lib/board';
+import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType, isRentalType, EXPIRING_TYPES, EXPIRY_DAYS } from '../lib/board';
 import type { BoardType } from '../lib/board';
 import PrivacyNotice from './PrivacyNotice';
 import PhotoUploader from './PhotoUploader';
@@ -11,7 +11,9 @@ interface Props {
   onSubmitted?: () => void;
 }
 
-const MAIN_CATEGORIES: BoardType[] = ['secondhand', 'rental_offer', 'rental_seek', 'discussion'];
+const MAIN_CATEGORIES: BoardType[] = ['secondhand', 'rental_offer', 'discussion'];
+
+const RENTAL_SUBCATEGORIES: BoardType[] = ['rental_offer', 'rental_seek'];
 
 const DISCUSSION_SUBCATEGORIES: BoardType[] = [
   'discussion',
@@ -35,6 +37,7 @@ export default function BoardForm({ onSubmitted }: Props) {
   const [err, setErr] = useState<string | null>(null);
 
   const isDiscussion = isDiscussionType(type);
+  const isRentalMain = isRentalType(type);
   const isExpiringType = EXPIRING_TYPES.includes(type);
 
   const canSubmit =
@@ -88,7 +91,10 @@ export default function BoardForm({ onSubmitted }: Props) {
         <div className="label">類型</div>
         <div className="grid grid-cols-2 gap-2">
           {MAIN_CATEGORIES.map((t) => {
-            const isThisSelected = t === type || (t === 'discussion' && isDiscussion);
+            const isThisSelected =
+              (t === 'discussion' && isDiscussion) ||
+              (t === 'rental_offer' && isRentalMain) ||
+              (t === type && !isDiscussion && !isRentalMain);
             return (
               <button
                 key={t}
@@ -101,16 +107,43 @@ export default function BoardForm({ onSubmitted }: Props) {
                 }`}
               >
                 <div className="text-sm font-medium">
-                  {t === 'discussion' ? '討論' : BOARD_TYPE_LABEL[t]}
+                  {t === 'discussion' ? '討論' : t === 'rental_offer' ? '租房' : BOARD_TYPE_LABEL[t]}
                 </div>
                 <div className="text-xs text-content-muted mt-0.5">
-                  {t === 'discussion' ? '話題交流、經驗分享、疑難雜症' : BOARD_TYPE_HINT[t]}
+                  {t === 'discussion'
+                    ? '話題交流、經驗分享、疑難雜症'
+                    : t === 'rental_offer'
+                    ? '出租或求租房源'
+                    : BOARD_TYPE_HINT[t]}
                 </div>
               </button>
             );
           })}
         </div>
       </div>
+
+      {isRentalMain && (
+        <div className="space-y-2 pt-2 pl-4 border-l-2 border-brand-gold/30">
+          <label className="text-sm text-content-muted">租房子類</label>
+          <div className="space-y-1.5">
+            {RENTAL_SUBCATEGORIES.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setType(t)}
+                className={`w-full text-left p-2.5 rounded-lg border transition-colors ${
+                  type === t
+                    ? 'border-brand-burgundy bg-brand-burgundy-surface text-brand-burgundy'
+                    : 'border-border-subtle hover:border-brand-gold text-content-secondary'
+                }`}
+              >
+                <div className="text-sm font-medium">{BOARD_TYPE_LABEL[t]}</div>
+                <div className="text-xs text-content-muted mt-0.5">{BOARD_TYPE_HINT[t]}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {isDiscussion && (
         <div className="space-y-2 pt-2 pl-4 border-l-2 border-brand-gold/30">

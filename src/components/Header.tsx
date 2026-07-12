@@ -59,11 +59,11 @@ export default function Header() {
             to="/"
             className="inline-flex items-center gap-2 hover:no-underline
                        transition-transform duration-150 hover:scale-[1.02]"
-            aria-label="留德資訊首頁"
+            aria-label="留德華首頁"
           >
             <Logo className="w-8 h-8 shrink-0" />
             <span className="hidden sm:inline font-semibold text-content-primary tracking-tight">
-              留德資訊
+              留德華
             </span>
           </Link>
 
@@ -83,6 +83,7 @@ export default function Header() {
                                 bg-surface-card shadow-lg p-1.5">
                   <NavLink to="/faq" className={dropdownLinkClass}>常見問答</NavLink>
                   <NavLink to="/privacy" className={dropdownLinkClass}>隱私政策</NavLink>
+                  <NavLink to="/support" className={dropdownLinkClass}>支持本站</NavLink>
                 </div>
               </div>
             </div>
@@ -225,6 +226,13 @@ export default function Header() {
                            text-content-secondary text-sm no-underline"
               >
                 隱私政策
+              </NavLink>
+              <NavLink
+                to="/support"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-secondary text-sm no-underline"
+              >
+                支持本站
               </NavLink>
 
               {user && (

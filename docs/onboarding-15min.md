@@ -1,8 +1,8 @@
-# 15 分鐘上手：留德資訊站
+# 15 分鐘上手：留德華站
 
 ## 前 3 分鐘：這是什麼
 
-留德資訊站 v0.7.0：Vite + React 19 + TypeScript + Tailwind v4 + Supabase 的 SPA，
+留德華站 v0.7.0：Vite + React 19 + TypeScript + Tailwind v4 + Supabase 的 SPA，
 部署於 GitHub Pages（HashRouter，無伺服器 rewrite）。核心功能：
 
 1. 語校評價（讀公開、寫需登入，6 維評分自動計算 overall）

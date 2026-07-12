@@ -103,6 +103,9 @@
 | PAT-100 | KNOWN_ISSUE | Claude Code sandbox 無法完成 OAuth 登入（驗證上限說明） |
 | PAT-101 | CORE_IMMUTABLE | 貼文到期機制：商業 90 天／討論永久 + RLS 修正 |
 | PAT-102 | CORE_IMMUTABLE | 討論區 8 類（新增美食 + 台灣餐廳） |
+| PAT-103 | CORE_IMMUTABLE | 佈告欄租房分類重組：rental_offer/seek 歸為「租房」子類 |
+| PAT-104 | CORE_IMMUTABLE | 支持頁面：/support 鎖定 Coming Soon |
+| PAT-105 | CORE_IMMUTABLE | 站名更改：留德資訊 → 留德華（8 檔 14 處，公告歷史條目除外） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

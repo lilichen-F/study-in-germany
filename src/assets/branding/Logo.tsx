@@ -4,7 +4,7 @@ interface Props {
 }
 
 /**
- * 留德資訊 · Logo Mark
+ * 留德華 · Logo Mark
  *
  * 設計語言：
  *   - Brandenburger Tor 抽象化（開放拱形 = 留德入口）
@@ -22,7 +22,7 @@ export default function Logo({ className, variant = 'mark' }: Props) {
       <span className={`inline-flex items-center gap-2 ${className ?? ''}`}>
         <LogoMark className="w-8 h-8" />
         <span className="font-semibold text-content-primary tracking-tight">
-          留德資訊
+          留德華
         </span>
       </span>
     );
@@ -37,7 +37,7 @@ function LogoMark({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       role="img"
-      aria-label="留德資訊"
+      aria-label="留德華"
     >
       {/* 拱形頂（Brandenburger Tor 抽象化） */}
       <path
