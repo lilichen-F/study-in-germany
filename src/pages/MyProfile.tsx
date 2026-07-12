@@ -368,7 +368,7 @@ export default function MyProfile() {
           你之後仍可用同一個 Google 帳號重新登入（但會是全新的空白個人資料）。
           如需徹底刪除所有紀錄（包含登入資料），請{' '}
           <a
-            href="https://github.com/lilichen-F/study-in-germany/issues/new?title=%5B%E5%B8%B3%E8%99%9F%E5%88%AA%E9%99%A4%E8%AB%8B%E6%B1%82%5D&labels=account-deletion&body=%E8%AB%8B%E5%91%8A%E7%9F%A5%E4%BD%A0%E7%9A%84%E9%A1%AF%E7%A4%BA%E5%90%8D%E7%A8%B1%E6%88%96%E8%A8%BB%E5%86%8A%E6%99%82%E9%96%93%EF%BC%8C%E4%BB%A5%E4%BE%BF%E6%88%91%E5%80%91%E5%8D%94%E5%8A%A9%E7%A2%BA%E8%AA%8D%E8%BA%AB%E5%88%86%E3%80%82"
+            href="https://github.com/si-kui-a/study-in-germany/issues/new?title=%5B%E5%B8%B3%E8%99%9F%E5%88%AA%E9%99%A4%E8%AB%8B%E6%B1%82%5D&labels=account-deletion&body=%E8%AB%8B%E5%91%8A%E7%9F%A5%E4%BD%A0%E7%9A%84%E9%A1%AF%E7%A4%BA%E5%90%8D%E7%A8%B1%E6%88%96%E8%A8%BB%E5%86%8A%E6%99%82%E9%96%93%EF%BC%8C%E4%BB%A5%E4%BE%BF%E6%88%91%E5%80%91%E5%8D%94%E5%8A%A9%E7%A2%BA%E8%AA%8D%E8%BA%AB%E5%88%86%E3%80%82"
             target="_blank"
             rel="noopener noreferrer"
             className="text-brand-burgundy"

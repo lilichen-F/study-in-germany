@@ -108,6 +108,8 @@
 | PAT-105 | CORE_IMMUTABLE | 站名更改：留德資訊 → 留德華（8 檔 14 處，公告歷史條目除外） |
 | PAT-106 | CORE_IMMUTABLE | 發文 FAB + Modal Pattern（Board.tsx 改浮動按鈕觸發） |
 | PAT-107 | CORE_IMMUTABLE | 追蹤動態獨立頁面：/following（抽取自 MyProfile） |
+| PAT-108 | CORE_IMMUTABLE | GitHub 帳號改名：lilichen-F → si-kui-a + deploy.yml 修正 |
+| PAT-109 | CORE_IMMUTABLE | schools.json Batch 2 匯入（27→52 所，跳過 5 筆重複） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

@@ -13,7 +13,7 @@ export default function Footer() {
         <nav className="flex gap-4">
           <Link to="/privacy">隱私政策</Link>
           <a
-            href="https://github.com/lilichen-F/study-in-germany"
+            href="https://github.com/si-kui-a/study-in-germany"
             target="_blank"
             rel="noreferrer"
           >

@@ -80,7 +80,7 @@ jobs:
         env:
           SITE_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
-          URL="https://lilichen-f.github.io/study-in-germany/"
+          URL="$SITE_URL"
           echo "=== 檢查主頁 ==="
           CODE=$(curl -s -o /tmp/index.html -w "%{http_code}" "$URL")
           if [ "$CODE" != "200" ]; then

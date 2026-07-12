@@ -2,7 +2,7 @@
 
 德國留學生活資訊入口 · MVP · 現行版本 v0.7.0
 
-- **線上**：https://lilichen-f.github.io/study-in-germany/
+- **線上**：https://si-kui-a.github.io/study-in-germany/
 - **技術棧**：Vite + React 19 + TypeScript + Tailwind CSS v4 + react-router-dom（HashRouter）+ Supabase（Auth / Postgres / Storage）
 - **設計系統**：DS v4.1 Morandi 色票 + DS v4.2 Workflow Pattern（Edu 板塊）
 
