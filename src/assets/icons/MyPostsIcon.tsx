@@ -4,16 +4,13 @@ export default function MyPostsIcon({ className }: { className?: string }) {
          className={className} role="img" aria-label="我的資料"
          fill="none" stroke="currentColor" strokeWidth="1.5"
          strokeLinecap="round" strokeLinejoin="round">
-      {/* 文件夾 · 實心打底 */}
-      <path d="M 10 18 L 24 18 L 28 24 L 50 24 L 50 46 L 10 46 Z"
-            fill="currentColor" opacity="0.15" stroke="currentColor" />
-      {/* 人形頭 · 實心 */}
-      <circle cx="30" cy="14" r="7" fill="currentColor" opacity="0.6" stroke="none" />
-      {/* 人形肩膀 */}
-      <path d="M 18 24 Q 30 15 42 24" />
-      {/* 文字列 */}
-      <line x1="18" y1="34" x2="42" y2="34" opacity="0.5" />
-      <line x1="18" y1="39" x2="34" y2="39" opacity="0.5" />
+      {/* 文件夾 · 大面積實心色塊 */}
+      <path d="M 12 20 L 24 20 L 28 26 L 48 26 L 48 46 L 12 46 Z"
+            fill="currentColor" opacity="0.3" stroke="currentColor" />
+      {/* 人形頭 · 更深色塊 */}
+      <circle cx="30" cy="16" r="6" fill="currentColor" opacity="0.5" stroke="currentColor" />
+      {/* 肩膀線條點綴 */}
+      <path d="M 20 24 Q 30 18 40 24" opacity="0.6" />
     </svg>
   );
 }

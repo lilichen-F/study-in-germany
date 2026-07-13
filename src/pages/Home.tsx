@@ -7,7 +7,7 @@ import BoardIcon from '../assets/icons/BoardIcon';
 import FaqIcon from '../assets/icons/FaqIcon';
 import MyPostsIcon from '../assets/icons/MyPostsIcon';
 import EduIcon from '../assets/icons/EduIcon';
-import RecommendationIcon from '../assets/icons/RecommendationIcon';
+import PortalRecommendationIcon from '../assets/icons/PortalRecommendationIcon';
 import BellIcon from '../assets/icons/BellIcon';
 
 /**
@@ -30,7 +30,7 @@ const PORTAL_ITEMS = [
   },
   {
     to: '/recommendation', title: '推薦', description: '德國好物、方案、優惠',
-    Icon: RecommendationIcon,
+    Icon: PortalRecommendationIcon,
   },
   {
     to: '/faq', title: '常見問答', description: '簽證、健保、限制提領帳戶、生活疑問',
@@ -46,6 +46,8 @@ const PORTAL_ITEMS = [
  * DS v4.1 Portal 首頁（B.1 Hero + B.2 Morandi 整合 · Phase G 擴為 6 卡）
  * Phase Y：Portal 卡片改用與 Edu Hub 一致的大圖示置中佈局（PAT-116）
  * Phase AB：Portal 圖示色彩統一為 brand-burgundy，不再各卡各自套用 module-* 識別色（PAT-119）
+ * Phase AC：Portal 圖示造型統一為色塊為主、線條為輔（PAT-121）；「推薦」卡片改用
+ *   PortalRecommendationIcon（獨立於 Recommendation.tsx 頁首共用的 RecommendationIcon）
  * 結構：Hero 天際線 → Portal (6 卡，兩列 3+3) → 熱門語校 → 最新公告
  */
 export default function Home() {
