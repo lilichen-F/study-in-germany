@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
+import { translateError } from '../lib/errorMessages';
 import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType, isRentalType, EXPIRING_TYPES, EXPIRY_DAYS } from '../lib/board';
 import type { BoardType } from '../lib/board';
 import PrivacyNotice from './PrivacyNotice';
@@ -77,7 +78,10 @@ export default function BoardForm({ onSubmitted }: Props) {
     });
     setSubmitting(false);
     if (error) {
-      setErr(error.message);
+      const f = translateError(error);
+      setErr(f.message);
+      // eslint-disable-next-line no-console
+      console.error('[BoardForm] submit failed:', f.raw);
       return;
     }
     setTitle(''); setDescription(''); setPrice('');

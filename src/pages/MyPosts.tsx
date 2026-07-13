@@ -23,12 +23,10 @@ function MyPostsContent() {
   const [reviews, setReviews] = useState<SchoolReview[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    setErr(null);
     if (MOCK_MODE) {
       mockLog('my-posts', 'using empty MOCK data for guest view');
       setReviews([]);
@@ -50,7 +48,6 @@ function MyPostsContent() {
     ]);
     if (reviewsRes.error || listingsRes.error) {
       const friendly = translateError(reviewsRes.error ?? listingsRes.error);
-      setErr(friendly.message);
       push('error', `讀取發文失敗：${friendly.message}`);
       console.error('[MyPosts] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
@@ -66,7 +63,12 @@ function MyPostsContent() {
   const deleteReview = async (id: number) => {
     if (!confirm('確定刪除這則評價？此動作無法復原。')) return;
     const { error } = await supabase.from('school_reviews').delete().eq('id', id);
-    if (error) { alert(`刪除失敗：${error.message}`); return; }
+    if (error) {
+      const f = translateError(error);
+      push('error', f.message);
+      console.error('[MyPosts] deleteReview failed:', f.raw);
+      return;
+    }
     setReviews((prev) => prev.filter((r) => r.id !== id));
   };
 
@@ -74,7 +76,12 @@ function MyPostsContent() {
     if (!confirm('確定刪除這則貼文？照片會一併移除，此動作無法復原。')) return;
     await Promise.all(l.photo_urls.map((u) => deletePhoto(u).catch(() => null)));
     const { error } = await supabase.from('listings').delete().eq('id', l.id);
-    if (error) { alert(`刪除失敗：${error.message}`); return; }
+    if (error) {
+      const f = translateError(error);
+      push('error', f.message);
+      console.error('[MyPosts] deleteListing failed:', f.raw);
+      return;
+    }
     setListings((prev) => prev.filter((x) => x.id !== l.id));
   };
 
@@ -86,14 +93,18 @@ function MyPostsContent() {
       .from('listings')
       .update({ expires_at: newExpiresAt })
       .eq('id', l.id);
-    if (error) { alert(`續期失敗：${error.message}`); return; }
+    if (error) {
+      const f = translateError(error);
+      push('error', f.message);
+      console.error('[MyPosts] renewListing failed:', f.raw);
+      return;
+    }
     setListings((prev) =>
       prev.map((x) => (x.id === l.id ? { ...x, expires_at: newExpiresAt } : x))
     );
   };
 
   if (loading) return <SkeletonList n={2} />;
-  if (err) return <div className="text-sm text-state-danger">載入失敗：{err}</div>;
 
   return (
     <div className="space-y-10">

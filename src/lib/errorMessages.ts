@@ -1,6 +1,8 @@
 /**
  * PostgREST / Supabase 錯誤代碼→中文使用者訊息。
- * 未命中的 code 回原文，避免資訊遺失。
+ * 未命中的 code/pattern 一律回通用訊息（不回傳原始 raw 文字），
+ * 避免資料庫內部錯誤細節（表名、欄位名、SQL 約束名等）外洩給使用者；
+ * 完整原始錯誤只透過 raw 欄位供呼叫端 console.error 除錯用（PAT-112）。
  */
 
 const CODE_MAP: Record<string, string> = {
@@ -48,5 +50,5 @@ export function translateError(error: unknown): FriendlyError {
       return { message: msg, raw, code };
     }
   }
-  return { message: raw, raw, code };
+  return { message: '發生未預期的錯誤，請稍後再試', raw, code };
 }

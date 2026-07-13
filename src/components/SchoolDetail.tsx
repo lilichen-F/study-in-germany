@@ -33,12 +33,10 @@ export default function SchoolDetail() {
 
   const [reviews, setReviews] = useState<SchoolReview[]>([]);
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
     setLoading(true);
-    setErr(null);
     if (MOCK_MODE) {
       mockLog('school-detail', `using MOCK_REVIEWS for ${id}`);
       setReviews(MOCK_REVIEWS.filter((r) => r.school_id === id));
@@ -52,7 +50,6 @@ export default function SchoolDetail() {
       .order('created_at', { ascending: false });
     if (error) {
       const f = translateError(error);
-      setErr(f.message);
       push('error', `讀取評價失敗：${f.message}`);
       console.error('[SchoolDetail] raw:', f.raw, 'code:', f.code);
       setLoading(false);
@@ -207,8 +204,6 @@ export default function SchoolDetail() {
         <h2 className="text-lg font-medium">學員評價</h2>
         {loading ? (
           <SkeletonList n={2} />
-        ) : err ? (
-          <div className="card text-sm text-state-danger">讀取失敗：{err}</div>
         ) : (
           <ReviewList reviews={reviews} onDeleted={load} />
         )}

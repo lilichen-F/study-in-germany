@@ -36,7 +36,10 @@ export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }:
     await Promise.all(l.photo_urls.map((u) => deletePhoto(u).catch(() => null)));
     const { error } = await supabase.from('listings').delete().eq('id', l.id);
     if (error) {
-      alert(`刪除失敗：${error.message}`);
+      const f = translateError(error);
+      push('error', f.message);
+      // eslint-disable-next-line no-console
+      console.error('[BoardList] delete failed:', f.raw);
       return;
     }
     onDeleted?.();

@@ -55,14 +55,12 @@ export default function Board() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState<string | null>(null);
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
   const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
   const [postModalOpen, setPostModalOpen] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
-    setErr(null);
     if (MOCK_MODE) {
       mockLog('board', 'using MOCK_LISTINGS');
       setListings(MOCK_LISTINGS);
@@ -75,7 +73,6 @@ export default function Board() {
       .order('created_at', { ascending: false });
     if (error) {
       const friendly = translateError(error);
-      setErr(friendly.message);
       push('error', `讀取佈告欄失敗：${friendly.message}`);
       console.error('[Board] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
@@ -167,8 +164,6 @@ export default function Board() {
       <section>
         {loading ? (
           <SkeletonList n={3} />
-        ) : err ? (
-          <div className="text-sm text-state-danger">讀取失敗：{err}</div>
         ) : visibleListings.length === 0 ? (
           <EmptyState
             icon={<BoardIcon className="w-full h-full" />}

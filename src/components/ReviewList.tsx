@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { SchoolReview } from '../lib/types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
+import { translateError } from '../lib/errorMessages';
+import { useToast } from '../lib/toast';
 import RatingBreakdown from './RatingBreakdown';
 import UserAvatar from './UserAvatar';
 import FollowButton from './FollowButton';
@@ -16,6 +18,7 @@ interface Props {
 
 export default function ReviewList({ reviews, onDeleted }: Props) {
   const { user } = useAuth();
+  const { push } = useToast();
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
 
   useEffect(() => {
@@ -38,7 +41,13 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
   const handleDelete = async (id: number) => {
     if (!confirm('確定刪除這則評價？此動作無法復原。')) return;
     const { error } = await supabase.from('school_reviews').delete().eq('id', id);
-    if (error) { alert(`刪除失敗：${error.message}`); return; }
+    if (error) {
+      const f = translateError(error);
+      push('error', f.message);
+      // eslint-disable-next-line no-console
+      console.error('[ReviewList] delete failed:', f.raw);
+      return;
+    }
     onDeleted?.();
   };
 

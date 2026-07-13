@@ -188,23 +188,25 @@ export default function Privacy() {
         </p>
       </section>
 
-      <section className="rounded-lg border border-dashed border-border-subtle p-4">
+      <section>
         <h2 className="mb-2 text-lg font-medium text-content-primary">10. 未來贊助功能預留條款</h2>
-        <p className="text-sm">
-          ⚠️ <strong>本節待補</strong>：此段落應完整採用 Lily 提供的「贊助功能法遵條款：定稿版」
-          文件全文，但該文件內容尚未於本輪對話中提供給 Claude Code。依本輪硬性約束「不可自行
-          發明法律條款」，此處暫不填入任何內容，避免產生未經確認的法律主張。請 Lily 提供該文件
-          全文後，由下一輪 Phase 補上。
+        <p>
+          若本網站提供贊助或支持連結，相關付款程序由第三方服務商（例如 Buy Me a Coffee、Ko-fi）
+          直接提供與處理。使用者點擊贊助連結後，將導向該服務商之網站或介面完成付款，付款相關資料
+          （如姓名、電子郵件、付款識別資訊、交易金額）由該服務商依其自身之隱私政策收集、處理及
+          保存，本網站不會接觸、儲存或傳輸上述資料。
+        </p>
+        <p className="mt-2">
+          本網站建議使用者於使用第三方贊助服務前，先行閱讀該服務商之隱私政策。
         </p>
       </section>
 
-      <section className="rounded-lg border border-dashed border-border-subtle p-4">
+      <section>
         <h2 className="mb-2 text-lg font-medium text-content-primary">11. 服務性質聲明</h2>
-        <p className="text-sm">
-          ⚠️ <strong>本節待補</strong>：此段落應完整採用 Lily 提供的「網站法遵文件架構大綱」中
-          「五、服務條款預留段落」文件全文，但該文件內容尚未於本輪對話中提供給 Claude Code。
-          依本輪硬性約束「不可自行發明法律條款」，此處暫不填入任何內容，避免產生未經確認的法律
-          主張。請 Lily 提供該文件全文後，由下一輪 Phase 補上。
+        <p>
+          本網站目前為開源資訊網站，未提供付費內容或訂閱功能。若未來新增贊助、會員、數位商品或
+          其他收費服務，相關使用規則、退款、存取權限與限制條件將於更新後公告，並適用當時版本之
+          服務條款。
         </p>
       </section>
     </article>
