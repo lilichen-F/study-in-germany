@@ -121,6 +121,7 @@
 | PAT-119 | CORE_IMMUTABLE | Portal 色彩統一為 brand-burgundy，脫離 module-* 分歧邏輯 |
 | PAT-120 | RESOLVED | module-faq/myposts 灰色根因：非故障，僅低飽和度顏色 |
 | PAT-121 | CORE_IMMUTABLE | Portal 圖示造型統一：色塊為主、線條為輔（含共用檔案拆分） |
+| PAT-122 | CORE_IMMUTABLE | 全站圖像設計系統：通用治理標準（色彩/分層/寫實抽象/規格家族/fallback） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
