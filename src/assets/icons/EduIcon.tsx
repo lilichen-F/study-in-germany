@@ -1,3 +1,4 @@
+/** @deprecated Phase AH：已改用 Tabler Icons，此手繪 SVG 檔案零引用，僅保留供考古參考（PAT-122） */
 export default function EduIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"

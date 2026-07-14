@@ -1004,58 +1004,97 @@ Portal 首頁 6 個圖示的視覺手法標竿為 SchoolIcon（Phase AA）：主
 0.25-0.5 並補上 `stroke="currentColor"` 讓輪廓與填色一致），與 SchoolIcon/EduIcon/
 PortalRecommendationIcon 統一視覺語言。
 
-## PAT-122 [CORE_IMMUTABLE]: 全站圖像設計系統 · 通用治理標準
-**這是一份上位治理文件，適用於全站所有現有與未來圖示家族**（城市天際線/Edu Geometry/
-Badge 徽章/Portal 6卡等），任何新增或修改圖示的工作，執行前都必須對照本 PAT 逐項檢查。
+## PAT-122 [CORE_IMMUTABLE]: 全站圖示系統 · Tabler Icons 統一（Phase AH 終局版）
 
-### 一、色彩總則
-- 每個圖示只使用 currentColor 一種色相，不得混用多色相
-- 顏色一律跟隨外層 CSS class 決定，不寫死色碼
-- 同一功能分區內所有圖示必須共用同一色彩身份，不得色系跳動
+**歷史脈絡**：Portal/Edu/Badge/Recommendation 四個圖示家族歷經 Phase Y→AA→AB→AC→AF→AG
+共 6 輪手繪 SVG 反覆調整（填色比例、線寬、留白），仍未達 Lily 滿意的視覺標準，
+且此環境截圖工具於多輪皆持續故障，導致視覺確認嚴重受限、每輪只能靠 DOM/computed
+style 間接驗證。Lily 最終決策：放棄手繪自訂路徑，改用成熟開源圖標庫
+`@tabler/icons-react`，終結長期反覆調整。
 
-### 二、分層堆疊總則
-- 造型複雜需要層次感時，用 opacity 分層而非多色階/漸層
-- 背景/次要層：opacity 0.1–0.2；中景層：0.2–0.3；主體/焦點層：0.3–0.6
-- 相鄰層 opacity 差距至少 0.1 以上才算有效分層
+### 現行圖示家族（Phase AH 後）
 
-### 三、寫實 vs 抽象判斷準則（不虛構原則）
-- 有公開可查證、廣泛認知的具體形象 → 採寫實型，以辨識特徵為主體
-- 無具體形象或查證不到依據 → 採抽象型，用幾何符號/通用意象，不虛構不存在的細節
-- 此原則適用於城市地標、徽章成就、學校特色、任何未來新增的圖示主題
-
-### 四、構成邏輯：色塊與線條比例分派（依語意性質決定，非全站統一單一畫法）
-| 圖示性質 | 構成邏輯 | 現行對應 |
+| 家族 | 技術方案 | 適用範圍 |
 |---|---|---|
-| 風景/場景類 | 色塊為主體，線條極少或不使用 | 城市天際線家族（400×300）|
-| 符號/圖標類 | 線條勾勒主體外框，局部色塊點綴 | Edu Hub、Badge 徽章家族（60×60）|
-| 入口/導覽類 | 色塊構成主體，線條僅作細節點綴 | Portal 6 卡家族（60×60，Phase AC 確立）|
+| 城市天際線 | 手繪 SVG，400×300，風景剪影（**唯一維持不動的家族，Phase AH 未觸碰**）| Schools 列表卡片、SchoolDetail Banner |
+| Portal 6 卡 | Tabler Icons，`currentColor`＋`text-brand-burgundy`（PAT-119） | 首頁 Portal（含 Announcements 區塊的 IconBell） |
+| 作戰手冊 7 卡 | Tabler Icons，`currentColor`＋`text-module-edu` | Edu Hub（`Edu.tsx`）+ 主題詳情頁頭圖（`EduTopic.tsx`，共用同一 registry） |
+| 推薦專區 6 卡 | Tabler Icons，`currentColor`＋`text-module-recommendation` | Recommendation Hub + 子分類頁（`RecommendationCategory.tsx`）+ 頁首獨立圖示（`RecommendationIcon.tsx`） |
+| Badge 徽章 | Tabler Icons，`currentColor`＋tier 對應色 | MyProfile 徽章清單、頭像旁徽章 chip |
 
-### 五、規格尺寸家族制原則
-- 不強制統一單一 viewBox，依用途分家族，同家族內部規格必須一致
-- 不同家族允許不同規格（風景類 400×300 橫向 vs 符號類 60×60 正方）
-- 新增家族前優先評估是否可沿用既有家族，避免圖示系統碎片化
+**新增依賴**：`@tabler/icons-react`（本專案唯一允許新增依賴的例外案例，因終結長期
+反覆調整的價值遠大於零依賴原則；`peerDependencies: { react: ">= 16" }`，與本專案
+React 19 相容確認無誤）。
 
-### 六、Fallback 總則
-- 依外部資料動態決定內容的圖示系統，必須有 fallback（永不空白、永不報錯）
-- Fallback 圖示本身仍需符合當下家族的構成邏輯，只是語意中性
+### 圖標對應表
 
-### 七、治理總則
-- 新圖示上線前，需與同家族既有標竿逐項比對規格
-- 不擅自跨家族混用手法（例如不可未經確認就把 Portal 色塊手法套進 Edu Hub）
-- 程式碼結構驗證（viewBox/shape數量/opacity值）不能取代實際視覺確認，兩者都需要做
+**Portal（Home.tsx，6 卡，直接以元件參照存於 PORTAL_ITEMS，無獨立 registry）**：
+語言學校→`IconBuildingArch`／生活佈告欄→`IconSpeakerphone`／作戰手冊→`IconNotebook`／
+推薦→`IconStar`／常見問答→`IconMessageQuestion`／我的資料→`IconUserCircle`
+（另：同頁 Announcements 區塊的鈴鐺圖示，非四大家族之一但同檔案一併換成 `IconBell`，
+避免同一檔案內殘留唯一一個手繪圖示）
 
-### 現行圖示家族清單（依本 PAT 治理）
-| 家族 | 規格 | 適用範圍 |
-|---|---|---|
-| 城市天際線 | 400×300，色塊為主 | Schools 列表卡片、SchoolDetail Banner |
-| Edu Geometry | 60×60，線條+局部色塊 | Edu Hub 7 卡工作流程主題 |
-| Badge 徽章 | 60×60，線條+局部色塊 | MyProfile 徽章清單、頭像旁徽章 chip |
-| Portal 6 卡 | 60×60，色塊為主+線條點綴 | 首頁 Portal 6 張入口卡片 |
-| Recommendation | 60×60，線條為主（頁首小圖示）| /#/recommendation 頁首、6 子分類卡片 |
+**作戰手冊（`src/assets/icons/edu/index.tsx` registry，`EduTopicIcon`，7 主題）**：
+簽證流程→`IconId`／落地指南→`IconHome`／延簽流程→`IconClockHour4`／
+學程申請→`IconSchool`／獎學金→`IconAward`／教育政策→`IconFileText`／
+離開指南→`IconDoorExit`
 
-**歷史脈絡**：本 PAT 源自 Phase Y/AA/AB/AC 一連串解決 Portal 卡片視覺不一致問題的過程
-（先統一色彩、再統一造型），Lily 要求把過程中確立的原則正式抽象化為全站標準，
-避免未來再次發生同類混亂。
+**推薦專區（`src/assets/icons/recommendation/index.tsx` registry，`RecommendationCategoryIcon`，
+6 子分類；`RecommendationIcon.tsx` 頁首圖示獨立換成 `IconStar`，與 Portal「推薦」卡呼應）**：
+通用推薦→`IconCompass`／簽證相關→`IconFileCertificate`／落地相關→`IconLuggage`／
+學程相關→`IconSearch`／獎學金→`IconMedal`／台灣海外方案→`IconMapPin`
+
+**Badge 徽章（`src/assets/icons/badges/index.tsx` registry，`BadgeIcon`，7 徽章）**：
+先鋒→`IconRocket`／評價達人→`IconStarFilled`／貼文達人→`IconPencil`／
+貢獻達人→`IconGift`／討論家→`IconMessageCircle`／語校達人→`IconSchool`
+（沿用作戰手冊「學程申請」同一圖標，語意相通）／全能達人→`IconCrown`
+
+**與 spec 提供對照表的兩處偏差**（Tabler 庫內確認不存在對應圖標，依 STOP CONDITION
+「不要硬選不相關圖標湊數」原則另尋語意相近替代，而非直接沿用不存在的名稱）：
+- 簽證相關原建議 `IconStamp`（不存在）→ 改用 `IconFileCertificate`（官方證明文件，
+  語意貼近「可查證的簽證文件」）
+- 貢獻達人原建議 `IconHandLove`（不存在）→ 改用 `IconGift`（spec 本身提供的備選項）
+
+### 架構決策：保留 registry 元件、內部抽換實作
+
+Edu/Recommendation/Badge 三個家族原本就有 `EduTopicIcon`/`RecommendationCategoryIcon`/
+`BadgeIcon` 這類「slug/badgeId → 元件」的 registry 包裝元件，本輪**只替換 registry
+內部的 REGISTRY 對照表本體**（手繪元件 → Tabler 元件），對外的呼叫介面
+（`<EduTopicIcon slug={...} className="..." />` 等）完全不變。好處：
+- `EduTopic.tsx`（主題詳情頁頭圖）、`RecommendationCategory.tsx`（子分類頁頭圖）
+  這些消費端**零程式碼異動**即自動套用新圖示，不需要逐頁修改，也不會發生
+  「Hub 卡片換了新圖示、但點進去的詳情頁仍是舊圖示」的不一致
+- Portal（Home.tsx）因為原本就沒有 registry（PORTAL_ITEMS 直接存元件參照，僅單一
+  消費端），故直接在陣列中替換元件參照即可，不需要另建 registry
+
+圖示尺寸統一交由外層 wrapper div 控制（Phase AG 建立的 `w-12 sm:w-16 lg:w-20` 等
+響應式 class），Tabler 元件本身只傳 `className="w-full h-full"` 撐滿容器＋
+`stroke={1.5}`，不使用 Tabler 的 `size` prop（避免與現行響應式 class 系統疊床架屋）。
+
+### 舊有手繪 SVG 檔案處置
+
+**標記 `@deprecated`、保留檔案、不刪除**（本輪逐一確認除 `BoardIcon.tsx` 外皆已零
+引用，但依 spec「檔案本身可保留但標記 deprecated」的預設指示，即使確認零引用也
+選擇保留而非刪除，降低不可逆風險）：
+`SchoolIcon`/`EduIcon`/`PortalRecommendationIcon`/`FaqIcon`/`MyPostsIcon`/`BellIcon`
+（Portal，6 檔）、`VisaIcon`/`ArrivalIcon`/`RenewalIcon`/`ApplicationIcon`/
+`ScholarshipIcon`/`PolicyIcon`/`ExitIcon`（Edu，7 檔）、`PioneerIcon`/`StarIcon`/
+`QuillIcon`/`HandshakeIcon`/`ChatIcon`/`CrownIcon`（Badge，6 檔）、`GeneralIcon`/
+`TaiwanIcon`（Recommendation，2 檔）。
+
+**例外未刪除亦未 deprecate**：`BoardIcon.tsx` 在 Phase AE 新增的 Board.tsx 追蹤動態
+空狀態（EmptyState icon）仍在使用，與 Portal 卡片是不同的消費端，本輪未動它。
+
+### 城市天際線家族：唯一不動
+
+`src/assets/cities/` 全數 22 檔 + `Fallback.tsx` + `index.tsx` registry 完全未觸碰
+（`git diff --stat main -- src/assets/cities/` 確認零異動），繼續沿用 400×300
+風景剪影手繪 SVG，不納入本輪 Tabler 遷移範圍。
+
+### 圖標選用原則
+
+優先選擇語意直接對應的 Tabler 圖標；若無完全對應，選擇語意相近且視覺不與同頁面
+其他圖標混淆的替代圖標，不強行使用不相關圖標湊數（見上方兩處偏差記錄）。
 
 ## PAT-123 [CORE_IMMUTABLE]: 追蹤動態併入佈告欄 · 檢視模式而非分類
 

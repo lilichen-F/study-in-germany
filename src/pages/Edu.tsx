@@ -26,6 +26,8 @@ const TOPICS = [
  *   同一套 class 組合邏輯（PAT-126）；step 數量不再於卡片上顯示，優先保留
  *   icon+title 之精簡度（進入各主題頁後仍可見完整 step 數量與流程總覽）
  * Phase AG：圖示與標題文字放大，消除卡片內部多餘留白（PAT-126 v2）
+ * Phase AH：圖示改用 Tabler Icons（`EduTopicIcon` registry 內部改實作，
+ *   本頁 import/呼叫方式不變，見 src/assets/icons/edu/index.tsx，PAT-122）
  */
 export default function Edu() {
   return (

@@ -1,18 +1,20 @@
-import type { FC } from 'react';
-import VisaIcon from '../edu/VisaIcon';
-import ArrivalIcon from '../edu/ArrivalIcon';
-import ApplicationIcon from '../edu/ApplicationIcon';
-import ScholarshipIcon from '../edu/ScholarshipIcon';
-import GeneralIcon from './GeneralIcon';
-import TaiwanIcon from './TaiwanIcon';
+import {
+  IconCompass,
+  IconFileCertificate,
+  IconLuggage,
+  IconSearch,
+  IconMedal,
+  IconMapPin,
+  type Icon as TablerIcon,
+} from '@tabler/icons-react';
 
-const REGISTRY: Record<string, FC<{ className?: string }>> = {
-  general: GeneralIcon,        // 新畫
-  visa: VisaIcon,               // 沿用 Edu
-  arrival: ArrivalIcon,         // 沿用 Edu
-  edu: ApplicationIcon,         // 沿用 Edu（學程 → 大學帽）
-  scholarship: ScholarshipIcon, // 沿用 Edu
-  taiwan: TaiwanIcon,           // 新畫
+const REGISTRY: Record<string, TablerIcon> = {
+  general: IconCompass,
+  visa: IconFileCertificate,
+  arrival: IconLuggage,
+  edu: IconSearch,
+  scholarship: IconMedal,
+  taiwan: IconMapPin,
 };
 
 export function RecommendationCategoryIcon({
@@ -24,5 +26,5 @@ export function RecommendationCategoryIcon({
 }) {
   const Icon = REGISTRY[slug];
   if (!Icon) return null;
-  return <Icon className={className} />;
+  return <Icon className={className} stroke={1.5} />;
 }

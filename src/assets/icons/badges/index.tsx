@@ -1,21 +1,23 @@
-import type { FC } from 'react';
-import PioneerIcon from './PioneerIcon';
-import StarIcon from './StarIcon';
-import QuillIcon from './QuillIcon';
-import HandshakeIcon from './HandshakeIcon';
-import ChatIcon from './ChatIcon';
-import CrownIcon from './CrownIcon';
-import ApplicationIcon from '../edu/ApplicationIcon'; // 沿用 Edu · 語校達人
+import {
+  IconRocket,
+  IconStarFilled,
+  IconPencil,
+  IconGift,
+  IconMessageCircle,
+  IconSchool,
+  IconCrown,
+  type Icon as TablerIcon,
+} from '@tabler/icons-react';
 import type { BadgeId } from '../../../lib/badges';
 
-const REGISTRY: Record<BadgeId, FC<{ className?: string }>> = {
-  pioneer: PioneerIcon,
-  review_expert: StarIcon,
-  post_expert: QuillIcon,
-  contribution_expert: HandshakeIcon,
-  discussion_expert: ChatIcon,
-  school_expert: ApplicationIcon, // 沿用 Edu ApplicationIcon
-  omni_expert: CrownIcon,
+const REGISTRY: Record<BadgeId, TablerIcon> = {
+  pioneer: IconRocket,
+  review_expert: IconStarFilled,
+  post_expert: IconPencil,
+  contribution_expert: IconGift,
+  discussion_expert: IconMessageCircle,
+  school_expert: IconSchool, // 沿用作戰手冊「學程申請」同一圖標，語意相通
+  omni_expert: IconCrown,
 };
 
 export function BadgeIcon({
@@ -27,5 +29,5 @@ export function BadgeIcon({
 }) {
   const Icon = REGISTRY[badgeId];
   if (!Icon) return null;
-  return <Icon className={className} />;
+  return <Icon className={className} stroke={1.5} />;
 }

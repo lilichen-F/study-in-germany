@@ -1,20 +1,22 @@
-import type { FC } from 'react';
-import VisaIcon from './VisaIcon';
-import ArrivalIcon from './ArrivalIcon';
-import RenewalIcon from './RenewalIcon';
-import ApplicationIcon from './ApplicationIcon';
-import ScholarshipIcon from './ScholarshipIcon';
-import PolicyIcon from './PolicyIcon';
-import ExitIcon from './ExitIcon';
+import {
+  IconId,
+  IconHome,
+  IconClockHour4,
+  IconSchool,
+  IconAward,
+  IconFileText,
+  IconDoorExit,
+  type Icon as TablerIcon,
+} from '@tabler/icons-react';
 
-const REGISTRY: Record<string, FC<{ className?: string }>> = {
-  visa: VisaIcon,
-  arrival: ArrivalIcon,
-  renewal: RenewalIcon,
-  application: ApplicationIcon,
-  scholarship: ScholarshipIcon,
-  policy: PolicyIcon,
-  exit: ExitIcon,
+const REGISTRY: Record<string, TablerIcon> = {
+  visa: IconId,
+  arrival: IconHome,
+  renewal: IconClockHour4,
+  application: IconSchool,
+  scholarship: IconAward,
+  policy: IconFileText,
+  exit: IconDoorExit,
 };
 
 export function EduTopicIcon({
@@ -26,5 +28,5 @@ export function EduTopicIcon({
 }) {
   const Icon = REGISTRY[slug];
   if (!Icon) return null;
-  return <Icon className={className} />;
+  return <Icon className={className} stroke={1.5} />;
 }
