@@ -13,7 +13,8 @@ import HeroSection from '../components/HeroSection';
 import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
-import { isOnboardingCompleted } from '../lib/onboarding';
+import { isOnboardingCompleted, getLocalPersonaStage } from '../lib/onboarding';
+import { getNextStepSuggestion } from '../lib/nextStep';
 
 /**
  * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
@@ -56,14 +57,18 @@ const PORTAL_ITEMS = [
  *   與 Recommendation.tsx、Edu.tsx 共用同一套 class 組合邏輯（PAT-126）
  * Phase AG：圖示與標題文字放大，消除卡片內部多餘留白（PAT-126 v2）
  * Phase AH：6 個手繪 SVG 圖示全數改用 Tabler Icons（`@tabler/icons-react`），
- *   直接以元件參照存於 PORTAL_ITEMS，不再需要獨立的 PortalRecommendationIcon.tsx
- *   分流檔案（PAT-122 終局版）
+ *   直接以元件參照存於 PORTAL_ITEMS（PAT-122 終局版；舊有分流檔案已於
+ *   Phase AN 健檢確認零引用後刪除，見 PAT-135）
  * Phase AI：新增新手導覽 Modal（精簡版，僅階段選擇+收尾），首次造訪時自動彈出
  *   （PAT-127）
- * 結構：Hero 天際線 → Portal (6 卡) → 熱門語校 → 最新公告
+ * Phase AN：Hero 下方新增「下一步提示」卡片，僅當使用者已設定 persona_stage
+ *   時顯示，導向作戰手冊對應主題的 Step 1（v9 精簡延伸，PAT-134）
+ * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const localStage = getLocalPersonaStage();
+  const nextStep = localStage ? getNextStepSuggestion(localStage) : null;
 
   useEffect(() => {
     if (!isOnboardingCompleted()) {
@@ -74,6 +79,24 @@ export default function Home() {
   return (
     <div className="space-y-20 sm:space-y-24">
       <HeroSection />
+
+      {nextStep && (
+        <Link
+          to={`/edu/${nextStep.moduleSlug}`}
+          className="block card bg-brand-gold-soft border-brand-gold/30
+                     hover:border-brand-gold transition-colors no-underline"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-xs text-content-muted mb-1">為你推薦的下一步</div>
+              <div className="text-sm font-medium text-content-primary">
+                {nextStep.moduleName} · Step {nextStep.stepNumber}：{nextStep.stepTitle}
+              </div>
+            </div>
+            <span className="text-brand-burgundy text-sm shrink-0">前往 →</span>
+          </div>
+        </Link>
+      )}
 
       {/* Portal */}
       <section>

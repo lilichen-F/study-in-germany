@@ -41,6 +41,11 @@ export default function Faq() {
           ))}
         </div>
       </div>
+
+      <p className="text-xs text-content-muted mt-8 pt-4 border-t border-border-subtle">
+        本頁內容最後審核於 2026-07。常見問答涉及的統計數字（如治安、德鐵準點率）
+        約每年審核更新一次，正式決策請以官方最新公告為準。
+      </p>
     </div>
   );
 }

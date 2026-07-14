@@ -1349,3 +1349,49 @@ Phase AJ 建立的深連結切換 bug 修正（`useEffect` 監聽 `searchParams`
 - `Faq.tsx` 頁面說明文字「留德新手最常先問的 5 個問題」因新增後總數變為
   8 題而改為「留德新手最常先問的問題」（移除具體數字而非改寫成新數字，
   避免未來再次新增題目時又產生數字漂移）
+
+## PAT-133 [CORE_IMMUTABLE]: FAQ 年度維護日期
+
+`Faq.tsx` 頁底顯示寫死的「本頁內容最後審核於 2026-07」文字，位於「需要更完整的
+資訊？」卡片之後。維護頻率：每年一次人工審核，Lily 實際更新內容時同步手動改
+此日期字串，非自動計算（因為維護本質是人工審核行為，不是可自動判斷「內容是否
+仍然正確」的技術問題）。
+
+## PAT-134 [CORE_IMMUTABLE]:「下一步提示」卡片 · v9 精簡延伸
+
+Home.tsx Hero 區塊之後、Portal 卡片矩陣之前，僅當使用者已設定 persona_stage
+（讀 `getLocalPersonaStage()`，Phase AI 建立，localStorage-only、零 DB 查詢）
+時顯示。`src/lib/nextStep.ts` 提供純靜態對照表 `STAGE_NEXT_STEP`，將 4 種
+persona_stage 對應到作戰手冊某一主題的 Step 1，卡片點擊導向該步驟頁面。
+
+**內容真實性**：`STAGE_NEXT_STEP` 的 `stepTitle` 逐一核對 `src/data/edu/*.ts`
+的實際 `step: 1` 對應 `title_zh` 內容才填入，spec 原文提供的佔位內容有 3/4
+與實際資料不符（visa 的「確認簽證類型與所需文件」應為「確認簽證類型」；
+arrival 的「辦理戶籍登記（Anmeldung）」實際 step 1 是「如何找房」，
+Anmeldung 是後面的步驟；policy 的「了解學分與學歷認證規則」實際 step 1 是
+「Bologna 進程 + ECTS」；exit 的「確認戶籍銷戶流程（Abmeldung）」實際
+step 1 是「通知移民局」，Abmeldung 是 step 2），依 pre-flight 實際讀取
+`src/data/edu/*.ts` 逐一核對後修正，未依 spec 佔位文字照抄。
+
+此為 v9 願景「陪伴儀表板」的最小可行版本，儀表板/推播/期限追蹤完整功能仍
+暫緩（見 PAT-114/PAT-127），零新增資料表、零新增分析追蹤機制（符合現行
+隱私政策承諾），待未來使用規模與資源評估後再擴充。
+
+## PAT-135 [RESOLVED]: Phase AH 手繪 SVG deprecated 檔案清理（20 檔）
+
+Phase AH（Tabler Icons 遷移）將 21 個手繪 SVG 檔案標記 `@deprecated` 但保留
+（含 `BoardIcon.tsx` 除外，因其仍被 Board.tsx「我的貼文」空狀態使用）。
+Phase AN 全站健檢逐一重新確認零引用（`grep -rl` 全站搜尋，除一處純文字註解
+外無任何實際 import），依 Phase AH 當時的條件授權（「若確認零引用，才可刪除」）
+正式刪除以下 20 檔精簡專案：
+
+- Portal（6）：`SchoolIcon`/`EduIcon`/`PortalRecommendationIcon`/`FaqIcon`/
+  `MyPostsIcon`/`BellIcon`
+- Edu（7）：`VisaIcon`/`ArrivalIcon`/`RenewalIcon`/`ApplicationIcon`/
+  `ScholarshipIcon`/`PolicyIcon`/`ExitIcon`
+- Badge（6）：`PioneerIcon`/`StarIcon`/`QuillIcon`/`HandshakeIcon`/
+  `ChatIcon`/`CrownIcon`
+- Recommendation（2）：`GeneralIcon`/`TaiwanIcon`
+
+刪除後 typecheck/build 皆 PASS，確認零遺留引用。`BoardIcon.tsx` 維持不動
+（仍在使用中，非 deprecated）。

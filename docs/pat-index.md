@@ -131,6 +131,9 @@
 | PAT-129 | CORE_IMMUTABLE | 我的貼文/我的評價併入佈告欄（3、4 個 viewMode），MyPosts.tsx 移除 |
 | PAT-130 | CORE_IMMUTABLE |「我的」重組為 3 頂層分頁+2 子分類（語校評價/貼文），沿用 hierarchical sub-filter |
 | PAT-132 | CORE_IMMUTABLE | FAQ 新增德國安全性+德鐵準點率/失竊資訊（3 題，已查證 2026-07 資料） |
+| PAT-133 | CORE_IMMUTABLE | FAQ 年度維護日期：頁底寫死「最後審核於 YYYY-MM」，人工年度更新 |
+| PAT-134 | CORE_IMMUTABLE |「下一步提示」卡片：依 persona_stage 導向作戰手冊對應 Step 1，v9 精簡延伸 |
+| PAT-135 | RESOLVED | Phase AH deprecated 手繪 SVG 檔案清理（20 檔，健檢確認零引用後刪除） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
