@@ -12,7 +12,7 @@ import { useContributions } from '../lib/useContributions';
 import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
 import { deleteAccountData } from '../lib/deleteAccount';
-import { resetOnboarding } from '../lib/onboarding';
+import { resetOnboarding, getLocalPersonaStage, PERSONA_STAGE_LABELS } from '../lib/onboarding';
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -34,6 +34,7 @@ export default function MyProfile() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   const googleName = (user?.user_metadata?.full_name as string | undefined) ?? null;
+  const localStage = getLocalPersonaStage();
 
   const { counts } = useContributions(user?.id ?? null);
   const { badges } = useBadges({
@@ -172,18 +173,30 @@ export default function MyProfile() {
         <h1 className="text-2xl sm:text-3xl font-semibold">個人資料</h1>
       </div>
 
-      {/* Phase AI：重新觸發新手導覽（PAT-127） */}
-      <div>
-        <button
-          type="button"
-          onClick={() => {
-            resetOnboarding();
-            window.location.href = `${window.location.origin}${window.location.pathname}#/`;
-          }}
-          className="text-sm text-brand-burgundy hover:text-brand-burgundy-hover"
-        >
-          重新設定我的階段
-        </button>
+      {/* Phase AI：重新觸發新手導覽（PAT-127）· Phase AJ：視覺提升為卡片式按鈕（PAT-128） */}
+      <div className="card bg-brand-gold-soft border-brand-gold/30">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <div className="text-sm font-medium text-content-primary">
+              🎯 你目前設定的階段
+            </div>
+            <div className="text-xs text-content-muted mt-1">
+              {localStage ? PERSONA_STAGE_LABELS[localStage].label : '尚未設定'}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              resetOnboarding();
+              window.location.href = `${window.location.origin}${window.location.pathname}#/`;
+            }}
+            className="shrink-0 px-4 py-2 rounded-lg border border-brand-burgundy
+                       text-sm font-medium text-brand-burgundy
+                       hover:bg-brand-burgundy hover:text-white transition-colors"
+          >
+            重新設定
+          </button>
+        </div>
       </div>
 
       {/* 目前資訊 */}

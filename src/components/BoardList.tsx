@@ -92,7 +92,11 @@ export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }:
                 const daysLeft = Math.ceil(
                   (new Date(l.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
                 );
-                if (daysLeft <= 0) return null;
+                if (daysLeft <= 0) {
+                  // Phase AJ：「我的貼文」viewMode 會顯示已過期貼文（供續期），
+                  // 其他 viewMode 因 Board.tsx 的 visibleListings 過濾不會出現過期項目
+                  return <span className="text-state-danger font-medium">已過期</span>;
+                }
                 return (
                   <span className={daysLeft <= 7 ? 'text-state-danger' : 'text-content-muted'}>
                     {daysLeft <= 7 ? `⚠️ 剩 ${daysLeft} 天下架` : `${daysLeft} 天後下架`}

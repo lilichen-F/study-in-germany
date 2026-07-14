@@ -15,11 +15,10 @@
 | `/` | Portal 首頁（Hero + 5 卡 + 熱門語校 + 最新公告） |
 | `/schools` | 語校列表 |
 | `/schools/:id` | 語校詳情（含 6 維評價 breakdown、住宿資訊） |
-| `/board` | 生活佈告欄（4 類：二手交易 / 出租 / 求租 / 討論區） |
+| `/board` | 生活佈告欄（4 類：二手交易 / 出租 / 求租 / 討論區；含全部貼文／追蹤動態／我的貼文／我的評價 4 種檢視模式） |
 | `/faq` | 常見問答（5 題快速常問） |
 | `/edu` | 作戰手冊 Hub（7 大主題） |
 | `/edu/:slug` | 各主題 Workflow（`visa` `arrival` `renewal` `application` `scholarship` `policy` `exit`） |
-| `/my-posts` | 個人資料管理 |
 | `/privacy` | 隱私政策 |
 
 ### 核心功能

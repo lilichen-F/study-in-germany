@@ -57,9 +57,9 @@ npm run dev
 - `src/lib/markdown.ts` — ⚠️ Phase B.3 遺留，Phase C.1 後已無業務使用（PAT-31 DEPRECATE_MARK），勿以為是現行 Edu 內容管道
 
 **產品邏輯集中**：
-- `src/pages/Board.tsx` — 佈告欄，4 類 filter（含 discussion）
+- `src/pages/Board.tsx` — 佈告欄，4 類 filter（含 discussion）+ 4 種檢視模式
+  （全部貼文／追蹤動態／我的貼文／我的評價，Phase AE/AJ 起原 MyPosts.tsx 併入於此）
 - `src/pages/Edu.tsx` / `EduTopic.tsx` — Edu Hub + workflow 詳情頁
-- `src/pages/MyPosts.tsx` — 個人管理
 - `src/components/SchoolDetail.tsx` — 語校詳情 + 評價 + 6 維 breakdown + 住宿
 - `src/components/ReviewForm.tsx` / `StarSlider.tsx` — 6 維評分表單（整星，Phase V 起不再半星）
 - `src/components/RatingBreakdown.tsx` — 評分 breakdown（compact 一行 / bar-chart 全維雙 mode）

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { SchoolReview } from '../lib/types';
+import type { SchoolReview, School } from '../lib/types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
@@ -11,13 +11,20 @@ import FollowButton from './FollowButton';
 import ReportButton from './ReportButton';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
+import schools from '../data/schools.json';
+
+function schoolName(schoolId: string): string {
+  return (schools as School[]).find((s) => s.id === schoolId)?.name_zh ?? schoolId;
+}
 
 interface Props {
   reviews: SchoolReview[];
   onDeleted?: () => void;
+  /** Phase AJ：Board.tsx「我的評價」跨校集中檢視需顯示評價對應的學校（PAT-129） */
+  showSchoolLink?: boolean;
 }
 
-export default function ReviewList({ reviews, onDeleted }: Props) {
+export default function ReviewList({ reviews, onDeleted, showSchoolLink }: Props) {
   const { user } = useAuth();
   const { push } = useToast();
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
@@ -63,6 +70,14 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
     <div className="space-y-3">
       {reviews.map((r) => (
         <div key={r.id} className="card">
+          {showSchoolLink && (
+            <Link
+              to={`/schools/${r.school_id}`}
+              className="text-xs font-medium text-brand-burgundy mb-2 inline-block"
+            >
+              {schoolName(r.school_id)} →
+            </Link>
+          )}
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <UserAvatar
