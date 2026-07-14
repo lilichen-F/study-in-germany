@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import type { Listing } from '../lib/types';
 import { attachProfiles } from '../lib/types';
@@ -10,11 +11,15 @@ import { SkeletonList } from '../components/Skeleton';
 import BoardIcon from '../assets/icons/BoardIcon';
 import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
+import { useAuth } from '../lib/useAuth';
+import { useFollowingList } from '../lib/useFollow';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
 import { boardTypeOf, isDiscussion, isRentalType, BOARD_TYPE_LABEL } from '../lib/board';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
+
+type ViewMode = 'all' | 'following';
 
 type MainFilter = 'all' | 'secondhand' | 'rental' | 'discussion';
 type SubFilter =
@@ -52,12 +57,18 @@ const SUB_FILTERS_DISCUSSION: { key: SubFilter; label: string }[] = [
 
 export default function Board() {
   const { push } = useToast();
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const { followingIds, loading: followingLoading } = useFollowingList(user?.id ?? null);
   const [listings, setListings] = useState<Listing[]>([]);
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
   const [loading, setLoading] = useState(true);
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
   const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
   const [postModalOpen, setPostModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>(
+    searchParams.get('view') === 'following' ? 'following' : 'all'
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -95,7 +106,14 @@ export default function Board() {
 
   const visibleListings = listings.filter((l) => !isExpired(l));
 
-  const filtered = visibleListings.filter((l) => {
+  // Phase AE：「追蹤動態」為獨立於分類 filter 之外的檢視模式（用誰的角度看 vs
+  // 內容屬於什麼類型，兩個不同維度可疊加），先依 viewMode 縮限範圍，分類 filter
+  // 再疊加套用於這個縮限後的集合上
+  const scopedListings = viewMode === 'following'
+    ? visibleListings.filter((l) => followingIds.includes(l.user_id))
+    : visibleListings;
+
+  const filtered = scopedListings.filter((l) => {
     if (mainFilter === 'all') return true;
     if (mainFilter === 'rental') {
       if (subFilter === 'all_rental') return isRentalType(boardTypeOf(l));
@@ -123,6 +141,32 @@ export default function Board() {
           二手交易、租房（出租／求租）、討論（一般／學習／長居／美食／台灣餐廳）。
           二手交易／租房 90 天後自動下架（可續期），討論類永久保留。
         </p>
+      </div>
+
+      {/* 檢視模式（用誰的角度看）· 與下方分類 filter（內容屬於什麼類型）為不同維度，見 PAT-123 */}
+      <div className="flex gap-2 border-b border-border-subtle">
+        <button
+          onClick={() => setViewMode('all')}
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+            viewMode === 'all'
+              ? 'border-brand-burgundy text-brand-burgundy'
+              : 'border-transparent text-content-muted hover:text-content-secondary'
+          }`}
+        >
+          全部貼文
+        </button>
+        <button
+          onClick={() => setViewMode('following')}
+          disabled={!user}
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+            viewMode === 'following'
+              ? 'border-brand-burgundy text-brand-burgundy'
+              : 'border-transparent text-content-muted hover:text-content-secondary'
+          }`}
+          title={!user ? '請先登入' : undefined}
+        >
+          追蹤動態
+        </button>
       </div>
 
       <div className="space-y-3">
@@ -162,9 +206,27 @@ export default function Board() {
       </div>
 
       <section>
-        {loading ? (
+        {loading || (viewMode === 'following' && followingLoading) ? (
           <SkeletonList n={3} />
-        ) : visibleListings.length === 0 ? (
+        ) : viewMode === 'following' && !user ? (
+          <EmptyState
+            icon={<BoardIcon className="w-full h-full" />}
+            title="請先登入"
+            description="登入後即可查看你追蹤的人最新發布的貼文。"
+          />
+        ) : viewMode === 'following' && followingIds.length === 0 ? (
+          <EmptyState
+            icon={<BoardIcon className="w-full h-full" />}
+            title="你還沒有追蹤任何人"
+            description="於評價或貼文旁點「+ 追蹤」開始關注其他使用者。"
+          />
+        ) : viewMode === 'following' && scopedListings.length === 0 ? (
+          <EmptyState
+            icon={<BoardIcon className="w-full h-full" />}
+            title="你追蹤的人還沒有發佈貼文"
+            description="持續關注，或切換回「全部貼文」瀏覽。"
+          />
+        ) : viewMode === 'all' && visibleListings.length === 0 ? (
           <EmptyState
             icon={<BoardIcon className="w-full h-full" />}
             title="目前沒有貼文"

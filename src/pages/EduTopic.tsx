@@ -50,7 +50,7 @@ export default function EduTopic() {
     return (
       <div className="py-16 text-center text-content-secondary">
         找不到這個主題。
-        <Link to="/edu" className="ml-2">回學用板塊</Link>
+        <Link to="/edu" className="ml-2">回作戰手冊</Link>
       </div>
     );
   }
@@ -68,7 +68,7 @@ export default function EduTopic() {
       {/* Breadcrumb */}
       <div>
         <Link to="/edu" className="text-xs no-underline">
-          ← 回學用板塊
+          ← 回作戰手冊
         </Link>
       </div>
 

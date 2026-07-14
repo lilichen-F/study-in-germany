@@ -1,7 +1,7 @@
 export default function EduIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"
-         className={className} role="img" aria-label="學用板塊"
+         className={className} role="img" aria-label="作戰手冊"
          fill="none" stroke="currentColor" strokeWidth="1.5"
          strokeLinecap="round" strokeLinejoin="round">
       {/* 左頁 · 實心色塊 */}

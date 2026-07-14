@@ -83,7 +83,7 @@ export default function Edu() {
 
       <div className="pt-8 border-t border-border-subtle">
         <p className="text-xs text-content-muted text-center">
-          本站學用板塊內容最後審核於 2026-07-11 ·
+          本站作戰手冊內容最後審核於 2026-07-11 ·
           <br className="sm:hidden" />
           正式使用請至各官方連結查詢最新資訊
         </p>

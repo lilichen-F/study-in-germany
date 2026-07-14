@@ -20,7 +20,6 @@ import EduTopic from './pages/EduTopic';
 import Recommendation from './pages/Recommendation';
 import RecommendationCategory from './pages/RecommendationCategory';
 import Support from './pages/Support';
-import Following from './pages/Following';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -54,7 +53,6 @@ export default function App() {
               <Route path="/recommendation/:slug" element={<RecommendationCategory />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/support" element={<Support />} />
-              <Route path="/following" element={<Following />} />
               <Route path="/my-posts" element={<MyPosts />} />
               <Route path="/my-profile" element={<MyProfile />} />
               <Route path="*" element={<NotFound />} />

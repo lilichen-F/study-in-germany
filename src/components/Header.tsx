@@ -70,7 +70,7 @@ export default function Header() {
           <nav className="hidden sm:flex items-center gap-1">
             <NavLink to="/schools" className={navClass}>語校</NavLink>
             <NavLink to="/board" className={navClass}>佈告欄</NavLink>
-            <NavLink to="/edu" className={navClass}>學用</NavLink>
+            <NavLink to="/edu" className={navClass}>作戰手冊</NavLink>
             <NavLink to="/faq" className={navClass}>常見問答</NavLink>
 
             {/* 更多：隱私政策 / 支持本站（Phase X 起移出常見問答，升為一級導覽；
@@ -99,7 +99,6 @@ export default function Header() {
                                   bg-surface-card shadow-lg p-1.5">
                     <NavLink to="/my-posts" className={dropdownLinkClass}>我的貼文</NavLink>
                     <NavLink to="/my-profile" className={dropdownLinkClass}>編輯個人資料</NavLink>
-                    <NavLink to="/following" className={dropdownLinkClass}>追蹤動態</NavLink>
                   </div>
                 </div>
               </div>
@@ -202,7 +201,7 @@ export default function Header() {
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                學用
+                作戰手冊
               </NavLink>
               <NavLink
                 to="/faq"
@@ -245,13 +244,6 @@ export default function Header() {
                                text-content-secondary text-sm no-underline"
                   >
                     編輯個人資料
-                  </NavLink>
-                  <NavLink
-                    to="/following"
-                    className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
-                               text-content-secondary text-sm no-underline"
-                  >
-                    追蹤動態
                   </NavLink>
                 </>
               )}

@@ -25,7 +25,7 @@ const PORTAL_ITEMS = [
     Icon: BoardIcon,
   },
   {
-    to: '/edu', title: '學用板塊', description: '簽證、落地、延簽、獎學金、政策',
+    to: '/edu', title: '作戰手冊', description: '簽證、落地、延簽、獎學金、政策',
     Icon: EduIcon,
   },
   {

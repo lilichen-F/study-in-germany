@@ -413,7 +413,7 @@ export default function MyProfile() {
       <div className="card">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-content-primary">追蹤動態</h2>
-          <Link to="/following" className="text-sm text-brand-burgundy">
+          <Link to="/board?view=following" className="text-sm text-brand-burgundy">
             查看全部 →
           </Link>
         </div>
