@@ -4,6 +4,8 @@
  * 跨城市通用知識，非城市連結清單（城市連結見 immigration.json）。
  * 全部文字內容照抄 Phase AT 指令書提供的白名單來源整理稿，不得增添未列事實。
  * 連結僅限指令書 §2 白名單 8 條，見 IMMIGRATION_GUIDE_LINKS，見 PAT-149。
+ * Phase AT.c：§2 擴充 §2a/§2b/§2c，內容逐字依 Lily 查證回覆的三張表填入，
+ * 事實範圍不超過三張表本身，見 PAT-151。
  */
 
 export interface ImmigrationGuideLink {
@@ -14,7 +16,9 @@ export interface ImmigrationGuideLink {
 export type GuideBlock =
   | { type: 'ordered'; items: string[] }
   | { type: 'unordered'; items: string[] }
-  | { type: 'subheading'; text: string };
+  | { type: 'subheading'; text: string }
+  | { type: 'table'; headers: string[]; rows: string[][] }
+  | { type: 'callout'; text: string };
 
 export interface ImmigrationGuideSection {
   id: string;
@@ -56,6 +60,65 @@ export const IMMIGRATION_GUIDE_SECTIONS: ImmigrationGuideSection[] = [
           '核發前提：有效護照＋已正式提出的居留申請。只是詢問過、預約過，不構成申請。',
           '**Fiktionsbescheinigung 不是萬用旅行證件**：能否出境後再入境，取決於證明類型與註記，出國前務必逐字確認證件內容（漢堡官方明確提醒部分臨時證明不足以再入境）。',
           '到期後才送件：延續效力通常不成立，風險自負。',
+        ],
+      },
+      // Phase AT.c · §2a 申請成立要件與應取得文件（來源：柏林官方，PAT-151）
+      { type: 'subheading', text: '§2a 申請成立要件與應取得文件' },
+      {
+        type: 'table',
+        headers: ['層次', '內容'],
+        rows: [
+          [
+            '成立三要件',
+            '到期前送達＋管轄外事局＋正式申請（官方線上表單／簽名書面申請表／親送）。詢問、Email、預約確認都不是申請。',
+          ],
+          [
+            '該收到①送件證據',
+            '線上表單確認信／掛號回執／收件確認（Eingangsbestätigung）——延續效力由「及時送達」觸發，這是你唯一能自證的東西。',
+          ],
+          [
+            '該收到②審理期文件',
+            'Fiktionsbescheinigung 本體。柏林流程：親自面談後核發，須有效護照＋Anmeldung，規費成人 13 €（柏林值，各城市或異）；該證明僅與有效護照併用才有效。',
+          ],
+          [
+            '例外',
+            '持申根短期簽（C 類）入境者：不核發 Fiktion。',
+          ],
+        ],
+      },
+      // Phase AT.c · §2b Abs.3/Abs.4 再入境對照表（來源：漢堡官方，PAT-151）
+      { type: 'subheading', text: '§2b Abs.3/Abs.4 再入境對照表' },
+      {
+        type: 'table',
+        headers: ['證明上註記', '對應情境', '出境後可否再入境'],
+        rows: [
+          ['§81 Abs. 4', '原持有效居留或 D 簽，到期前送件', '可，但返德當下該證明本身須仍在效期內'],
+          [
+            '§81 Abs. 3',
+            '免簽入境後在境內首次申請（台灣護照典型情境）',
+            '不可再入境，亦不得開始新工作／新學業。唯一例外：免簽 90 天額度未用完者可依免簽身分入境',
+          ],
+          ['申根 C 簽入境', '—', '根本不核發 Fiktion'],
+        ],
+      },
+      {
+        type: 'callout',
+        text: '出國前逐字確認證明上勾選的是 Abs. 3 還是 Abs. 4，這一個勾決定你回不回得來。',
+      },
+      // Phase AT.c · §2c 送件底線＋建議值（PAT-151）
+      { type: 'subheading', text: '§2c 送件底線' },
+      {
+        type: 'unordered',
+        items: ['法定底線：到期日「前」送達即成立——踩線日有效，但零緩衝、零補救空間。'],
+      },
+      { type: 'callout', text: '本站建議，非官方期限' },
+      {
+        type: 'unordered',
+        items: [
+          '最遲到期前 4 週送出可留證據的申請',
+          '8–12 週開始備件',
+          '熱門城市預約提前 2–3 個月',
+          '柏林官方明文「文件缺漏」是核發 Fiktion 的常見原因之一——佐證「先送件、後補件」優於「等備齊才送」',
         ],
       },
     ],

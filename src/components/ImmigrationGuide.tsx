@@ -23,7 +23,47 @@ function renderInline(text: string) {
 
 function GuideBlockView({ block }: { block: GuideBlock }) {
   if (block.type === 'subheading') {
-    return <div className="text-sm font-semibold text-content-primary">{block.text}</div>;
+    return <div className="text-sm font-semibold text-content-primary pt-1">{block.text}</div>;
+  }
+  if (block.type === 'callout') {
+    return (
+      <div className="text-xs font-medium text-brand-burgundy bg-brand-gold-soft
+                      px-3 py-2 rounded-lg inline-block">
+        {renderInline(block.text)}
+      </div>
+    );
+  }
+  if (block.type === 'table') {
+    return (
+      <div className="overflow-x-auto rounded-lg border border-border-subtle">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-surface-hover">
+              {block.headers.map((h, i) => (
+                <th
+                  key={i}
+                  className="text-left font-semibold text-content-primary px-3 py-2
+                             border-b border-border-subtle whitespace-nowrap"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {block.rows.map((row, ri) => (
+              <tr key={ri} className={ri > 0 ? 'border-t border-border-subtle' : ''}>
+                {row.map((cell, ci) => (
+                  <td key={ci} className="text-content-secondary px-3 py-2 align-top leading-relaxed">
+                    {renderInline(cell)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
   }
   if (block.type === 'ordered') {
     return (
