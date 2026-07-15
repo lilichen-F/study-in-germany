@@ -7,6 +7,7 @@
  * Phase AQ：分類徹底重組，舊 6 分類（general/visa/arrival/edu/scholarship/
  * taiwan）→ 新 8 分類（finance/transport/telecom/housing/lookup/scholarship/
  * expense/general），依實用主題而非留德階段分類，見 PAT-145。
+ * Phase AR：新增第 9 分類 immigration（外事局），僅收錄已查證連結，見 PAT-146。
  */
 
 export type RecommendationCategory =
@@ -17,6 +18,7 @@ export type RecommendationCategory =
   | 'lookup'
   | 'scholarship'
   | 'expense'
+  | 'immigration'
   | 'general';
 
 export interface RecommendationCategoryMeta {
@@ -60,6 +62,11 @@ export const RECOMMENDATION_CATEGORIES: RecommendationCategoryMeta[] = [
     key: 'expense',
     title: '支出',
     subtitle: '保險、貸款、稅費',
+  },
+  {
+    key: 'immigration',
+    title: '外事局',
+    subtitle: '各城市 Ausländerbehörde 官方入口',
   },
   {
     key: 'general',

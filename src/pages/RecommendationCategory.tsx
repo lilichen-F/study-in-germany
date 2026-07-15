@@ -10,6 +10,7 @@ import housingData from '../data/recommendations/housing.json';
 import lookupData from '../data/recommendations/lookup.json';
 import scholarshipData from '../data/recommendations/scholarship.json';
 import expenseData from '../data/recommendations/expense.json';
+import immigrationData from '../data/recommendations/immigration.json';
 import generalData from '../data/recommendations/general.json';
 
 const DATA_MAP: Record<string, Recommendation[]> = {
@@ -20,6 +21,7 @@ const DATA_MAP: Record<string, Recommendation[]> = {
   lookup: lookupData as Recommendation[],
   scholarship: scholarshipData as Recommendation[],
   expense: expenseData as Recommendation[],
+  immigration: immigrationData as Recommendation[],
   general: generalData as Recommendation[],
 };
 
@@ -65,6 +67,15 @@ export default function RecommendationCategory() {
           </p>
         </div>
       </header>
+
+      {/* Phase AR：外事局分類提醒制度變動頻繁，不描述具體預約流程（PAT-146） */}
+      {meta.key === 'immigration' && (
+        <div className="text-xs text-content-muted bg-brand-gold-soft px-3 py-2 rounded-lg">
+          ⚠️ 各城市外事局的預約制度變動頻繁（例如柏林已廢除傳統線上預約系統），
+          本頁僅提供官方入口連結，實際申請流程請以官網當下顯示內容為準。
+          目前僅收錄柏林、慕尼黑，其餘城市待未來查證後補充。
+        </div>
+      )}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {items.map((item) => (

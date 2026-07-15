@@ -1627,3 +1627,24 @@ Tabler 庫內確認存在，未需替換。`RecommendationCategoryMeta` 移除 `
 grid（`aspect-square`，`sm:grid-cols-3 lg:grid-cols-4`），`line-clamp-2`/
 `line-clamp-3` 控制標題/描述行數（本專案 Tailwind v4 已內建支援，
 `HotSchoolsCarousel.tsx` 已有先例使用，未需額外套件）。
+
+## PAT-146 [CORE_IMMUTABLE]: 加油站新增「外事局」分類
+
+第 9 個加油站分類，僅收錄 Lily 於 2026 年 7 月查證過的柏林、慕尼黑 2 筆官方
+連結。遵循 PAT-58 無時效性資訊原則：不描述具體預約流程步驟（易過期），只提供
+官方入口 URL，並於 `RecommendationCategory.tsx` 分類頁面加明顯提醒文字告知
+制度變動頻繁（柏林已廢除傳統線上預約系統為實例）。未來新增其他城市，須先查證
+官方連結真實性，不可自行推測或虛構網址格式。圖示沿用 `IconBuildingBank`
+（Tabler 庫內確認存在，符合 PAT-122 治理標準）。
+
+**已知未解缺口（DEV-N，本輪未修復）**：`SubmissionForm.tsx` 的分類下拉選單
+依 `RECOMMENDATION_CATEGORIES` 自動產生選項（PAT-145 建立的架構），新增
+immigration 分類後選單自動出現「外事局」選項（已透過瀏覽器驗證，combobox
+內確實含 `option "外事局" value="immigration"`）。但 `supabase/schema.sql`
+的 `user_submissions_target_category_check` CHECK constraint（Phase AQ
+最後更新，見該處 SQL）僅允許 `finance/transport/telecom/housing/lookup/
+scholarship/expense/general` 8 值，**不含 `immigration`**。若使用者於
+提交表單選擇「外事局」並送出，INSERT 將違反 CHECK constraint 而失敗。
+本輪「DB 零觸碰」為明確硬性限制，未獲授權修改 schema.sql，故僅記錄不修復；
+待 Lily 執行一段追加 SQL（`DROP CONSTRAINT` + `ADD CONSTRAINT` 加入
+`'immigration'`）後方可解除此缺口。

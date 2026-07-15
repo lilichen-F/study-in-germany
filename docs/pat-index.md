@@ -144,6 +144,7 @@
 | PAT-143 | CORE_IMMUTABLE | Portal/Recommendation/Edu 卡片描述文字桌面+手機皆顯示（維持 PAT-126 跨頁一致性） |
 | PAT-144 | CORE_IMMUTABLE | persona_stage 循序推進：全部完成後「前往下一階段」按鈕，await 雲端寫入避免 PAT-139 重演 |
 | PAT-145 | CORE_IMMUTABLE | 推薦專區分類重組：8 新分類（金融/交通/電信/找房/查詢/獎學金/支出/通用）取代舊 6 分類 |
+| PAT-146 | CORE_IMMUTABLE | 加油站新增第 9 分類「外事局」，僅收錄柏林/慕尼黑 2 筆已查證連結；已知缺口：schema.sql CHECK constraint 未含 immigration |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
