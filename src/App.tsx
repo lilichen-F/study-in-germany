@@ -21,6 +21,7 @@ import RecommendationCategory from './pages/RecommendationCategory';
 import Support from './pages/Support';
 import NotFound from './pages/NotFound';
 import { WorkflowProgressProvider } from './lib/WorkflowProgressContext';
+import PostOnboardingLoginPrompt from './components/PostOnboardingLoginPrompt';
 
 export default function App() {
   return (
@@ -61,6 +62,7 @@ export default function App() {
           </main>
           <Footer />
           <DevBadge />
+          <PostOnboardingLoginPrompt />
         </div>
       </WorkflowProgressProvider>
     </HashRouter>

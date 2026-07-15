@@ -13,6 +13,7 @@ import HeroSection from '../components/HeroSection';
 import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
+import { notifyOnboardingStageSelected } from '../components/PostOnboardingLoginPrompt';
 import {
   isOnboardingCompleted, getLocalPersonaStage, setLocalPersonaStage, PERSONA_STAGE_LABELS,
 } from '../lib/onboarding';
@@ -254,7 +255,11 @@ export default function Home() {
         <Announcements />
       </section>
 
-      <OnboardingModal open={onboardingOpen} onClose={() => setOnboardingOpen(false)} />
+      <OnboardingModal
+        open={onboardingOpen}
+        onClose={() => setOnboardingOpen(false)}
+        onStageSelected={notifyOnboardingStageSelected}
+      />
     </div>
   );
 }
