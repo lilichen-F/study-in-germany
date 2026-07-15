@@ -147,6 +147,7 @@
 | PAT-146 | CORE_IMMUTABLE | 加油站新增第 9 分類「外事局」，僅收錄柏林/慕尼黑 2 筆已查證連結；已知缺口：schema.sql CHECK constraint 未含 immigration |
 | PAT-147 | CORE_IMMUTABLE | 加油站卡片摘要化：description>60 字改用 summary/points/detail（PAT-135 格式），stretched-link 解決 details 巢狀在 a 內的問題 |
 | PAT-148 | CORE_IMMUTABLE | 加油站推薦 + 語言學校補 updated_at（YYYY-MM），依 git log 實際 commit 日期核實；修正 spec 誤植的 Phase L→實為 Phase U |
+| PAT-149 | CORE_IMMUTABLE | 外事局分類頁新增通用應對指南（5 節+8 官方連結），沿用 WorkflowCard button+chevron 展開模式；發現 AS 未合併與指令書前提衝突，經請示後等待合併再分支 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
