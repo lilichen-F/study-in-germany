@@ -163,6 +163,7 @@
 | PAT-162 | CORE_IMMUTABLE | 全站文案準則（Phase BB 建立）+ 判斷框架：「使用者」作內容標籤/第三方署名可留，取代「你」對讀者說話則違規；導覽短詞彙不套用散文結構要求 |
 | PAT-163 | CORE_IMMUTABLE | 貼文卡片共用元件（ListingCardBody，line-clamp+展開）+ fetchWithRetry 讀取重試工具（3 次/500ms→1000ms，需 `.retry(false)` 關閉 postgrest-js 內建重試避免疊加）；讀可重試、寫不可重試 |
 | PAT-164 | CORE_IMMUTABLE | user_submissions.status 4 值語意（approved≠終態，僅 rejected/archived 才從清單消失）；跨分類共用型別的分類專屬欄位優先選填擴充；篩選元件單選/複選依資料結構決定，非統一套用同一互動 |
+| PAT-165 | CORE_IMMUTABLE | 「大分類→子板塊」兩層導覽先例（德文學習 9 子板塊）：route 存大分類、query param 延伸 Board.tsx 的 useSearchParams 模式存子層、複雜度獨立封裝為子元件；非正常狀態依可靠度分兩級視覺提示 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
