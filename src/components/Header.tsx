@@ -69,17 +69,20 @@ export default function Header() {
 
           <nav className="hidden sm:flex items-center gap-1">
             <NavLink to="/board" className={navClass}>討論區</NavLink>
-            <NavLink to="/recommendation" className={navClass}>資源</NavLink>
             <NavLink to="/faq" className={navClass}>常見問答</NavLink>
 
-            {/* Phase AQ：資源 dropdown（語校 + 作戰手冊 收合，PAT-141）*/}
+            {/* Phase AY：「探索」dropdown（資源 + 語校 + 作戰手冊 收合，PAT-159）
+                原本「資源」dropdown 標籤（PAT-141）與 Phase AW 把「加油站」
+                更名為「資源」的獨立頂層連結（原本各自無關）發生命名撞名，
+                此輪合併為單一資料夾並改用不衝突的觸發文字，見 PAT-159 */}
             <div className="relative group">
               <button type="button" className={navClass({ isActive: false })}>
-                資源 ▾
+                探索 ▾
               </button>
               <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
                 <div className="min-w-[10rem] rounded-lg border border-border-subtle
                                 bg-surface-card shadow-lg p-1.5">
+                  <NavLink to="/recommendation" className={dropdownLinkClass}>資源</NavLink>
                   <NavLink to="/schools" className={dropdownLinkClass}>語校</NavLink>
                   <NavLink to="/edu" className={dropdownLinkClass}>作戰手冊</NavLink>
                 </div>
@@ -203,13 +206,6 @@ export default function Header() {
                 討論區
               </NavLink>
               <NavLink
-                to="/recommendation"
-                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
-                           text-content-primary no-underline"
-              >
-                資源
-              </NavLink>
-              <NavLink
                 to="/faq"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
@@ -219,7 +215,14 @@ export default function Header() {
 
               <div className="my-2 border-t border-border-subtle" />
 
-              {/* Phase AQ：資源（語校 + 作戰手冊 收合，PAT-141） */}
+              {/* Phase AY：「探索」分組（資源 + 語校 + 作戰手冊 收合，PAT-159） */}
+              <NavLink
+                to="/recommendation"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                資源
+              </NavLink>
               <NavLink
                 to="/schools"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
