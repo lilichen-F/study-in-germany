@@ -21,7 +21,8 @@ export type RecommendationCategory =
   | 'scholarship'
   | 'expense'
   | 'immigration'
-  | 'general';
+  | 'general'
+  | 'german_learning';
 
 export interface RecommendationCategoryMeta {
   key: RecommendationCategory;
@@ -75,6 +76,11 @@ export const RECOMMENDATION_CATEGORIES: RecommendationCategoryMeta[] = [
     title: '通用',
     subtitle: '其他實用工具與社群',
   },
+  {
+    key: 'german_learning',
+    title: '德文學習',
+    subtitle: '文法、詞彙、聽力、口說、檢定等 9 子板塊',
+  },
 ];
 
 export interface Recommendation {
@@ -94,6 +100,13 @@ export interface Recommendation {
   fee_status?: HousingFeeStatus;
   term?: HousingTerm[];
   target?: HousingTarget[];
+
+  // Phase BE：德文學習分類篩選欄位（僅 category === 'german_learning' 使用）
+  board?: GermanLearningBoard[];    // 子板塊，同一資源可能橫跨多個
+  level_label?: string;            // 原文等級字串（如 "A1–B2"/"全等級"），逐字保留避免轉譯失真
+  level?: GermanLearningLevel[];   // level_label 展開後的離散值，供篩選用
+  resource_status?: GermanLearningStatus;
+  audience?: GermanLearningAudience[];
 }
 
 /** 服務費/仲介費狀態 */
@@ -119,4 +132,57 @@ export const HOUSING_TARGET_LABEL: Record<HousingTarget, string> = {
   general: '通用',
   shared: '合租',
   room: '套房',
+};
+
+/**
+ * Phase BE：德文學習資源分類欄位。
+ * 「子板塊」＝來源表格的「類別」欄，同一資源可橫跨多個子板塊
+ * （例：Deutschlernerblog.de 同時屬於文法/詞彙/閱讀/聽力/寫作/檢定）。
+ */
+export type GermanLearningBoard =
+  | 'grammar' | 'general' | 'vocabulary' | 'dictionary' | 'writing'
+  | 'reading' | 'listening' | 'speaking' | 'exam';
+export const GERMAN_LEARNING_BOARD_LABEL: Record<GermanLearningBoard, string> = {
+  grammar: '文法',
+  general: '綜合',
+  vocabulary: '詞彙',
+  dictionary: '字典',
+  writing: '寫作',
+  reading: '閱讀',
+  listening: '聽力',
+  speaking: '口說',
+  exam: '檢定',
+};
+/** 子板塊顯示順序，對應來源文件「一、綜合入門」～「九、檢定考試」的章節順序 */
+export const GERMAN_LEARNING_BOARD_ORDER: GermanLearningBoard[] = [
+  'general', 'grammar', 'dictionary', 'listening', 'reading',
+  'vocabulary', 'writing', 'speaking', 'exam',
+];
+
+export type GermanLearningLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+export const GERMAN_LEARNING_LEVEL_ORDER: GermanLearningLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+/**
+ * 狀態非「正常運作」者必須在卡片視覺上明顯標示（見 PAT-165）——
+ * 不可與正常項目同等呈現，讀完整段文字才發現狀態異常不符合零虛構原則。
+ */
+export type GermanLearningStatus = 'active' | 'changed' | 'outdated' | 'unconfirmed' | 'discontinued_usable';
+export const GERMAN_LEARNING_STATUS_LABEL: Record<GermanLearningStatus, string> = {
+  active: '正常運作',
+  changed: '已變更',
+  outdated: '內容老舊',
+  unconfirmed: '需人工確認',
+  discontinued_usable: '停更可用',
+};
+
+export type GermanLearningAudience =
+  | 'beginner' | 'self_learner' | 'exam_prep' | 'academic' | 'new_immigrant' | 'teacher' | 'child';
+export const GERMAN_LEARNING_AUDIENCE_LABEL: Record<GermanLearningAudience, string> = {
+  beginner: '初學者',
+  self_learner: '自學者',
+  exam_prep: '考證備考',
+  academic: '學術／研究',
+  new_immigrant: '新移民',
+  teacher: '教師',
+  child: '兒童',
 };
