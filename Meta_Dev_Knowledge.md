@@ -1,5 +1,18 @@
 # Meta_Dev_Knowledge — study-in-germany
 
+## 專案級備註（非 PAT）
+
+**2026-07-15**：與領域無關的治理框架（Phase 工作流、受保護檔案機制、
+PAT 記錄格式、五段式報告模板、SQL 校正鐵則、多重路徑驗證原則、文案
+準則的判斷框架、已知維運陷阱清單）已抽取至獨立倉庫
+[`web-scaffold-toolkit`](https://github.com/si-kui-a/web-scaffold-toolkit)
+（私有倉庫，僅限本帳號存取）。日後治理規則本身的異動（例如「PAT 記錄
+系統要不要調整格式」這類跟 study-in-germany 這個網站無關的流程性決策）
+以該倉庫的 `GOVERNANCE.md` 為準；本檔（`Meta_Dev_Knowledge.md`）自此
+僅保留 study-in-germany 這個專案自己的技術決策與教訓記錄（PAT-01 至
+PAT-163 為抽取當下已存在的既有記錄，維持原樣不動，僅代表抽取時間點
+之前的專案特定累積，不因抽取而重新編號或搬遷）。
+
 ## 文案準則（Phase BB 建立，見 PAT-162）
 
 全站新增或改寫文案時的預設依循標準。既有文案不因本準則自動視為需要
