@@ -2050,3 +2050,49 @@ optional `onStageSelected` callback prop，僅在 `handleFinish()` 內
 互動邏輯本身。略過永久旗標（`post_onboarding_login_prompt_dismissed`）
 與已登入判斷（`!user`）皆內建於監聽器邏輯中，父層只需無條件呼叫
 `notifyOnboardingStageSelected()`，不需重複判斷。
+
+## PAT-158 [CORE_IMMUTABLE]: 多重觸發路徑功能，每條路徑須各自獨立瀏覽器實測
+
+**起因**：Phase AX 完成報告曾宣稱「略過導覽（skip）路徑不會觸發登入
+提示」，但僅以程式碼審閱（`if (selectedStage)` 判斷式的邏輯推理）作為
+依據，從未在瀏覽器中實際點擊「跳過，直接瀏覽」按鈕確認。Lily 於 dev
+preview 實測後回報「略過導覽路徑，登入提示同樣跳出」，要求逐路徑重新
+稽核。
+
+**規則**：任何功能若存在**多個可能觸發同一結果的獨立使用者路徑**
+（例如本例的「選定階段」vs「略過導覽」，皆是使用者可能在同一個彈窗中
+選擇的分支），每一條路徑都必須在瀏覽器中**分別實際操作一次**並記錄
+結果，不能因為「已驗證路徑 A 正確」或「程式碼審閱顯示路徑 B 的條件式
+邏輯正確」就推論路徑 B 也一定正確。程式碼審閱可以（也應該）作為輔助，
+但不能替代任一路徑的實機驗證——條件式判斷在原始碼裡看起來正確，不等於
+它在瀏覽器實際執行環境中的行為與預期一致（可能有 HMR/build 快取、
+元件掛載順序、事件監聽時機等只有實際執行才會暴露的因素）。
+
+**Phase AX 修復輪的重新調查結果**：
+- 逐行複查 `OnboardingModal.tsx` 的完整 onClick 呼叫鏈：`handleSelectStage('skip')`
+  只呼叫 `markOnboardingCompleted()` + `onClose()`，從未進入
+  `handleFinish()` 或觸碰 `onStageSelected`；grep 全 repo 確認
+  `notifyOnboardingStageSelected`/`onStageSelected`/事件名稱字串
+  皆只有原本設計的單一呼叫點，無重複或隱藏的觸發路徑。
+- 瀏覽器實測兩條路徑（皆以全新分頁 + 清空 localStorage 的乾淨狀態
+  重複執行，非單次）：
+  - **路徑 A（選定階段）**：清空 localStorage → 開啟首頁 → 點擊任一
+    階段按鈕 → 點擊「開始瀏覽」→ 確認 URL 導向 `#/edu/visa` 且登入
+    提示彈窗正確出現（標題「登入即可儲存你的進度、留言與追蹤」）。
+  - **路徑 B（略過導覽）**：清空 localStorage → 開啟首頁 → 點擊「跳過，
+    直接瀏覽」→ 確認 `onboarding_completed` 寫入 true、URL 停留於
+    `#/`、**登入提示彈窗未出現**（`document.querySelector('[role="dialog"]')`
+    為 null，重複查詢兩次排除渲染時序誤判）。
+- 本輪重新調查**未發現需要修改的程式碼**——路徑分離在最初實作時就已
+  正確（`if (selectedStage)` 判斷式本身沒有邏輯錯誤），問題出在完成
+  報告的驗證方法本身：只驗證了路徑 A、未驗證路徑 B 就在報告中宣稱兩者
+  皆正確。已排除「MyProfile 重新設定階段導致元件未重新掛載、內部
+  state 殘留」的假說——該按鈕使用 `window.location.href` 賦值觸發真正
+  的整頁重新載入（非 SPA `navigate()`），元件必然重新掛載、state 必然
+  重置，不構成殘留污染的可能路徑。
+- 無法排除的另一種可能：Lily 原始測試當下遇到的是 dev server 的
+  HMR/模組快取問題（本輪對話中，Claude Code 自己在稍早的瀏覽器驗證中
+  也曾遇到同類「console 顯示過期錯誤訊息，實際原始碼與全新分頁重測皆
+  正常」的案例）——若後續仍能穩定重現，需要 Lily 提供具體重現步驟
+  （包含是否為同一分頁連續測試兩條路徑、是否曾手動重新整理）以便進一步
+  排查。

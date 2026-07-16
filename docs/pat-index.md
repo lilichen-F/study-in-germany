@@ -156,6 +156,7 @@
 | PAT-155 | CORE_IMMUTABLE | 核心教訓：schema.sql 段落未經真 DB 驗證即視同未測試，Phase AV 建立 audit.sql + expected-schema.md 全量稽核機制取代憑印象比對 |
 | PAT-156 | CORE_IMMUTABLE | 全站更名分層規則：只改顯示層字串（導覽/標題/toast/隱私政策），路由/檔名/category鍵值/DB CHECK值域/程式碼註解一律不動 |
 | PAT-157 | CORE_IMMUTABLE | 導覽完成後續彈窗須掛 App 根層級：OnboardingModal 完成時 navigate() 會卸載 Home，狀態需用 window CustomEvent 廣播而非 props/state 耦合 |
+| PAT-158 | CORE_IMMUTABLE | 多重觸發路徑功能規則：每條獨立使用者路徑須各自瀏覽器實測，程式碼審閱不可替代任一路徑的實機驗證（起因：略過導覽路徑未實測即宣稱不觸發） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
