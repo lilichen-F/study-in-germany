@@ -13,6 +13,8 @@ import type { PersonaStage } from '../lib/onboarding';
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** Phase AX：僅在使用者「選定階段」完成導覽時觸發，略過導覽（skip）不觸發 */
+  onStageSelected?: () => void;
 }
 
 type Step = 'stage' | 'closing';
@@ -21,7 +23,7 @@ type Step = 'stage' | 'closing';
  * DS v4.2 · 新手導覽（精簡版）
  * Step 1 階段判斷 → Step 5 收尾，中間跳過期限/推播（功能本體未建）
  */
-export default function OnboardingModal({ open, onClose }: Props) {
+export default function OnboardingModal({ open, onClose, onStageSelected }: Props) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>('stage');
@@ -50,6 +52,7 @@ export default function OnboardingModal({ open, onClose }: Props) {
     markOnboardingCompleted();
     onClose();
     if (selectedStage) {
+      onStageSelected?.();
       navigate(`/edu/${PERSONA_MODULE_MAP[selectedStage]}`);
     }
   };

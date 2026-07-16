@@ -157,6 +157,8 @@
 | PAT-156 | CORE_IMMUTABLE | 全站更名分層規則：只改顯示層字串（導覽/標題/toast/隱私政策），路由/檔名/category鍵值/DB CHECK值域/程式碼註解一律不動 |
 | PAT-157 | CORE_IMMUTABLE | 導覽「資源」撞名事故：AW 更名正確但未檢查新名稱與既有 PAT-141 分組標籤衝突；全站更名須額外檢查新名稱是否製造新的視覺重複（與 AX 分支的 PAT-157 待合併後重新編號） |
 | PAT-158 | CORE_IMMUTABLE | schema.sql 校正唯一合法依據是 audit.sql 對正式 DB 的真實查詢結果，程式碼推論只能當線索不能當校正依據（起因：AV 用程式碼推論校正 user_id 外鍵，猜錯目標） |
+| PAT-159 | CORE_IMMUTABLE | 導覽完成後續彈窗須掛 App 根層級：OnboardingModal 完成時 navigate() 會卸載 Home，狀態需用 window CustomEvent 廣播而非 props/state 耦合 |
+| PAT-160 | CORE_IMMUTABLE | 多重觸發路徑功能規則：每條獨立使用者路徑須各自瀏覽器實測，程式碼審閱不可替代任一路徑的實機驗證（起因：略過導覽路徑未實測即宣稱不觸發） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
