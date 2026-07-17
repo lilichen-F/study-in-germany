@@ -9,6 +9,8 @@ import UserSubmissionsList from '../components/UserSubmissionsList';
 import ImmigrationGuide from '../components/ImmigrationGuide';
 import GermanLearningBoard from '../components/GermanLearningBoard';
 import CareerBoard from '../components/CareerBoard';
+import CardRating from '../components/CardRating';
+import { useCardRatingsMap } from '../lib/useCardRatings';
 import financeData from '../data/recommendations/finance.json';
 import transportData from '../data/recommendations/transport.json';
 import telecomData from '../data/recommendations/telecom.json';
@@ -71,6 +73,11 @@ export default function RecommendationCategory() {
   const toggleTarget = (t: HousingTarget) => {
     setTargetFilter((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
   };
+
+  // Phase BH：資源卡片五星評分（見 PAT-169）。german_learning/career 有
+  // 各自獨立的卡片渲染元件，各自呼叫此 hook；此處服務其餘 9 個分類
+  // 共用的卡片渲染路徑（含 housing 的篩選結果）。
+  const { statsMap, submitRating } = useCardRatingsMap(slug ?? '');
 
   const visibleItems = useMemo(() => {
     if (!items || !isHousing) return items ?? [];
@@ -210,6 +217,14 @@ export default function RecommendationCategory() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {visibleItems.map((item) => (
           <div key={item.id} className="card space-y-2">
+            <CardRating
+              category={slug ?? ''}
+              cardTitle={item.title}
+              cardUrl={item.url}
+              stats={statsMap.get(item.id)}
+              onRate={(r) => submitRating(item.id, r)}
+            />
+
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-sm font-semibold text-content-primary leading-snug">
                 {item.title}

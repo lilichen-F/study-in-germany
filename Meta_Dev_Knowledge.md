@@ -2538,3 +2538,47 @@ Jobturbo.at 等），命名模式高度一致（皆為「Job + 英文字根 + .a
 清單（不限職缺網站）只要出現「大量命名雷同＋逐一查無實據＋集中同一
 來源」的特徵組合，都可以套用同樣的判斷框架，不需要重新從零建立
 懷疑依據。
+
+## PAT-169 [CORE_IMMUTABLE]: 通用評分表模式（card_ratings）· 以 (card_id, category) 取代逐分類建表
+
+**背景**：Phase BH 為 11 大資源分類（`RecommendationCategory.tsx` 體系，
+含 `GermanLearningBoard.tsx`／`CareerBoard.tsx`）新增五星評分功能。
+指令書明確要求「不為 11 個分類各建一張表，建單一通用表」，改以
+`card_id`（沿用各分類 JSON 既有的 `id` 欄位，跨分類天然不重複，因為
+各分類前綴不同，如 `career-*`／`gl-*`／`gen-*`）＋`category`（分類 key）
+共同識別一張卡片，`(card_id, user_id)` 複合主鍵天然提供 UPSERT 語意
+（一人對一卡僅一筆評分，`.upsert(..., { onConflict: 'card_id,user_id' })`
+直接命中主鍵即可覆蓋，不需要額外的唯一性檢查或先查後寫）。
+
+**資料讀取模式**：比照 `useHotSchools.ts`/`useHotListings.ts` 既有的
+「整表 SELECT + client 端 `useMemo` 聚合」模式（見 `useCardRatings.ts`
+的 `useCardRatingsMap(category)`）——每個分類頁面掛載時以
+`.eq('category', category)` 取得該分類全部評分列一次性聚合成
+`Map<card_id, {avg, count}>`，而非每張卡片各自查一次（一個分類頁面
+可能同時渲染 40+ 張卡片，逐卡查詢會是明顯的 N+1）。這與 PAT-163/150
+的「讀可重試、寫不可重試」邊界一致：讀取的整表查詢套用
+`fetchWithRetry`，寫入的 `.upsert()` 不套用。
+
+**未登入互動的第三種模式**：既有 `LikeButton`/`FollowButton` 用
+`disabled={!user}` + `title` tooltip（按鈕本身不可點擊，因此談不上
+「觸發」什麼）；`AuthGate.tsx` 是整塊內容替換（會連帶隱藏卡片其餘
+內容，不符合「不阻斷瀏覽其餘內容」的要求）。當需求明確要求「點擊
+需觸發登入流程」且「不能阻斷其餘內容」時，兩者都不適用，正確作法是
+按鈕維持可點擊、onClick 內判斷 `!user` 時呼叫既有
+`useToast().push('info', ...)` ＋ `useAuth().signInWithGoogle()`
+（見 `useCardRatings.ts` 的 `submitRating`）——完全複用既有登入與提示
+機制，只是換一種「不停用按鈕」的觸發方式，不是新建登入路徑。
+
+**驗證方法論補充**：本輪沒有真實 Google 登入憑證可用，改用「直接以
+Supabase MCP `execute_sql` 寫入真實 `profiles.id` 的測試列到即時
+DB，驗證讀取/渲染端是否正確反映」的技術，比 Phase BC 單純的靜態
+程式碼稽核更嚴謹，因為它會實際跑過資料庫→前端的完整讀取路徑。
+**測試列使用完畢後務必刪除**，避免在正式環境留下人造評分/回饋資料
+（本輪已於驗收後執行 `DELETE FROM card_ratings WHERE card_id = 'gen-n26'`
+與對應 `user_submissions` 測試列清除，並以 `SELECT count(*)` 覆核
+歸零）。
+
+**未來擴展**：學校卡／討論區貼文卡若要套用同一評分機制，`card_id`
+命名需延續「分類前綴＋既有 id」的慣例以避免跨表 id 撞名，`category`
+可直接用該卡片所屬體系的既有分類 key（如 `school`／`board`），資料表
+結構與 RLS policy 可直接複用 `card_ratings`，不需要另建新表。
