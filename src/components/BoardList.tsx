@@ -10,6 +10,7 @@ import LikeButton from './LikeButton';
 import CommentSection from './CommentSection';
 import type { BadgeId } from '../lib/badges';
 import { boardTypeOf, isDiscussionType, EXPIRY_DAYS } from '../lib/board';
+import { isWithinEditWindow } from '../lib/editWindow';
 import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
 
@@ -17,10 +18,12 @@ interface Props {
   listings: Listing[];
   onDeleted?: () => void;
   onRenewed?: () => void;
+  /** Phase BI：15 分鐘編輯窗內顯示編輯入口（見 PAT-170） */
+  onEdit?: (listing: Listing) => void;
   badgesMap?: Map<string, BadgeId[]>;
 }
 
-export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }: Props) {
+export default function BoardList({ listings, onDeleted, onRenewed, onEdit, badgesMap }: Props) {
   const { user } = useAuth();
   const { push } = useToast();
 
@@ -102,6 +105,15 @@ export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }:
                     className="text-xs text-brand-burgundy hover:text-brand-burgundy-hover"
                   >
                     續期 {EXPIRY_DAYS} 天
+                  </button>
+                )}
+                {user?.id === l.user_id && isWithinEditWindow(l.created_at) && (
+                  <button
+                    type="button"
+                    onClick={() => onEdit?.(l)}
+                    className="text-xs text-brand-burgundy hover:text-brand-burgundy-hover"
+                  >
+                    編輯
                   </button>
                 )}
                 {user?.id === l.user_id && (

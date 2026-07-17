@@ -6,19 +6,27 @@ import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
 import { RATING_DIMENSIONS, calculateOverall } from '../lib/ratings';
 import type { RatingDimension } from '../lib/ratings';
+import type { SchoolReview } from '../lib/types';
+import { EDIT_WINDOW_MINUTES } from '../lib/editWindow';
 import StarSlider from './StarSlider';
 
 interface Props {
   schoolId: string;
   onSubmitted?: () => void;
+  /** Phase BI：帶入既有評價即為編輯模式，改呼叫 .update() 而非 .insert()（見 PAT-170） */
+  editingReview?: SchoolReview | null;
+  onCancel?: () => void;
 }
 
-export default function ReviewForm({ schoolId, onSubmitted }: Props) {
+export default function ReviewForm({ schoolId, onSubmitted, editingReview, onCancel }: Props) {
   const { user } = useAuth();
   const { push } = useToast();
+  const isEditing = !!editingReview;
 
-  const [stars, setStars] = useState<Partial<Record<RatingDimension, number>>>({});
-  const [comment, setComment] = useState('');
+  const [stars, setStars] = useState<Partial<Record<RatingDimension, number>>>(
+    editingReview?.stars ?? {},
+  );
+  const [comment, setComment] = useState(editingReview?.comment_text ?? '');
   const [submitting, setSubmitting] = useState(false);
 
   const overall = calculateOverall(stars);
@@ -46,30 +54,41 @@ export default function ReviewForm({ schoolId, onSubmitted }: Props) {
       }
     }
 
-    const payload = {
-      school_id: schoolId,
-      user_id: user.id,
-      stars: {
-        overall: Math.round(overall),
-        ...roundedStars,
-      },
-      comment_text: comment.trim(),
+    const stars_payload = {
+      overall: Math.round(overall),
+      ...roundedStars,
     };
 
-    const { error } = await supabase.from('school_reviews').insert(payload);
+    const { error } = isEditing
+      ? await supabase
+          .from('school_reviews')
+          .update({
+            stars: stars_payload,
+            comment_text: comment.trim(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingReview.id)
+      : await supabase.from('school_reviews').insert({
+          school_id: schoolId,
+          user_id: user.id,
+          stars: stars_payload,
+          comment_text: comment.trim(),
+        });
     setSubmitting(false);
 
     if (error) {
       const f = translateError(error);
       push('error', f.message);
       // eslint-disable-next-line no-console
-      console.error('[ReviewForm] insert failed:', f.raw);
+      console.error('[ReviewForm] submit failed:', f.raw);
       return;
     }
 
-    push('success', '評價已送出');
-    setStars({});
-    setComment('');
+    push('success', isEditing ? '評價已更新' : '評價已送出');
+    if (!isEditing) {
+      setStars({});
+      setComment('');
+    }
     onSubmitted?.();
   };
 
@@ -117,17 +136,26 @@ export default function ReviewForm({ schoolId, onSubmitted }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <div className="text-xs text-content-muted">
-          評價一經送出無法編輯，只能刪除重發（避免竄改）。
+          {isEditing
+            ? `發布後 ${EDIT_WINDOW_MINUTES} 分鐘內可編輯，超過時限請改用刪除重發。`
+            : `評價發布後 ${EDIT_WINDOW_MINUTES} 分鐘內可編輯，之後僅能刪除重發。`}
         </div>
-        <button
-          type="submit"
-          disabled={!canSubmit || submitting}
-          className="btn-primary"
-        >
-          {submitting ? '送出中…' : '送出評價'}
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          {isEditing && (
+            <button type="button" onClick={onCancel} className="btn-ghost text-sm">
+              取消
+            </button>
+          )}
+          <button
+            type="submit"
+            disabled={!canSubmit || submitting}
+            className="btn-primary"
+          >
+            {submitting ? '送出中…' : isEditing ? '儲存修改' : '送出評價'}
+          </button>
+        </div>
       </div>
     </form>
   );

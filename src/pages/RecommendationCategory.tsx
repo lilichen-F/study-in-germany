@@ -217,14 +217,6 @@ export default function RecommendationCategory() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {visibleItems.map((item) => (
           <div key={item.id} className="card space-y-2">
-            <CardRating
-              category={slug ?? ''}
-              cardTitle={item.title}
-              cardUrl={item.url}
-              stats={statsMap.get(item.id)}
-              onRate={(r) => submitRating(item.id, r)}
-            />
-
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-sm font-semibold text-content-primary leading-snug">
                 {item.title}
@@ -272,6 +264,16 @@ export default function RecommendationCategory() {
                 <span className="text-xs text-content-muted ml-auto">更新於 {item.updated_at}</span>
               )}
             </div>
+
+            {/* Phase BI：評分元件移至卡片最後一列並靠右，與上方「更新於」
+                日期戳上下疊放，不重疊（見 PAT-170） */}
+            <CardRating
+              category={slug ?? ''}
+              cardTitle={item.title}
+              cardUrl={item.url}
+              stats={statsMap.get(item.id)}
+              onRate={(r) => submitRating(item.id, r)}
+            />
           </div>
         ))}
       </div>

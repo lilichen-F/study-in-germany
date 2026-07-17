@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { IconSpeakerphone } from '@tabler/icons-react';
 import { useHotListings } from '../lib/useHotListings';
 import { boardTypeOf, isDiscussionType } from '../lib/board';
 import ListingCardBody from './ListingCardBody';
@@ -12,6 +11,11 @@ import { SkeletonBox } from './Skeleton';
  * 首頁預覽卡片不重複顯示（改以頂部單張縮圖呈現，維持卡片精簡密度）。
  * 讚數/留言數統計 footer 為「熱門」排序依據的被動指標，非互動元件——
  * 跟隨/按讚/留言/檢舉/續期/刪除等頁面級管理操作維持在 Board.tsx，不重複套用。
+ *
+ * Phase BI：移除「無照片時」的預設佔位圖示（原為 IconSpeakerphone，僅本元件
+ * 專屬，未與 BoardList.tsx／ListingCardBody 共用邏輯，移除前已逐一確認，
+ * 見 PAT-170）。真實貼文照片（l.photo_urls[0]）不受影響，仍照常顯示；
+ * 無照片的貼文改為完全不渲染頂部縮圖區塊，卡片直接從分類標籤+日期開始。
  */
 export default function HotBoardCarousel() {
   const { hot, loading } = useHotListings();
@@ -47,14 +51,11 @@ export default function HotBoardCarousel() {
                        card-interactive p-0 overflow-hidden
                        ${kindIsDiscussion ? 'bg-surface-section border-brand-gold/30' : ''}`}
           >
-            <div className="h-24 bg-surface-section flex items-center justify-center px-6
-                            text-module-board overflow-hidden">
-              {l.photo_urls?.[0] ? (
+            {l.photo_urls?.[0] && (
+              <div className="h-24 bg-surface-section overflow-hidden">
                 <img src={l.photo_urls[0]} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <IconSpeakerphone className="w-10 h-10 opacity-60" stroke={1.5} />
-              )}
-            </div>
+              </div>
+            )}
             <div className="p-4">
               <ListingCardBody listing={l} truncateDescription showPhotos={false} />
               <div className="mt-3 flex items-center justify-between text-xs">

@@ -176,14 +176,6 @@ export default function CareerBoard({ items }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {visibleItems.map((item) => (
             <div key={item.id} className="card space-y-2">
-              <CardRating
-                category="career"
-                cardTitle={item.title}
-                cardUrl={item.url}
-                stats={statsMap.get(item.id)}
-                onRate={(r) => submitRating(item.id, r)}
-              />
-
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-sm font-semibold text-content-primary leading-snug">
                   {item.title}
@@ -226,6 +218,15 @@ export default function CareerBoard({ items }: Props) {
                   ))}
                 </div>
               )}
+
+              {/* Phase BI：評分元件移至卡片最後一列並靠右（見 PAT-170） */}
+              <CardRating
+                category="career"
+                cardTitle={item.title}
+                cardUrl={item.url}
+                stats={statsMap.get(item.id)}
+                onRate={(r) => submitRating(item.id, r)}
+              />
             </div>
           ))}
         </div>

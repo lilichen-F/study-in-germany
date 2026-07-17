@@ -5,11 +5,14 @@ import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType, isRentalType, EXPIRING_TYPES, EXPIRY_DAYS } from '../lib/board';
 import type { BoardType } from '../lib/board';
+import type { Listing } from '../lib/types';
 import PrivacyNotice from './PrivacyNotice';
 import PhotoUploader from './PhotoUploader';
 
 interface Props {
   onSubmitted?: () => void;
+  /** Phase BI：帶入既有貼文即為編輯模式，改呼叫 .update() 而非 .insert()（見 PAT-170） */
+  editingListing?: Listing | null;
 }
 
 const MAIN_CATEGORIES: BoardType[] = ['secondhand', 'rental_offer', 'discussion'];
@@ -24,16 +27,18 @@ const DISCUSSION_SUBCATEGORIES: BoardType[] = [
   'discussion_taiwan_restaurant',
 ];
 
-export default function BoardForm({ onSubmitted }: Props) {
+export default function BoardForm({ onSubmitted, editingListing }: Props) {
   const { user } = useAuth();
-  const [type, setType] = useState<BoardType>('secondhand');
-  const [region, setRegion] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [contact, setContact] = useState('');
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [consent, setConsent] = useState(false);
+  const isEditing = !!editingListing;
+  const [type, setType] = useState<BoardType>(editingListing?.type ?? 'secondhand');
+  const [region, setRegion] = useState(editingListing?.region ?? '');
+  const [title, setTitle] = useState(editingListing?.title ?? '');
+  const [description, setDescription] = useState(editingListing?.description ?? '');
+  const [price, setPrice] = useState(editingListing?.price ?? '');
+  const [contact, setContact] = useState(editingListing?.contact_info ?? '');
+  const [photos, setPhotos] = useState<string[]>(editingListing?.photo_urls ?? []);
+  // 編輯模式：使用者發文當下已同意過隱私權說明，不重複要求勾選
+  const [consent, setConsent] = useState(isEditing);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -61,12 +66,7 @@ export default function BoardForm({ onSubmitted }: Props) {
     // Phase R 起顯式設定 expires_at：商業類 90 天到期、討論全類 null（永久，
     // 需搭配 schema.sql 本輪修正過的 listings_public_read policy 才能正確顯示，
     // 見 PAT-101）
-    const expiresAt = isExpiringType
-      ? new Date(Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString()
-      : null;
-
-    const { error } = await supabase.from('listings').insert({
-      user_id: user.id,
+    const payload = {
       type,
       region: isDiscussion ? '' : region.trim(),
       title: title.trim(),
@@ -74,8 +74,22 @@ export default function BoardForm({ onSubmitted }: Props) {
       price: isDiscussion ? null : price.trim() || null,
       contact_info: contact.trim() || null,
       photo_urls: isDiscussion ? [] : photos,
-      expires_at: expiresAt,
-    });
+    };
+
+    // Phase BI：編輯模式不動 expires_at（續期是獨立於「編輯內容」的動作，
+    // 見 BoardList.tsx 既有的「續期」按鈕，PAT-170）
+    const { error } = isEditing
+      ? await supabase
+          .from('listings')
+          .update({ ...payload, updated_at: new Date().toISOString() })
+          .eq('id', editingListing.id)
+      : await supabase.from('listings').insert({
+          ...payload,
+          user_id: user.id,
+          expires_at: isExpiringType
+            ? new Date(Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString()
+            : null,
+        });
     setSubmitting(false);
     if (error) {
       const f = translateError(error);
@@ -84,8 +98,10 @@ export default function BoardForm({ onSubmitted }: Props) {
       console.error('[BoardForm] submit failed:', f.raw);
       return;
     }
-    setTitle(''); setDescription(''); setPrice('');
-    setContact(''); setRegion(''); setPhotos([]); setConsent(false);
+    if (!isEditing) {
+      setTitle(''); setDescription(''); setPrice('');
+      setContact(''); setRegion(''); setPhotos([]); setConsent(false);
+    }
     onSubmitted?.();
   };
 
@@ -255,7 +271,7 @@ export default function BoardForm({ onSubmitted }: Props) {
             : '討論類貼文永久保留，不會自動下架'}
         </div>
         <button type="submit" disabled={!canSubmit} className="btn-primary shrink-0">
-          {submitting ? '送出中…' : '公開發布'}
+          {submitting ? '送出中…' : isEditing ? '儲存修改' : '公開發布'}
         </button>
       </div>
     </form>

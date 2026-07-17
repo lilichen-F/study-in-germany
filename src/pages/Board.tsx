@@ -70,6 +70,7 @@ export default function Board() {
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
   const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
   const [postModalOpen, setPostModalOpen] = useState(false);
+  const [editingListing, setEditingListing] = useState<Listing | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const v = searchParams.get('view');
     if (v === 'following' || v === 'mine') return v;
@@ -402,14 +403,21 @@ export default function Board() {
             description="登入後可刊登第一則出租、求租或二手交易資訊。"
           />
         ) : (
-          <BoardList listings={filtered} onDeleted={load} onRenewed={load} badgesMap={badgesMap} />
+          <BoardList
+            listings={filtered}
+            onDeleted={load}
+            onRenewed={load}
+            onEdit={(l) => { setEditingListing(l); setPostModalOpen(true); }}
+            badgesMap={badgesMap}
+          />
         )}
       </section>
 
       <FloatingActionButton onClick={() => setPostModalOpen(true)} />
       <PostModal
         open={postModalOpen}
-        onClose={() => setPostModalOpen(false)}
+        editingListing={editingListing}
+        onClose={() => { setPostModalOpen(false); setEditingListing(null); }}
         onSubmitted={load}
       />
     </div>
