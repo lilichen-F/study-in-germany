@@ -34,23 +34,6 @@
     "target": ["general", "shared", "room"]
   },
   {
-    "id": "housing-studenten-wg",
-    "category": "housing",
-    "title": "Studenten-WG",
-    "summary": "專攻學生族群的合租媒合平台",
-    "points": [
-      "FEE：免費",
-      "適合：學生",
-      "長租"
-    ],
-    "tags": ["合租", "學生"],
-    "url": "https://www.studenten-wg.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long"],
-    "target": ["student", "shared"]
-  },
-  {
     "id": "housing-studenten-wohnung",
     "category": "housing",
     "title": "studenten-wohnung.de",
@@ -85,40 +68,6 @@
     "target": ["shared", "student", "general"]
   },
   {
-    "id": "housing-wohnungsboerse",
-    "category": "housing",
-    "title": "wohnungsboerse.net",
-    "summary": "雙邊免費刊登的房源平台",
-    "points": [
-      "FEE：免費",
-      "適合：通用",
-      "長租"
-    ],
-    "tags": ["合租", "通用"],
-    "url": "https://www.wohnungsboerse.net/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long"],
-    "target": ["general", "shared"]
-  },
-  {
-    "id": "housing-zwischenmiete",
-    "category": "housing",
-    "title": "zwischenmiete.de",
-    "summary": "主打取代傳統 Mitwohnzentrale 收費模式的短租平台",
-    "points": [
-      "FEE：免費（官網聲明無仲介費）",
-      "適合：通用／學生",
-      "短租"
-    ],
-    "tags": ["合租", "短租"],
-    "url": "https://www.zwischenmiete.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["short"],
-    "target": ["shared", "general", "student"]
-  },
-  {
     "id": "housing-immobilienscout24",
     "category": "housing",
     "title": "ImmobilienScout24",
@@ -128,6 +77,7 @@
       "適合：通用",
       "長租"
     ],
+    "detail": "原 wohnungsboerse.net 品牌已於 2021 年併入 Scout24 集團（本平台母公司），網址已導向本站。",
     "tags": ["合租", "套房", "通用"],
     "url": "https://www.immobilienscout24.de/",
     "updated_at": "2026-07",
@@ -162,6 +112,7 @@
       "適合：國際學生",
       "長租"
     ],
+    "detail": "原 Studenten-WG（2020 年收購）與 zwischenmiete.de 兩品牌已併入本平台，網址皆已導向本站。",
     "tags": ["合租", "套房", "學生"],
     "url": "https://housinganywhere.com/",
     "updated_at": "2026-07",
