@@ -169,6 +169,7 @@
 | PAT-168 | 方法論 | 批量高度命名相似網域（如「Job+字根+.at」模板化命名）逐一查無實據時，應整批判定為 AI 幻覺剔除，不與「真實存在但已停用」「網址誤植」個別情況混淆 |
 | PAT-169 | CORE_IMMUTABLE | 通用評分表 card_ratings：(card_id, category) 識別卡片、(card_id, user_id) 複合主鍵天然 UPSERT，未來擴展至學校/討論區卡片可直接複用；未登入互動第三種模式（可點擊+onClick 導向既有登入流程，不同於 disabled tooltip 或整塊 AuthGate） |
 | PAT-170 | CORE_IMMUTABLE | 15 分鐘編輯窗須寫入 UPDATE policy 的 USING 子句本身（前端隱藏按鈕僅體驗優化，非真防線）；用 SET LOCAL role+request.jwt.claim.sub 模擬指定使用者驗證 RLS 實際行為；推翻既有明確產品文案（如「評價不可編輯」）前須先向 Lily 確認 |
+| PAT-171 | CORE_IMMUTABLE | 費用/族群標籤零臆測：原文沒明確寫費用性質就標「未標示」，不依常識猜；CEFR 推導族群標籤屬「重組已驗證事實」非臆測；跨檔案搬移前必查目標檔案是否已有同名舊資料（DeutschAkademie 案例：schools.json 已有 3 筆舊 telc 資料，指令書措辭誤導性地假設不存在，緊急回退重做） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

@@ -113,6 +113,9 @@ export interface Recommendation {
   level?: GermanLearningLevel[];   // level_label 展開後的離散值，供篩選用
   resource_status?: GermanLearningStatus;
   audience?: GermanLearningAudience[];
+  // Phase BJ：費用維度，僅原文明確提及費用性質者標註 free/paid，
+  // 其餘一律 unknown（不得臆測），見 PAT-171
+  fee?: GermanLearningFee;
 
   // Phase BG：DACH 實習/求職分類欄位（僅 category === 'career' 使用）。
   // 欄位名稱刻意與 housing/german_learning 已用過的 fee_status/target/
@@ -191,16 +194,34 @@ export const GERMAN_LEARNING_STATUS_LABEL: Record<GermanLearningStatus, string> 
   discontinued_usable: '停更可用',
 };
 
+/**
+ * Phase BJ：入門/中級/高級為新增的族群標籤（beginner 由「初學者」更名為
+ * 「入門」，資料沿用既有人工標註不變動；intermediate/advanced 兩個新選項
+ * 依既有 level 欄位（CEFR）機械推導，非人工重新判斷用途——見 PAT-171
+ * 映射規則：level 含 A1/A2 → 入門（沿用既有 beginner 標註，未改推導方式）；
+ * level 含 B1/B2 → 中級；level 含 C1/C2 → 高級。同一資源可能橫跨多個。
+ */
 export type GermanLearningAudience =
-  | 'beginner' | 'self_learner' | 'exam_prep' | 'academic' | 'new_immigrant' | 'teacher' | 'child';
+  | 'beginner' | 'intermediate' | 'advanced'
+  | 'self_learner' | 'exam_prep' | 'academic' | 'new_immigrant' | 'teacher' | 'child';
 export const GERMAN_LEARNING_AUDIENCE_LABEL: Record<GermanLearningAudience, string> = {
-  beginner: '初學者',
+  beginner: '入門',
+  intermediate: '中級',
+  advanced: '高級',
   self_learner: '自學者',
   exam_prep: '考證備考',
   academic: '學術／研究',
   new_immigrant: '新移民',
   teacher: '教師',
   child: '兒童',
+};
+
+/** Phase BJ：費用維度，僅原文明確提及費用性質者標註，見 PAT-171 */
+export type GermanLearningFee = 'free' | 'paid' | 'unknown';
+export const GERMAN_LEARNING_FEE_LABEL: Record<GermanLearningFee, string> = {
+  free: '免費',
+  paid: '付費',
+  unknown: '未標示',
 };
 
 /**
