@@ -8,6 +8,8 @@ import {
   GERMAN_LEARNING_BOARD_LABEL, GERMAN_LEARNING_BOARD_ORDER, GERMAN_LEARNING_LEVEL_ORDER,
   GERMAN_LEARNING_STATUS_LABEL, GERMAN_LEARNING_AUDIENCE_LABEL,
 } from '../lib/recommendation';
+import { useCardRatingsMap } from '../lib/useCardRatings';
+import CardRating from './CardRating';
 
 type LevelFilter = 'all' | GermanLearningLevel;
 
@@ -66,6 +68,9 @@ export default function GermanLearningBoard({ items }: Props) {
   });
   const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
   const [audienceFilter, setAudienceFilter] = useState<GermanLearningAudience[]>([]);
+
+  // Phase BH：資源卡片五星評分（見 PAT-169）
+  const { statsMap, submitRating } = useCardRatingsMap('german_learning');
 
   useEffect(() => {
     const s = searchParams.get('sub');
@@ -161,6 +166,14 @@ export default function GermanLearningBoard({ items }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {visibleItems.map((item) => (
             <div key={item.id} className="card space-y-2">
+              <CardRating
+                category="german_learning"
+                cardTitle={item.title}
+                cardUrl={item.url}
+                stats={statsMap.get(item.id)}
+                onRate={(r) => submitRating(item.id, r)}
+              />
+
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-sm font-semibold text-content-primary leading-snug">
                   {item.title}

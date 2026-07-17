@@ -7,6 +7,8 @@ import {
   CAREER_TYPE_LABEL, CAREER_TYPE_ORDER, CAREER_FEE_LABEL, CAREER_MODE_LABEL,
   CAREER_COUNTRY_LABEL, CAREER_AUDIENCE_LABEL,
 } from '../lib/recommendation';
+import { useCardRatingsMap } from '../lib/useCardRatings';
+import CardRating from './CardRating';
 
 type FeeFilter = 'all' | CareerFee;
 type ModeFilter = 'all' | CareerMode;
@@ -47,6 +49,9 @@ export default function CareerBoard({ items }: Props) {
   const [modeFilter, setModeFilter] = useState<ModeFilter>('all');
   const [countryFilter, setCountryFilter] = useState<CountryFilter>('all');
   const [audienceFilter, setAudienceFilter] = useState<CareerAudience[]>([]);
+
+  // Phase BH：資源卡片五星評分（見 PAT-169）
+  const { statsMap, submitRating } = useCardRatingsMap('career');
 
   useEffect(() => {
     const s = searchParams.get('sub');
@@ -171,6 +176,14 @@ export default function CareerBoard({ items }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {visibleItems.map((item) => (
             <div key={item.id} className="card space-y-2">
+              <CardRating
+                category="career"
+                cardTitle={item.title}
+                cardUrl={item.url}
+                stats={statsMap.get(item.id)}
+                onRate={(r) => submitRating(item.id, r)}
+              />
+
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-sm font-semibold text-content-primary leading-snug">
                   {item.title}
