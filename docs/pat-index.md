@@ -168,6 +168,7 @@
 | PAT-167 | CORE_IMMUTABLE | 兩個相似兩層導覽需求（德文學習 vs DACH 實習/求職）優先複製而非抽共用元件：只有 tab+URL 同步技術真正共通，篩選維度形狀差異大，案例數不足以判斷抽象邊界 |
 | PAT-168 | 方法論 | 批量高度命名相似網域（如「Job+字根+.at」模板化命名）逐一查無實據時，應整批判定為 AI 幻覺剔除，不與「真實存在但已停用」「網址誤植」個別情況混淆 |
 | PAT-169 | CORE_IMMUTABLE | 通用評分表 card_ratings：(card_id, category) 識別卡片、(card_id, user_id) 複合主鍵天然 UPSERT，未來擴展至學校/討論區卡片可直接複用；未登入互動第三種模式（可點擊+onClick 導向既有登入流程，不同於 disabled tooltip 或整塊 AuthGate） |
+| PAT-170 | CORE_IMMUTABLE | 15 分鐘編輯窗須寫入 UPDATE policy 的 USING 子句本身（前端隱藏按鈕僅體驗優化，非真防線）；用 SET LOCAL role+request.jwt.claim.sub 模擬指定使用者驗證 RLS 實際行為；推翻既有明確產品文案（如「評價不可編輯」）前須先向 Lily 確認 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

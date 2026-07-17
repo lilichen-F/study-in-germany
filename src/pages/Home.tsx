@@ -7,10 +7,8 @@ import {
   IconStar,
   IconMessageQuestion,
   IconUserCircle,
-  IconBell,
 } from '@tabler/icons-react';
 import HeroSection from '../components/HeroSection';
-import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import HotBoardCarousel from '../components/HotBoardCarousel';
 import OnboardingModal from '../components/OnboardingModal';
@@ -106,8 +104,10 @@ const PORTAL_ITEMS = [
  *   （PAT-144）
  * Phase BB：新增「熱門討論區」區塊（比照熱門語校視覺結構，排序依讚數/留言數，
  *   見 PAT-162）；全站文案語氣治理同步進行，此頁的填詞式贅語一併簡化
+ * Phase BI：停用「最新公告」區塊渲染（DEPRECATE_MARK，非刪除，見
+ *   Announcements.tsx／data/announcements.json 檔頭標註與 PAT-170）
  * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 →
- *   熱門討論區 → 最新公告
+ *   熱門討論區
  */
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
@@ -261,18 +261,6 @@ export default function Home() {
           </Link>
         </div>
         <HotBoardCarousel />
-      </section>
-
-      {/* Announcements */}
-      <section>
-        <div className="flex items-baseline justify-between mb-3">
-          <h2 className="text-lg font-medium">最新公告</h2>
-          <div className="flex items-center gap-2 text-content-muted">
-            <IconBell className="w-4 h-4" />
-            <span className="text-xs">最近 5 則</span>
-          </div>
-        </div>
-        <Announcements />
       </section>
 
       <OnboardingModal

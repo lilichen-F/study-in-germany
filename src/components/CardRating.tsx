@@ -16,11 +16,16 @@ interface Props {
 }
 
 /**
- * 資源卡片五星評分 + 低分自動回饋信箱（Phase BH，見 PAT-169）。
+ * 資源卡片五星評分 + 低分自動回饋信箱（Phase BH 建立，見 PAT-169；
+ * Phase BI 改標籤文字＋移至卡片右下角，見 PAT-170）。
  *
  * 星星呈現目前平均分數（非使用者自己的評分），點擊送出/更改自己的評分
  * （UPSERT，由父層 useCardRatingsMap 提供的 onRate 處理，含未登入時導向
  * 既有登入流程的邏輯）。標籤文字永久顯示，不依賴 hover。
+ *
+ * Phase BI：改為卡片最後一個區塊並靠右對齊，呼叫端需將本元件放在
+ * tags/更新於日期列之後渲染，與既有右下角元素（如「更新於」日期戳）
+ * 上下疊放而非重疊——詳見各呼叫端程式碼與本輪報告的版面配置說明。
  *
  * 達門檻（5 人以上評分且平均低於 3.5）才顯示低分回饋信箱，單次提交、
  * 不即時公開顯示——複用既有 user_submissions 表（general_feedback），
@@ -60,8 +65,8 @@ export default function CardRating({ category, cardTitle, cardUrl, stats, onRate
 
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center gap-1.5 flex-wrap">
-        <span className="text-xs text-content-muted shrink-0">這對你有幫助嗎？</span>
+      <div className="flex items-center justify-end gap-1.5 flex-wrap">
+        <span className="text-xs text-content-muted shrink-0">幫助性</span>
         <div className="flex items-center gap-0.5">
           {[1, 2, 3, 4, 5].map((n) => (
             <button

@@ -1,3 +1,8 @@
+/**
+ * [DEPRECATE_MARK] Phase BI 起不再於 Home.tsx 渲染（見 PAT-170）。
+ * 元件與底層資料（announcements.json）保留不刪，供未來若要恢復或另作
+ * 他用；若日後確定徹底不需要，屬另一個決定，需另行處理。
+ */
 import announcementsData from '../data/announcements.json';
 
 interface Announcement {

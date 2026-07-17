@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
 import BoardForm from './BoardForm';
 import AuthGate from './AuthGate';
+import type { Listing } from '../lib/types';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSubmitted?: () => void;
+  /** Phase BI：帶入既有貼文即為編輯模式（見 PAT-170） */
+  editingListing?: Listing | null;
 }
 
-export default function PostModal({ open, onClose, onSubmitted }: Props) {
+export default function PostModal({ open, onClose, onSubmitted, editingListing }: Props) {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -39,7 +42,7 @@ export default function PostModal({ open, onClose, onSubmitted }: Props) {
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-content-primary">
-            刊登新貼文
+            {editingListing ? '編輯貼文' : '刊登新貼文'}
           </h2>
           <button
             type="button"
@@ -58,6 +61,7 @@ export default function PostModal({ open, onClose, onSubmitted }: Props) {
 
         <AuthGate message="請先登入才能刊登討論區貼文。">
           <BoardForm
+            editingListing={editingListing}
             onSubmitted={() => {
               onSubmitted?.();
               onClose();

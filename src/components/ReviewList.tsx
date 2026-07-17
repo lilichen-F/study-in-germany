@@ -11,6 +11,8 @@ import FollowButton from './FollowButton';
 import ReportButton from './ReportButton';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
+import { isWithinEditWindow } from '../lib/editWindow';
+import ReviewForm from './ReviewForm';
 import schools from '../data/schools.json';
 
 function schoolName(schoolId: string): string {
@@ -28,6 +30,7 @@ export default function ReviewList({ reviews, onDeleted, showSchoolLink }: Props
   const { user } = useAuth();
   const { push } = useToast();
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   useEffect(() => {
     const userIds = reviews.map((r) => r.user_id);
@@ -103,6 +106,14 @@ export default function ReviewList({ reviews, onDeleted, showSchoolLink }: Props
                 </span>
               )}
               <ReportButton targetType="review" targetId={String(r.id)} />
+              {user?.id === r.user_id && isWithinEditWindow(r.created_at) && (
+                <button
+                  onClick={() => setEditingId(editingId === r.id ? null : r.id)}
+                  className="text-xs text-brand-burgundy hover:text-brand-burgundy-hover"
+                >
+                  編輯
+                </button>
+              )}
               {user?.id === r.user_id && (
                 <button
                   onClick={() => handleDelete(r.id)}
@@ -114,13 +125,26 @@ export default function ReviewList({ reviews, onDeleted, showSchoolLink }: Props
             </div>
           </div>
 
-          <div className="mt-3">
-            <RatingBreakdown stars={r.stars} compact />
-          </div>
+          {editingId === r.id ? (
+            <div className="mt-3">
+              <ReviewForm
+                schoolId={r.school_id}
+                editingReview={r}
+                onSubmitted={() => { setEditingId(null); onDeleted?.(); }}
+                onCancel={() => setEditingId(null)}
+              />
+            </div>
+          ) : (
+            <>
+              <div className="mt-3">
+                <RatingBreakdown stars={r.stars} compact />
+              </div>
 
-          <p className="mt-3 text-sm text-content-secondary whitespace-pre-wrap">
-            {r.comment_text}
-          </p>
+              <p className="mt-3 text-sm text-content-secondary whitespace-pre-wrap">
+                {r.comment_text}
+              </p>
+            </>
+          )}
         </div>
       ))}
     </div>
