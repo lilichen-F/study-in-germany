@@ -2,16 +2,23 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type {
   Recommendation, GermanLearningBoard as BoardKey, GermanLearningLevel,
-  GermanLearningStatus, GermanLearningAudience,
+  GermanLearningStatus, GermanLearningAudience, GermanLearningFee,
 } from '../lib/recommendation';
 import {
   GERMAN_LEARNING_BOARD_LABEL, GERMAN_LEARNING_BOARD_ORDER, GERMAN_LEARNING_LEVEL_ORDER,
-  GERMAN_LEARNING_STATUS_LABEL, GERMAN_LEARNING_AUDIENCE_LABEL,
+  GERMAN_LEARNING_STATUS_LABEL, GERMAN_LEARNING_AUDIENCE_LABEL, GERMAN_LEARNING_FEE_LABEL,
 } from '../lib/recommendation';
 import { useCardRatingsMap } from '../lib/useCardRatings';
 import CardRating from './CardRating';
 
 type LevelFilter = 'all' | GermanLearningLevel;
+type FeeFilter = 'all' | GermanLearningFee;
+/**
+ * Phase BJ：費用篩選選項須含「未標示」且不得被預設值悄悄篩掉——'all'
+ * 為「不篩選」，顯示全部（含 unknown）；使用者也可主動選「未標示」單獨
+ * 查看，兩者皆不會讓 unknown 資源從畫面消失，見 PAT-171。
+ */
+const FEE_OPTIONS = Object.keys(GERMAN_LEARNING_FEE_LABEL) as GermanLearningFee[];
 
 /**
  * Phase BF：新增「全部」虛擬子板塊，值為 'all'——與 GermanLearningLevel
@@ -59,6 +66,11 @@ interface Props {
  * 「不預先篩掉使用者可能想看的內容」是同一個設計方向的延伸：讓使用者
  * 一進頁面就看到全部資源，再自行用 tab／篩選縮小範圍，而非被指定看
  * 一個武斷的起始子板塊。
+ *
+ * Phase BJ：新增費用篩選（免費/付費/未標示，見 PAT-171，只有原文明確
+ * 提及費用性質者才標註 free/paid，其餘一律 unknown）；適合族群「初學者」
+ * 更名為「入門」並新增「中級」「高級」（依既有 level CEFR 欄位機械推導，
+ * 非人工重新判斷）。
  */
 export default function GermanLearningBoard({ items }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,6 +79,7 @@ export default function GermanLearningBoard({ items }: Props) {
     return (BOARD_TAB_ORDER as string[]).includes(s ?? '') ? (s as BoardTabKey) : 'all';
   });
   const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
+  const [feeFilter, setFeeFilter] = useState<FeeFilter>('all');
   const [audienceFilter, setAudienceFilter] = useState<GermanLearningAudience[]>([]);
 
   // Phase BH：資源卡片五星評分（見 PAT-169）
@@ -94,11 +107,12 @@ export default function GermanLearningBoard({ items }: Props) {
     return items.filter((item) => {
       if (board !== 'all' && !item.board?.includes(board)) return false;
       if (levelFilter !== 'all' && !item.level?.includes(levelFilter)) return false;
+      if (feeFilter !== 'all' && item.fee !== feeFilter) return false;
       if (audienceFilter.length > 0 && !audienceFilter.some((a) => item.audience?.includes(a))) return false;
       return true;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, board, levelFilter, audienceFilter]);
+  }, [items, board, levelFilter, feeFilter, audienceFilter]);
 
   return (
     <div className="space-y-4">
@@ -120,7 +134,9 @@ export default function GermanLearningBoard({ items }: Props) {
         ))}
       </div>
 
-      {/* 篩選列：等級/狀態單選下拉（比照 Schools.tsx），適合族群多選 chip（比照 Phase BD 找房頁先例） */}
+      {/* 篩選列：等級/費用單選下拉（比照 Schools.tsx），適合族群多選 chip（比照 Phase BD 找房頁先例）。
+          Phase BJ 新增費用維度：「任意」預設值不篩選，unknown 資源正常顯示不被悄悄隱藏；
+          「未標示」為明確選項，使用者可主動篩選查看（見 PAT-171） */}
       <div className="flex flex-wrap items-center gap-3">
         <select
           value={levelFilter}
@@ -133,6 +149,20 @@ export default function GermanLearningBoard({ items }: Props) {
           <option value="all">等級：任意</option>
           {GERMAN_LEARNING_LEVEL_ORDER.map((l) => (
             <option key={l} value={l}>{l}</option>
+          ))}
+        </select>
+
+        <select
+          value={feeFilter}
+          onChange={(e) => setFeeFilter(e.target.value as FeeFilter)}
+          className="text-sm px-3 py-2 rounded-lg border border-border-subtle
+                     bg-surface-canvas text-content-primary
+                     focus:outline-none focus:border-brand-burgundy
+                     hover:border-brand-gold transition-colors"
+        >
+          <option value="all">費用：任意</option>
+          {FEE_OPTIONS.map((f) => (
+            <option key={f} value={f}>{GERMAN_LEARNING_FEE_LABEL[f]}</option>
           ))}
         </select>
 

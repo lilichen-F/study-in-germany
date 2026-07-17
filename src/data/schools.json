@@ -460,14 +460,14 @@
     "city": "München",
     "city_key": "munich",
     "level": "A1–C2",
-    "website": null,
-    "note": "telc 官方授權考場四城之一（B1/B2）。",
+    "website": "https://www.deutschakademie.de",
+    "note": "telc 官方授權考場四城之一（B1/B2）。1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
     "accommodation": null,
-    "founded_year": null,
+    "founded_year": 1999,
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null,
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
     "updated_at": "2026-07"
   },
   {
@@ -477,14 +477,14 @@
     "city": "Berlin",
     "city_key": "berlin",
     "level": "A1–C2",
-    "website": null,
-    "note": "telc 官方授權考場四城之一（B1/B2）。",
+    "website": "https://www.deutschakademie.de",
+    "note": "telc 官方授權考場四城之一（B1/B2）。1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
     "accommodation": null,
-    "founded_year": null,
+    "founded_year": 1999,
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null,
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
     "updated_at": "2026-07"
   },
   {
@@ -494,14 +494,14 @@
     "city": "Hamburg",
     "city_key": "hamburg",
     "level": "A1–C2",
-    "website": null,
-    "note": "telc 官方授權考場四城之一（B1/B2）。",
+    "website": "https://www.deutschakademie.de",
+    "note": "telc 官方授權考場四城之一（B1/B2）。1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
     "accommodation": null,
-    "founded_year": null,
+    "founded_year": 1999,
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null,
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
     "updated_at": "2026-07"
   },
   {
@@ -858,6 +858,66 @@
       "telc考場"
     ],
     "price_hint": null,
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "deutschakademie-frankfurt",
+    "name_zh": "DeutschAkademie 法蘭克福",
+    "name_de": "DeutschAkademie Frankfurt",
+    "city": "Frankfurt am Main",
+    "city_key": "frankfurt",
+    "level": "A1–C2",
+    "website": "https://www.deutschakademie.de",
+    "note": "1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
+    "accommodation": null,
+    "founded_year": 1999,
+    "accreditation": [],
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "deutschakademie-stuttgart",
+    "name_zh": "DeutschAkademie 斯圖加特",
+    "name_de": "DeutschAkademie Stuttgart",
+    "city": "Stuttgart",
+    "city_key": "stuttgart",
+    "level": "A1–C2",
+    "website": "https://www.deutschakademie.de",
+    "note": "1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
+    "accommodation": null,
+    "founded_year": 1999,
+    "accreditation": [],
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "deutschakademie-koeln",
+    "name_zh": "DeutschAkademie 科隆",
+    "name_de": "DeutschAkademie Köln",
+    "city": "Köln",
+    "city_key": "koeln",
+    "level": "A1–C2",
+    "website": "https://www.deutschakademie.de",
+    "note": "1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
+    "accommodation": null,
+    "founded_year": 1999,
+    "accreditation": [],
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "deutschakademie-leipzig",
+    "name_zh": "DeutschAkademie 萊比錫",
+    "name_de": "DeutschAkademie Leipzig",
+    "city": "Leipzig",
+    "city_key": "leipzig",
+    "level": "A1–C2",
+    "website": "https://www.deutschakademie.de",
+    "note": "1999 年創立於維也納的連鎖語言學校，德國境內設柏林（Wittenbergplatz／Alexanderplatz 兩處）、慕尼黑、漢堡、法蘭克福、斯圖加特、科隆、萊比錫分校，另設線上課程。多次獲得學員好評與獎項。",
+    "accommodation": null,
+    "founded_year": 1999,
+    "accreditation": [],
+    "price_hint": "C1 線上密集班 309€ 起（其他班型與面授課程費用請洽官網）",
     "updated_at": "2026-07"
   }
 ]
