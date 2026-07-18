@@ -33,7 +33,7 @@ export default function VisaSelector() {
     <div className="space-y-8">
       <div>
         <Link to="/edu" className="text-xs no-underline">
-          ← 回作戰手冊
+          ← 回赴德指南
         </Link>
       </div>
 

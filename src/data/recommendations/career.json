@@ -133,21 +133,6 @@
     "career_audience": ["technical", "international_student"]
   },
   {
-    "id": "career-un-online-volunteering",
-    "category": "career",
-    "title": "UN Online Volunteering",
-    "summary": "聯合國官方線上志願服務平台",
-    "points": ["費用：免費", "模式：完全遠端", "國家：其他（國際）"],
-    "detail": "性質為虛擬協作志願服務，非正式企業實習，暫歸類於實習子板塊供瀏覽參考。",
-    "tags": ["志願服務", "官方"],
-    "url": "https://www.onlinevolunteering.org",
-    "updated_at": "2026-07",
-    "career_type": ["intern"],
-    "career_fee": ["free"],
-    "career_mode": ["remote"],
-    "career_country": ["other"]
-  },
-  {
     "id": "career-the-forage",
     "category": "career",
     "title": "The Forage",

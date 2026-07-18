@@ -56,7 +56,7 @@ export default function Edu() {
           German Study Hub
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold text-content-primary">
-          德國留學作戰手冊
+          赴德指南
         </h1>
         <p className="text-sm text-content-secondary mt-3 max-w-2xl leading-relaxed">
           把德國留學所有行政程序拆解成可執行步驟。
@@ -114,7 +114,7 @@ export default function Edu() {
 
       <div className="pt-8 border-t border-border-subtle">
         <p className="text-xs text-content-muted text-center">
-          本站作戰手冊內容最後審核於 2026-07-11 ·
+          本站赴德指南內容最後審核於 2026-07-11 ·
           <br className="sm:hidden" />
           正式使用請至各官方連結查詢最新資訊
         </p>

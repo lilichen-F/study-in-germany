@@ -139,7 +139,7 @@ export default function OnboardingModal({ open, onClose, onStageSelected }: Prop
               好的，我們幫你安排好了
             </h2>
             <p className="text-sm text-content-secondary mb-4">
-              之後可以隨時從導覽列「作戰手冊」回到這裡，
+              之後可以隨時從導覽列「赴德指南」回到這裡，
               或於「我的資料」頁面重新設定你的階段。
             </p>
             <button

@@ -114,31 +114,24 @@ export default function VisaCardItem({
 
   return (
     <div className="border border-border-subtle rounded-lg p-3">
+      {/* Phase BR：標題列不再是展開觸發器（觸發器移至底部文字連結，
+          比照 WorkflowCard.tsx 的收合互動視覺樣式，見 BR.a），
+          僅保留卡片編號/標題/卡09 註記 + 收藏按鈕 */}
       <div className="flex items-start gap-2">
-        <button
-          type="button"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          className="flex-1 min-w-0 flex items-center justify-between gap-3 text-left"
-        >
-          <span className="flex items-center gap-2 min-w-0">
-            <span className="shrink-0 text-xs font-mono text-content-muted">
-              {card.number}
-            </span>
-            <span className="text-sm font-semibold text-content-primary truncate">
-              {card.title}
-            </span>
-            {card.notUpdatedThisRound && (
-              <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded
-                               bg-surface-hover text-content-muted">
-                本次未更新
-              </span>
-            )}
+        <div className="flex-1 min-w-0 flex items-center gap-2">
+          <span className="shrink-0 text-xs font-mono text-content-muted">
+            {card.number}
           </span>
-          <span aria-hidden className={`shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}>
-            ▾
+          <span className="text-sm font-semibold text-content-primary truncate">
+            {card.title}
           </span>
-        </button>
+          {card.notUpdatedThisRound && (
+            <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded
+                             bg-surface-hover text-content-muted">
+              本次未更新
+            </span>
+          )}
+        </div>
         <button
           type="button"
           onClick={onToggleBookmark}
@@ -173,8 +166,26 @@ export default function VisaCardItem({
         </ul>
       </div>
 
+      {/* Phase BR.a：收合觸發改為底部文字連結＋chevron，沿用
+          WorkflowCard.tsx CTA 視覺樣式（底部連結、text-brand-burgundy、
+          border-t 分隔線）；文案改「查看詳細條件」（非「查看詳細流程」，
+          14 卡無先後順序，避免「流程」用語誤導 BR.a）。僅借用互動樣式，
+          不套用 STEP 編號/必做標籤/完成後核取清單/標記完成按鈕等
+          綁定「有序步驟」語意的元素——與 BP.a 排除 WorkflowCard 整體
+          架構的理由一致，本次不推翻該決策 */}
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between mt-2 pt-2 border-t border-border-subtle
+                   text-sm text-brand-burgundy hover:text-brand-burgundy-hover transition-colors"
+      >
+        <span>{open ? '收起詳細' : '查看詳細條件'}</span>
+        <span aria-hidden className={`transition-transform ${open ? 'rotate-180' : ''}`}>▾</span>
+      </button>
+
       {open && (
-        <div className="mt-3 space-y-3 pt-3 border-t border-border-subtle">
+        <div className="mt-3 space-y-3">
           <Field label="適用對象">
             <p className="text-sm text-content-primary leading-relaxed">{card.eligibility}</p>
           </Field>
