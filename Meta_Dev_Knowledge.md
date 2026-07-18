@@ -2984,3 +2984,33 @@ Rundfunkbeitrag/Berlin Ausländerbehörde 等皆兩邊逐字比對確認），
 邏輯。**驗證方法**：牽涉多貨幣/多數字並列顯示的功能，瀏覽器測試時
 除了核對加總是否正確，也要核對「視覺呈現的分隔符號本身」是否全畫面
 一致，這是加總正確與否之外、容易被忽略的獨立檢查項目。
+
+## PAT-182 [CORE_IMMUTABLE]: 新增 onboarding 選項不對應既有 enum 值時，觸發既有訊號函式（Path A/B）但不得為了「湊一個值」偽造 enum 成員；驗證訊號正確性須直接查 localStorage key，不能只看畫面文字
+
+**背景**：Phase BT.b 在 `OnboardingModal.tsx` 新增「還不清楚，先看看適合的
+簽證」選項，指令書明確要求視為 Path A（積極參與)的一種，觸發
+`markOnboardingCompleted()`＋`onStageSelected?.()`，但不得觸發 Path B 的
+`markSkippedOnboardingBefore()`——此為 Phase AX/BA/BI 已建立、經多輪測試
+驗證過的雙路徑機制（PAT-161），錯誤實作會靜默破壞既有行為且不易從
+UI 表面發現。
+
+**教訓（新增 enum 外選項的正確作法）**：這個選項沒有對應的
+`PersonaStage`（僅 4 個既有值：visa_prep/landing/settled/leaving，語意
+皆為「已知階段」，「還不清楚」在概念上不屬於其中任何一個)，正確作法
+是**只觸發 Path A 的訊號函式**（`markOnboardingCompleted`／
+`onStageSelected`)，**不呼叫** `setLocalPersonaStage`／不寫入
+`profiles.persona_stage`——不得為了讓型別「看起來完整」而挑一個最接近
+的既有值硬塞（如強行歸類為 visa_prep)，那會讓後續讀取
+`persona_stage` 的邏輯（如首頁推薦模組排序)得到錯誤但看似合法的資料。
+`PersonaStage | null` 的 `null` 分支本身就是既有、合法的「未設定」
+狀態，直接留白即可，不需要新增第五個 enum 值來容納這個選項。
+
+**驗證方法論**：Path A/B 的正確性判斷不能只看「畫面上有沒有出現某個
+提示視窗」（本輪測試中曾在重複使用同一分頁多輪 reload 後，觀察到
+`post_onboarding_login_prompt_dismissed` 顯示為非預期的 `"true"`，此為
+PAT-177 已記錄的分頁殘留狀態偽象，換一個全新分頁重測後確認是假警報)，
+而應直接在瀏覽器 console 用 `localStorage.getItem(...)` 逐一核對三個
+關鍵 key 的實際值（`onboarding_completed`＝`"true"`、
+`has_skipped_onboarding_before`＝`null`、`persona_stage_local`＝`null`)，
+這是比對照畫面文字更直接、不受 UI 渲染時序影響的驗證方式，新增/修改
+任何觸及此雙路徑機制的功能都應採用同一套 key-by-key 核對法。

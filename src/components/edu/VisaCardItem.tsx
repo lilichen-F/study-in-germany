@@ -5,12 +5,13 @@ import { ConfidenceBadge, SummaryConfidenceBadge } from './ConfidenceBadge';
 import FinanceEstimator from './FinanceEstimator';
 
 /**
- * Phase BS：財力估算小工具嵌入範圍——僅依親/Bürgergeld 替代驗證類三卡
+ * Phase BS：財力估算小工具嵌入範圍——依親/Bürgergeld 替代驗證類卡片
  * （04 配偶/同性伴侶、05 依附未成年德籍子女、06 未成年子女依親父母）。
- * 卡03（結婚/同性伴侶登記簽證）原文件同樣用 Bürgergeld 估算，但 Lily
- * 本次指定範圍未包含卡03，本輪不主動擴及，明確記錄於報告，非遺漏。
+ * Phase BT.a：擴及卡03（結婚/同性伴侶登記簽證），原文件同樣用
+ * Bürgergeld 估算，Phase BS 曾明確排除、本輪依 Lily 指示納入，沿用
+ * 同一份共用元件與計算邏輯，未重寫。
  */
-const FINANCE_ESTIMATOR_CARD_IDS = new Set(['visa-04', 'visa-05', 'visa-06']);
+const FINANCE_ESTIMATOR_CARD_IDS = new Set(['visa-03', 'visa-04', 'visa-05', 'visa-06']);
 
 /** 沿用 ImmigrationGuide.tsx GuideBlockView 的 **bold** 行內解析邏輯 */
 function renderInline(text: string) {
@@ -74,16 +75,27 @@ export default function VisaCardItem({
   bookmarked,
   busy,
   onToggleBookmark,
+  recommended = false,
+  initialOpen = false,
 }: {
   card: VisaCard;
   bookmarked: boolean;
   busy: boolean;
   onToggleBookmark: () => void;
+  /** Phase BT.b：簽證配對問卷的推薦標記，僅加徽章，不改變卡片內容/排序邏輯 */
+  recommended?: boolean;
+  /** Phase BT.b：由問卷結果導向時自動展開推薦卡片，其餘卡片行為不受影響 */
+  initialOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initialOpen);
 
   return (
-    <div className="border border-border-subtle rounded-lg p-3">
+    <div
+      id={`visa-card-${card.id}`}
+      className={`border rounded-lg p-3 ${
+        recommended ? 'border-brand-gold ring-1 ring-brand-gold' : 'border-border-subtle'
+      }`}
+    >
       {/* Phase BR：標題列不再是展開觸發器（觸發器移至底部文字連結，
           比照 WorkflowCard.tsx 的收合互動視覺樣式，見 BR.a），
           僅保留卡片編號/標題/卡09 註記 + 收藏按鈕 */}
@@ -95,6 +107,12 @@ export default function VisaCardItem({
           <span className="text-sm font-semibold text-content-primary truncate">
             {card.title}
           </span>
+          {recommended && (
+            <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded
+                             bg-brand-gold text-white font-medium">
+              推薦
+            </span>
+          )}
           {card.notUpdatedThisRound && (
             <span className="shrink-0 text-[10px] px-1.5 py-0.5 rounded
                              bg-surface-hover text-content-muted">
