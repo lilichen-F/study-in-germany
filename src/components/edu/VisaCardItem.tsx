@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { IconBookmark, IconBookmarkFilled } from '@tabler/icons-react';
-import type { Confidence, ConfidenceEntry, VisaCard } from '../../data/edu/visaCards';
-import { CONFIDENCE_LABEL, CONFIDENCE_LABEL_SHORT } from '../../data/edu/visaCards';
+import type { ConfidenceEntry, VisaCard } from '../../data/edu/visaCards';
+import { ConfidenceBadge, SummaryConfidenceBadge } from './ConfidenceBadge';
+import FinanceEstimator from './FinanceEstimator';
+
+/**
+ * Phase BS：財力估算小工具嵌入範圍——僅依親/Bürgergeld 替代驗證類三卡
+ * （04 配偶/同性伴侶、05 依附未成年德籍子女、06 未成年子女依親父母）。
+ * 卡03（結婚/同性伴侶登記簽證）原文件同樣用 Bürgergeld 估算，但 Lily
+ * 本次指定範圍未包含卡03，本輪不主動擴及，明確記錄於報告，非遺漏。
+ */
+const FINANCE_ESTIMATOR_CARD_IDS = new Set(['visa-04', 'visa-05', 'visa-06']);
 
 /** 沿用 ImmigrationGuide.tsx GuideBlockView 的 **bold** 行內解析邏輯 */
 function renderInline(text: string) {
@@ -16,45 +25,6 @@ function renderInline(text: string) {
     }
     return <span key={i}>{part}</span>;
   });
-}
-
-const CONFIDENCE_STYLE: Record<Confidence, string> = {
-  official: 'bg-state-success/15 border-state-success text-state-success',
-  'alt-high': 'bg-brand-gold text-white border-brand-gold',
-  'alt-medium': 'bg-brand-gold-soft border-brand-gold/50 text-content-primary',
-  gap: 'bg-surface-hover border-border-subtle border-dashed text-content-muted',
-};
-
-const CONFIDENCE_ICON: Record<Confidence, string> = {
-  official: '✓',
-  'alt-high': '◐',
-  'alt-medium': '~',
-  gap: '?',
-};
-
-function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5
-                  rounded border shrink-0 ${CONFIDENCE_STYLE[confidence]}`}
-    >
-      <span aria-hidden>{CONFIDENCE_ICON[confidence]}</span>
-      {CONFIDENCE_LABEL[confidence]}
-    </span>
-  );
-}
-
-/** Phase BQ：摘要層精簡徽章，用短標籤但保留 Phase BP 建立的顏色/圖示視覺區隔（BQ.b/d） */
-function SummaryConfidenceBadge({ confidence }: { confidence: Confidence }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-0.5 text-[10px] font-medium px-1 py-0.5
-                  rounded border shrink-0 whitespace-nowrap ${CONFIDENCE_STYLE[confidence]}`}
-    >
-      <span aria-hidden>{CONFIDENCE_ICON[confidence]}</span>
-      {CONFIDENCE_LABEL_SHORT[confidence]}
-    </span>
-  );
 }
 
 function FinanceEntry({ entry }: { entry: ConfidenceEntry }) {
@@ -205,6 +175,13 @@ export default function VisaCardItem({
                 <FinanceEntry key={i} entry={entry} />
               ))}
             </div>
+            {/* Phase BS：財力估算小工具，僅卡04/05/06（依親/Bürgergeld
+                替代驗證類）嵌入，指令書明確排除卡03，範圍界線見報告 */}
+            {FINANCE_ESTIMATOR_CARD_IDS.has(card.id) && (
+              <div className="mt-2">
+                <FinanceEstimator />
+              </div>
+            )}
           </Field>
 
           <Field label="工作權限">
