@@ -3014,3 +3014,21 @@ PAT-177 已記錄的分頁殘留狀態偽象，換一個全新分頁重測後確
 `has_skipped_onboarding_before`＝`null`、`persona_stage_local`＝`null`)，
 這是比對照畫面文字更直接、不受 UI 渲染時序影響的驗證方式，新增/修改
 任何觸及此雙路徑機制的功能都應採用同一套 key-by-key 核對法。
+
+## 備註：Phase BU 治理知識萃取，已歸檔至 web-scaffold-toolkit
+
+Phase BU（2026-07-18）將本檔 182 條 PAT 記錄中可跨專案複用的通則，
+萃取為 A–G 七大類（終端機/Git 操作紀律、驗證方法論、資料庫/Schema
+治理、內容/資料治理、架構模式、產品/UX 治理、治理流程本身的紀律），
+寫入獨立倉庫 `web-scaffold-toolkit` 的 `GOVERNANCE.md` §8（取代原本
+較簡略的 5 條版本，既有詳細事故紀錄予以保留、按新分類重新歸位）。
+完整內容見該倉庫 commit `257f356`，本檔不重複貼一次全文——本專案
+特定的技術決策（Tailwind v4 語法、Supabase RLS 具體欄位等）仍留在
+本檔，只有跨專案通則被萃取出去。
+
+**追加備註**：另新增 `skills/token-efficient-governance/SKILL.md`
+（同倉庫 commit `7492171`），萃取 Phase AS–BU 的 token 消耗模式為
+7 條效率原則（驗證深度分級、大檔案定位讀取、SQL 單次 UNION ALL、
+驗證方法本身的驗證、報告篇幅比例縮放、假 bug 排查標準化、小改動
+批次處理），並明確列出不可省略清單（多路徑實測/RLS 驗證/零虛構
+查證/敏感狀態機判斷/人類合併閘門）。同樣不在本檔重複全文。
