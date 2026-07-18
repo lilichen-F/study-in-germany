@@ -78,6 +78,24 @@ export default function OnboardingModal({ open, onClose, onStageSelected }: Prop
     }
   };
 
+  /**
+   * Phase BT.b：「還不清楚，先看看適合的簽證」——視為 Path A 的一種
+   * （積極參與,非略過)：呼叫 markOnboardingCompleted（非
+   * markSkippedOnboardingBefore)+ onStageSelected（觸發既有
+   * PostOnboardingLoginPrompt 一次性提示,與選定階段完全同一組訊號),
+   * 但沒有對應的 PersonaStage 可設定,故不呼叫 setLocalPersonaStage／
+   * 不寫入 profiles.persona_stage,直接導向簽證配對問卷（獨立元件,
+   * 見 VisaMatcherQuiz.tsx),不經過既有「closing」步驟的階段確認畫面
+   * （該畫面文案「好的,我們幫你安排好了」是針對選定具體階段設計,問卷
+   * 才是這個選項自然的下一步)。
+   */
+  const handleStartQuiz = () => {
+    markOnboardingCompleted();
+    onClose();
+    onStageSelected?.();
+    navigate('/edu/visa-matcher');
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center
                     bg-black/40 backdrop-blur-sm" onClick={handleSkipClose}>
@@ -122,6 +140,17 @@ export default function OnboardingModal({ open, onClose, onStageSelected }: Prop
                   </div>
                 </button>
               ))}
+              {/* Phase BT.b：獨立於既有 PersonaStage 按鈕之外，但視覺樣式
+                  一致（積極參與選項，非略過），與下方「跳過」連結明確區隔 */}
+              <button
+                type="button"
+                onClick={handleStartQuiz}
+                className="w-full text-left p-3 rounded-lg border border-border-subtle
+                           hover:border-brand-gold transition-colors"
+              >
+                <div className="text-sm font-medium text-content-primary">還不清楚</div>
+                <div className="text-xs text-content-muted mt-0.5">先看看適合我的簽證有哪些</div>
+              </button>
             </div>
             <button
               type="button"

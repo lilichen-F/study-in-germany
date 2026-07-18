@@ -17,6 +17,7 @@ import Faq from './pages/Faq';
 import Edu from './pages/Edu';
 import EduTopic from './pages/EduTopic';
 import VisaSelector from './pages/VisaSelector';
+import VisaMatcher from './pages/VisaMatcher';
 import Recommendation from './pages/Recommendation';
 import RecommendationCategory from './pages/RecommendationCategory';
 import Support from './pages/Support';
@@ -53,6 +54,7 @@ export default function App() {
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/edu" element={<Edu />} />
                 <Route path="/edu/visa-selector" element={<VisaSelector />} />
+                <Route path="/edu/visa-matcher" element={<VisaMatcher />} />
                 <Route path="/edu/:slug" element={<EduTopic />} />
                 <Route path="/recommendation" element={<Recommendation />} />
                 <Route path="/recommendation/:slug" element={<RecommendationCategory />} />

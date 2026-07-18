@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { EduTopicIcon } from '../assets/icons/edu';
 import {
   VISA_CARDS,
@@ -17,9 +18,29 @@ import { useVisaBookmarks } from '../lib/useVisaBookmarks';
  * 的 WorkflowTimeline/WorkflowCard 渲染路徑（見 Meta_Dev_Knowledge.md
  * BP.a 決策），改用 ImmigrationGuide.tsx 的 button+chevron+useState
  * 展開卡片模式，格式類型統一指視覺語言一致，非套用步驟總覽圓點。
+ *
+ * Phase BT.b：接受 ?recommend=visa-01,visa-02 查詢參數（來自簽證配對
+ * 問卷結果），僅加「推薦」徽章＋自動展開＋捲動至第一張，不改變卡片
+ * 排序、不隱藏/降權其餘卡片——問卷是建議，不是篩選門檻（Lily 明確要求）。
  */
 export default function VisaSelector() {
   const { bookmarkedIds, loading, busyId, toggleBookmark } = useVisaBookmarks();
+  const [searchParams] = useSearchParams();
+
+  const recommendedIds = useMemo(() => {
+    const raw = searchParams.get('recommend');
+    if (!raw) return new Set<string>();
+    return new Set(raw.split(',').map((s) => s.trim()).filter(Boolean));
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (recommendedIds.size === 0) return;
+    const firstId = VISA_CARDS.find((c) => recommendedIds.has(c.id))?.id;
+    if (!firstId) return;
+    const el = document.getElementById(`visa-card-${firstId}`);
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sortedCards = loading
     ? VISA_CARDS
@@ -69,6 +90,8 @@ export default function VisaSelector() {
             bookmarked={bookmarkedIds.has(card.id)}
             busy={busyId === card.id}
             onToggleBookmark={() => toggleBookmark(card.id)}
+            recommended={recommendedIds.has(card.id)}
+            initialOpen={recommendedIds.has(card.id)}
           />
         ))}
       </section>
