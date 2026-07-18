@@ -84,7 +84,7 @@ export default function Header() {
                                 bg-surface-card shadow-lg p-1.5">
                   <NavLink to="/recommendation" className={dropdownLinkClass}>資源</NavLink>
                   <NavLink to="/schools" className={dropdownLinkClass}>語校</NavLink>
-                  <NavLink to="/edu" className={dropdownLinkClass}>作戰手冊</NavLink>
+                  <NavLink to="/edu" className={dropdownLinkClass}>赴德指南</NavLink>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function Header() {
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                作戰手冊
+                赴德指南
               </NavLink>
 
               <div className="my-2 border-t border-border-subtle" />

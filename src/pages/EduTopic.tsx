@@ -11,6 +11,7 @@ import { exitWorkflow } from '../data/edu/exit';
 import type { WorkflowTopic } from '../data/edu/workflow';
 import WorkflowTimeline from '../components/edu/WorkflowTimeline';
 import WorkflowCard from '../components/edu/WorkflowCard';
+import GuideResourceShortcuts from '../components/edu/GuideResourceShortcuts';
 import { useWorkflowProgressContext } from '../lib/WorkflowProgressContext';
 import { getStepStatus } from '../lib/workflowProgress';
 
@@ -53,7 +54,7 @@ export default function EduTopic() {
     return (
       <div className="py-16 text-center text-content-secondary">
         找不到這個主題。
-        <Link to="/edu" className="ml-2">回作戰手冊</Link>
+        <Link to="/edu" className="ml-2">回赴德指南</Link>
       </div>
     );
   }
@@ -71,7 +72,7 @@ export default function EduTopic() {
       {/* Breadcrumb */}
       <div>
         <Link to="/edu" className="text-xs no-underline">
-          ← 回作戰手冊
+          ← 回赴德指南
         </Link>
       </div>
 
@@ -92,6 +93,9 @@ export default function EduTopic() {
           </p>
         </div>
       </header>
+
+      {/* Phase BR.d：資源捷徑入口，查無對應板塊不渲染任何內容 */}
+      <GuideResourceShortcuts guideSlug={topic.slug} />
 
       {/* 流程總覽 */}
       <section aria-label="流程總覽">

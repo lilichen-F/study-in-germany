@@ -64,7 +64,7 @@ const PORTAL_ITEMS = [
     Icon: IconSpeakerphone,
   },
   {
-    to: '/edu', title: '作戰手冊', description: '簽證、落地、延簽、獎學金、政策',
+    to: '/edu', title: '赴德指南', description: '簽證、落地、延簽、獎學金、政策',
     Icon: IconNotebook,
   },
   {

@@ -178,6 +178,7 @@
 | PAT-177 | 方法論 | 長 session 中反覆重用同一 preview 分頁做互動測試，累積的點擊/HMR 殘留狀態可能偽裝成「頁面預設已展開」等假 bug（每次觀察對象不同、無法穩定重現）；對關鍵「載入預設狀態」驗證項目應開全新分頁（tabs_create）做最終定案查核 |
 | PAT-178 | 方法論 | Supabase MCP execute_sql 走特權連線，SET LOCAL role+request.jwt.claims 無法可靠模擬 anon/他人身份邊界；純等式型 RLS policy（auth.uid()=user_id）直接用 pg_policies 檢視定義即足夠，不需模擬跨身份請求；牽涉真實 Google OAuth 的端對端流程無法在沙盒瀏覽器完成，須以 DB 層讀寫往返+程式碼路徑檢視替代並誠實記錄限制 |
 | PAT-179 | CORE_IMMUTABLE | 套用「結論先行＋精簡列點」三層格式（PAT-152）精簡帶獨立信心分級徽章的內容（如簽證卡財力欄）時，只能精簡敘述文字，不得連同視覺信號系統一起精簡掉；須為徽章建立同色系同圖示、僅文字縮短的精簡版（CONFIDENCE_LABEL_SHORT），摘要層仍可用顏色/圖示辨識信心層級，完整說明留在展開區 |
+| PAT-180 | 方法論 | 建立跨內容域對照表（赴德指南板塊↔資源分類）須以「兩邊具體引用同一實體」（同品牌/同機關官網連結）為依據，不得只憑表面類別相似（如都叫「政府機關」）；德國行政體系 Bürgeramt(戶籍)/Ausländerbehörde(居留)/Finanzamt(稅務) 職權不同易誤判，找不到具體引用重疊一律列為查無對應 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
