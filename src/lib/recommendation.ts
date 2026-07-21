@@ -116,6 +116,9 @@ export interface Recommendation {
   // Phase BJ：費用維度，僅原文明確提及費用性質者標註 free/paid，
   // 其餘一律 unknown（不得臆測），見 PAT-171
   fee?: GermanLearningFee;
+  // Phase BX：實體教材（紙本書）旗標。與 resource_status（運作狀態）
+  // 屬不同語意維度，故獨立欄位而非重用 resource_status，見 PAT-165/PAT-164。
+  is_physical?: boolean;
 
   // Phase BG：DACH 實習/求職分類欄位（僅 category === 'career' 使用）。
   // 欄位名稱刻意與 housing/german_learning 已用過的 fee_status/target/
@@ -216,12 +219,18 @@ export const GERMAN_LEARNING_AUDIENCE_LABEL: Record<GermanLearningAudience, stri
   child: '兒童',
 };
 
-/** Phase BJ：費用維度，僅原文明確提及費用性質者標註，見 PAT-171 */
-export type GermanLearningFee = 'free' | 'paid' | 'unknown';
+/**
+ * Phase BJ：費用維度，僅原文明確提及費用性質者標註，見 PAT-171。
+ * Phase BX：新增 mixed（基本免費+進階/會員/報名費另計）；新增 purchase
+ * （一次性購買，非訂閱/使用費，僅少數實體教材適用，見 BX.b 決策）。
+ */
+export type GermanLearningFee = 'free' | 'mixed' | 'paid' | 'unknown' | 'purchase';
 export const GERMAN_LEARNING_FEE_LABEL: Record<GermanLearningFee, string> = {
   free: '免費',
+  mixed: '混合',
   paid: '付費',
   unknown: '未標示',
+  purchase: '需購買',
 };
 
 /**

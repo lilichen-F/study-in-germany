@@ -698,5 +698,105 @@
     "resource_status": "active",
     "audience": ["exam_prep", "academic", "intermediate", "advanced"],
     "fee": "unknown"
+  },
+  {
+    "id": "gl-viki",
+    "category": "german_learning",
+    "title": "Viki.com",
+    "summary": "亞洲戲劇線上串流平台，多語字幕（含德語）可作為閱讀／聽力輔助素材",
+    "points": [
+      "費用：免費（含廣告）＋ Viki Pass 付費升級（去廣告／高畫質／可離線）",
+      "子板塊：閱讀、聽力"
+    ],
+    "detail": "屬泛用媒體沉浸手段，非德語學習專用工具，建議德語已達一定程度後使用。",
+    "tags": ["媒體影音"],
+    "url": "https://www.viki.com/",
+    "updated_at": "2026-07",
+    "board": ["reading", "listening"],
+    "resource_status": "active",
+    "fee": "mixed"
+  },
+  {
+    "id": "gl-allango",
+    "category": "german_learning",
+    "title": "allango",
+    "summary": "Klett Sprachen 官方繼任學習平台，取代已於 2024-08-31 停用的 Klett Augmented App",
+    "points": [
+      "原 Klett Augmented App 已於 2024-08-31 停用，allango 為官方後繼平台",
+      "免費存取",
+      "子板塊：綜合"
+    ],
+    "detail": "Génération pro／Freeway／瑞士德語三套教材的媒體資源並未搬入 allango，使用這三套教材的讀者仍需透過原有管道取得對應音檔／影音，請勿誤以為 allango 已涵蓋全部舊教材內容。",
+    "tags": ["官方平台"],
+    "url": "https://www.klett-sprachen.de/digitales/allango/c-4499",
+    "updated_at": "2026-07",
+    "board": ["general"],
+    "resource_status": "active",
+    "fee": "free"
+  },
+  {
+    "id": "gl-uebungsgrammatik-grundstufe",
+    "category": "german_learning",
+    "title": "Übungsgrammatik für die Grundstufe（Hueber）",
+    "summary": "Hueber 出版社文法練習書，適合 A1–B1 程度，獨立於任何主教材之外使用",
+    "points": [
+      "等級：A1–B1",
+      "實體教材，需另行購買",
+      "適合：自學者"
+    ],
+    "detail": "可搭配任何主教材使用；書內含解答，另提供免費線上測驗。",
+    "tags": ["實體書"],
+    "url": "https://shop.hueber.de/de/reihen-und-lehrwerke/deutsch-a-aoebungsgrammatik-fa-r-die-grundstufe-aktuell.html",
+    "updated_at": "2026-07",
+    "board": ["grammar"],
+    "level_label": "A1–B1",
+    "level": ["A1", "A2", "B1"],
+    "resource_status": "active",
+    "audience": ["self_learner", "beginner"],
+    "fee": "purchase",
+    "is_physical": true
+  },
+  {
+    "id": "gl-uebungsgrammatik-mittelstufe",
+    "category": "german_learning",
+    "title": "Übungsgrammatik für die Mittelstufe（Hueber）",
+    "summary": "Hueber 出版社文法練習書，適合 B1–C1 程度，可作為考證文法複習教材",
+    "points": [
+      "等級：B1–C1",
+      "實體教材，需另行購買",
+      "適合：自學者、考證備考"
+    ],
+    "detail": "可作為 Goethe B2/C1、TestDaF、telc B2/C1、ÖSD B2/C1 等考試的文法複習教材；書內含解答，另提供免費線上測驗。",
+    "tags": ["實體書"],
+    "url": "https://shop.hueber.de/de/reihen-und-lehrwerke/deutsch-a-aoebungsgrammatik-fa-r-die-mittelstufe-a-aktuell.html",
+    "updated_at": "2026-07",
+    "board": ["grammar"],
+    "level_label": "B1–C1",
+    "level": ["B1", "B2", "C1"],
+    "resource_status": "active",
+    "audience": ["self_learner", "exam_prep", "intermediate", "advanced"],
+    "fee": "purchase",
+    "is_physical": true
+  },
+  {
+    "id": "gl-deutsches-geplapper",
+    "category": "german_learning",
+    "title": "Deutsches Geplapper – Echtes Deutsch lernen",
+    "summary": "德語 Podcast，主持人以日常口語對話呈現真實德語，適合中高級聽力訓練",
+    "points": [
+      "等級：B2、C1",
+      "適合：中級、高級",
+      "⚠ 主持人另售付費課程，Podcast 本身與官網基礎資源可免費使用"
+    ],
+    "detail": "每週更新，官網另提供逐字稿、詞彙與文法練習等輔助教材；主持人另有獨立銷售的付費課程，屬「混合」費用性質，非 Podcast 本身收費。子板塊（聽力）依資源型態（Podcast）歸類，來源文件未逐項標註子板塊，屬本輪判斷。",
+    "tags": ["Podcast"],
+    "url": "https://www.naturalfluentgerman.com/",
+    "updated_at": "2026-07",
+    "board": ["listening"],
+    "level_label": "B2、C1",
+    "level": ["B2", "C1"],
+    "resource_status": "active",
+    "audience": ["intermediate", "advanced"],
+    "fee": "mixed"
   }
 ]

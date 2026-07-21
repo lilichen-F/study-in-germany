@@ -210,6 +210,12 @@ export default function GermanLearningBoard({ items }: Props) {
                 </a>
               </div>
 
+              {item.is_physical && (
+                <span className="inline-block text-xs px-2 py-0.5 rounded font-medium bg-brand-burgundy-surface text-brand-burgundy">
+                  📘 實體教材
+                </span>
+              )}
+
               {item.resource_status && item.resource_status !== 'active' && (
                 <span
                   className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${STATUS_BADGE_CLASS[item.resource_status]}`}

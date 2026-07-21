@@ -181,6 +181,7 @@
 | PAT-180 | 方法論 | 建立跨內容域對照表（赴德指南板塊↔資源分類）須以「兩邊具體引用同一實體」（同品牌/同機關官網連結）為依據，不得只憑表面類別相似（如都叫「政府機關」）；德國行政體系 Bürgeramt(戶籍)/Ausländerbehörde(居留)/Finanzamt(稅務) 職權不同易誤判，找不到具體引用重疊一律列為查無對應 |
 | PAT-181 | CORE_IMMUTABLE | 同一結果區塊內顯示多種貨幣/數字時，toLocaleString 千分位分隔符須全畫面統一一套慣例，不得依貨幣「原生語系」各自套用（如歐元用 de-DE 句點分隔、台幣用 zh-TW 逗號分隔，並排顯示會誤導慣用逗號分隔的台灣使用者）；判斷依據是「實際閱讀畫面的使用者慣用哪種書寫慣例」，非數字所屬貨幣的原生語系 |
 | PAT-182 | CORE_IMMUTABLE | 新增 onboarding 選項不對應既有 PersonaStage enum 值時，只觸發 Path A 訊號函式（markOnboardingCompleted/onStageSelected），不得為湊值硬塞最接近的既有 stage、不呼叫 setLocalPersonaStage（null 就是合法「未設定」狀態）；驗證 Path A/B 正確性須直接 localStorage.getItem 核對三個 key 實際值，不能只看畫面文字（分頁殘留狀態可能造成假警報，見 PAT-177） |
+| PAT-183 | 方法論 | 指令書附件與敘述不符時須逐項核對落差範圍再用 AskUserQuestion 確認，不可假設附件涵蓋敘述；必填欄位（如 url）缺值但屬客觀可查證公開事實（官方網址等）時，治理端 WebSearch 查證後填入不算違反 PAT-171 零虛構原則，僅主觀/未公開細節才需標示未確認；敘述完全未點名、查無線索的項目仍應誠實記錄缺失，不得為湊指令書聲稱的筆數而杜撰條目 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
