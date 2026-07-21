@@ -183,6 +183,7 @@
 | PAT-182 | CORE_IMMUTABLE | 新增 onboarding 選項不對應既有 PersonaStage enum 值時，只觸發 Path A 訊號函式（markOnboardingCompleted/onStageSelected），不得為湊值硬塞最接近的既有 stage、不呼叫 setLocalPersonaStage（null 就是合法「未設定」狀態）；驗證 Path A/B 正確性須直接 localStorage.getItem 核對三個 key 實際值，不能只看畫面文字（分頁殘留狀態可能造成假警報，見 PAT-177） |
 | PAT-183 | 方法論 | 指令書附件與敘述不符時須逐項核對落差範圍再用 AskUserQuestion 確認，不可假設附件涵蓋敘述；必填欄位（如 url）缺值但屬客觀可查證公開事實（官方網址等）時，治理端 WebSearch 查證後填入不算違反 PAT-171 零虛構原則，僅主觀/未公開細節才需標示未確認；敘述完全未點名、查無線索的項目仍應誠實記錄缺失，不得為湊指令書聲稱的筆數而杜撰條目 |
 | PAT-184 | 方法論 | 來源文件自稱「已去重」不可直接信任，須以現有資料庫實際內容（URL 為主、標題為輔）逐筆機械比對覆核，不受文件自身盤點範圍所限（Phase BY 實際發現 45 筆重複，文件自稱僅排除 27 項）；文件將既有資料重新歸類到新設分類，屬文件自身整理結果，非指令書交付任務，不應在同一輪順帶連動修改既有資料欄位，應列為獨立待決定事項回報 |
+| PAT-185 | DEPRECATE_MARK | Phase CA 將 german_learning.json 全數 36 筆「未標示」費用改標「混合」，是 Lily 知情、一次性授權推翻 PAT-171 零臆測原則的例外決定，非新通則；篩選 UI 費用選項改為依實際資料動態產生（非靜態列舉 enum），該值無資料使用時選項自動消失、未來重新出現也自動恢復；下次證據不足仍預設標「未標示」，除非再次明確授權覆蓋 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

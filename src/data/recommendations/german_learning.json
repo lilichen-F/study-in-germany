@@ -13,7 +13,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["self_learner", "exam_prep", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-dw-learn-german",
@@ -29,7 +29,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-deutsch-info",
@@ -46,7 +46,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "new_immigrant", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-duolingo",
@@ -62,7 +62,7 @@
     "level": ["A1", "A2"],
     "resource_status": "active",
     "audience": ["beginner"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-scu-deutsch",
@@ -79,7 +79,7 @@
     "level": ["A1", "B1", "B2"],
     "resource_status": "outdated",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-busuu",
@@ -95,7 +95,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-lingoda",
@@ -127,7 +127,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-lerngrammatik",
@@ -144,7 +144,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-mein-deutschbuch",
@@ -160,7 +160,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "teacher", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-deutschlernerblog",
@@ -177,7 +177,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["self_learner", "teacher", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-leo",
@@ -193,7 +193,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-dwds",
@@ -209,7 +209,7 @@
     "level": ["B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["academic", "self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-pons",
@@ -225,7 +225,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-duden",
@@ -241,7 +241,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-wortschatz-leipzig",
@@ -257,7 +257,7 @@
     "level": ["B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["academic", "self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-deepl",
@@ -273,7 +273,7 @@
     "level": ["A2", "B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-languagetool",
@@ -289,7 +289,7 @@
     "level": ["A2", "B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-vorleser",
@@ -322,7 +322,7 @@
     "level": ["B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-zeit-online",
@@ -338,7 +338,7 @@
     "level": ["B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-euronews-de",
@@ -354,7 +354,7 @@
     "level": ["A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-kindernetz",
@@ -370,7 +370,7 @@
     "level": ["A1", "A2"],
     "resource_status": "active",
     "audience": ["beginner", "child"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-grimmstories",
@@ -386,7 +386,7 @@
     "level": ["A1", "A2", "B1"],
     "resource_status": "active",
     "audience": ["self_learner", "child", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-languageguide",
@@ -402,7 +402,7 @@
     "level": ["A1", "A2"],
     "resource_status": "active",
     "audience": ["beginner"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-easy-german",
@@ -418,7 +418,7 @@
     "level": ["A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-slow-german",
@@ -434,7 +434,7 @@
     "level": ["A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-anja",
@@ -450,7 +450,7 @@
     "level": ["A1", "A2"],
     "resource_status": "active",
     "audience": ["beginner"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-deutsch-dianxin",
@@ -467,7 +467,7 @@
     "level": ["A1", "A2", "B1"],
     "resource_status": "discontinued_usable",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-anki",
@@ -483,7 +483,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-memrise",
@@ -499,7 +499,7 @@
     "level": ["A1", "A2", "B1"],
     "resource_status": "active",
     "audience": ["beginner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-hinative",
@@ -516,7 +516,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-conversationexchange",
@@ -532,7 +532,7 @@
     "level": ["A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-italki",
@@ -564,7 +564,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-tandem-app",
@@ -580,7 +580,7 @@
     "level": ["A1", "A2", "B1", "B2"],
     "resource_status": "active",
     "audience": ["self_learner", "intermediate"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-amazingtalker",
@@ -663,7 +663,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["exam_prep", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-osd",
@@ -680,7 +680,7 @@
     "level": ["A1", "A2", "B1", "B2", "C1", "C2"],
     "resource_status": "active",
     "audience": ["exam_prep", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-testdaf",
@@ -697,7 +697,7 @@
     "level": ["B2", "C1"],
     "resource_status": "active",
     "audience": ["exam_prep", "academic", "intermediate", "advanced"],
-    "fee": "unknown"
+    "fee": "mixed"
   },
   {
     "id": "gl-viki",
