@@ -231,6 +231,11 @@ export const GERMAN_LEARNING_AUDIENCE_LABEL: Record<GermanLearningAudience, stri
  * Phase BJ：費用維度，僅原文明確提及費用性質者標註，見 PAT-171。
  * Phase BX：新增 mixed（基本免費+進階/會員/報名費另計）；新增 purchase
  * （一次性購買，非訂閱/使用費，僅少數實體教材適用，見 BX.b 決策）。
+ * Phase CA：unknown 型別本身保留（見 PAT-185，未來批次證據不足時仍預設
+ * 標為 unknown，本次全數改標 mixed 是一次性例外，非新通則）；現行 81 筆
+ * 已無任何資料使用 unknown，篩選 UI 選項改為依實際資料動態產生
+ * （見 GermanLearningBoard.tsx 的 feeOptions），故此處不需再提供
+ * 靜態順序陣列給 UI 使用。
  */
 export type GermanLearningFee = 'free' | 'mixed' | 'paid' | 'unknown' | 'purchase';
 export const GERMAN_LEARNING_FEE_LABEL: Record<GermanLearningFee, string> = {
@@ -240,6 +245,8 @@ export const GERMAN_LEARNING_FEE_LABEL: Record<GermanLearningFee, string> = {
   unknown: '未標示',
   purchase: '需購買',
 };
+/** 篩選 UI 顯示順序；不代表目前有資料，實際選項由使用中的值動態過濾產生 */
+export const GERMAN_LEARNING_FEE_ORDER: GermanLearningFee[] = ['free', 'mixed', 'paid', 'purchase', 'unknown'];
 
 /**
  * Phase BG：DACH 實習/求職分類欄位。子板塊僅 2 個（實習/求職），資料量

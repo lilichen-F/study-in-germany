@@ -7,18 +7,13 @@ import type {
 import {
   GERMAN_LEARNING_BOARD_LABEL, GERMAN_LEARNING_BOARD_ORDER, GERMAN_LEARNING_LEVEL_ORDER,
   GERMAN_LEARNING_STATUS_LABEL, GERMAN_LEARNING_AUDIENCE_LABEL, GERMAN_LEARNING_FEE_LABEL,
+  GERMAN_LEARNING_FEE_ORDER,
 } from '../lib/recommendation';
 import { useCardRatingsMap } from '../lib/useCardRatings';
 import CardRating from './CardRating';
 
 type LevelFilter = 'all' | GermanLearningLevel;
 type FeeFilter = 'all' | GermanLearningFee;
-/**
- * Phase BJ：費用篩選選項須含「未標示」且不得被預設值悄悄篩掉——'all'
- * 為「不篩選」，顯示全部（含 unknown）；使用者也可主動選「未標示」單獨
- * 查看，兩者皆不會讓 unknown 資源從畫面消失，見 PAT-171。
- */
-const FEE_OPTIONS = Object.keys(GERMAN_LEARNING_FEE_LABEL) as GermanLearningFee[];
 
 /**
  * Phase BF：新增「全部」虛擬子板塊，值為 'all'——與 GermanLearningLevel
@@ -101,6 +96,17 @@ export default function GermanLearningBoard({ items }: Props) {
     setAudienceFilter((prev) => (prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]));
   };
 
+  /**
+   * Phase CA：費用篩選選項改為依 items 實際使用的值動態產生，而非列出
+   * enum 全部靜態值——避免「未標示」在零資料使用時仍留著一個空選項。
+   * 若未來批次又出現 unknown（見 PAT-185，這是預設行為非新例外），
+   * 選項會自動重新出現，不需要手動改回。
+   */
+  const feeOptions = useMemo(
+    () => GERMAN_LEARNING_FEE_ORDER.filter((f) => items.some((item) => item.fee === f)),
+    [items],
+  );
+
   const visibleItems = useMemo(() => {
     // 'all' 直接疊代 items 本身（每筆資源在陣列中只存在一次，不論 board
     // 陣列包含幾個子板塊標籤），故聯集顯示天然不會重複，不需額外去重邏輯
@@ -135,8 +141,8 @@ export default function GermanLearningBoard({ items }: Props) {
       </div>
 
       {/* 篩選列：等級/費用單選下拉（比照 Schools.tsx），適合族群多選 chip（比照 Phase BD 找房頁先例）。
-          Phase BJ 新增費用維度：「任意」預設值不篩選，unknown 資源正常顯示不被悄悄隱藏；
-          「未標示」為明確選項，使用者可主動篩選查看（見 PAT-171） */}
+          Phase BJ 新增費用維度：「任意」預設值不篩選；Phase CA 起費用選項改為
+          依實際資料動態產生（見 feeOptions），非固定列出 enum 全部值 */}
       <div className="flex flex-wrap items-center gap-3">
         <select
           value={levelFilter}
@@ -161,7 +167,7 @@ export default function GermanLearningBoard({ items }: Props) {
                      hover:border-brand-gold transition-colors"
         >
           <option value="all">費用：任意</option>
-          {FEE_OPTIONS.map((f) => (
+          {feeOptions.map((f) => (
             <option key={f} value={f}>{GERMAN_LEARNING_FEE_LABEL[f]}</option>
           ))}
         </select>
