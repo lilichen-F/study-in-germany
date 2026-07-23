@@ -110,13 +110,16 @@ export default function GermanLearningBoard({ items }: Props) {
   const visibleItems = useMemo(() => {
     // 'all' 直接疊代 items 本身（每筆資源在陣列中只存在一次，不論 board
     // 陣列包含幾個子板塊標籤），故聯集顯示天然不會重複，不需額外去重邏輯
-    return items.filter((item) => {
+    const filtered = items.filter((item) => {
       if (board !== 'all' && !item.board?.includes(board)) return false;
       if (levelFilter !== 'all' && !item.level?.includes(levelFilter)) return false;
       if (feeFilter !== 'all' && item.fee !== feeFilter) return false;
       if (audienceFilter.length > 0 && !audienceFilter.some((a) => item.audience?.includes(a))) return false;
       return true;
     });
+    // Phase CB：卡片依標題 locale-aware 排序（中英混合，見 PAT-186），
+    // 非固定沿用資料檔的插入順序。
+    return [...filtered].sort((a, b) => a.title.localeCompare(b.title, 'zh-Hant'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, board, levelFilter, feeFilter, audienceFilter]);
 

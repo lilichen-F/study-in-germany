@@ -70,7 +70,7 @@ export default function CareerBoard({ items }: Props) {
   };
 
   const visibleItems = useMemo(() => {
-    return items.filter((item) => {
+    const filtered = items.filter((item) => {
       if (!item.career_type?.includes(type)) return false;
       if (feeFilter !== 'all' && !item.career_fee?.includes(feeFilter)) return false;
       if (modeFilter !== 'all' && !item.career_mode?.includes(modeFilter)) return false;
@@ -78,6 +78,8 @@ export default function CareerBoard({ items }: Props) {
       if (audienceFilter.length > 0 && !audienceFilter.some((a) => item.career_audience?.includes(a))) return false;
       return true;
     });
+    // Phase CB：卡片依標題 locale-aware 排序（中英混合，見 PAT-186）
+    return [...filtered].sort((a, b) => a.title.localeCompare(b.title, 'zh-Hant'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, type, feeFilter, modeFilter, countryFilter, audienceFilter]);
 

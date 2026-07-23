@@ -7,6 +7,7 @@ import {
   IconStar,
   IconMessageQuestion,
   IconUserCircle,
+  IconDeviceGamepad2,
 } from '@tabler/icons-react';
 import HeroSection from '../components/HeroSection';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
@@ -53,6 +54,10 @@ const EDU_TOPICS_MAP: Record<string, WorkflowTopic> = {
  * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
  * 統一固定為 text-brand-burgundy，脫離 module-edu/module-recommendation 等
  * 只該用於各自頁面內部語境的變數（PAT-119）。
+ * Phase CB：新增外部連結卡片（行前生存挑戰），沿用 `href` 欄位區分內部
+ * 路由（`to`，站內 react-router 導覽）與外部連結（`href`，需
+ * target="_blank" + rel="noopener noreferrer"，比照既有外部連結慣例），
+ * 兩者互斥，渲染時依欄位存在與否決定用 `<Link>` 或 `<a>`。
  */
 const PORTAL_ITEMS = [
   {
@@ -78,6 +83,11 @@ const PORTAL_ITEMS = [
   {
     to: '/board?view=mine&sub=posts', title: '我的資料', description: '管理自己的評價與貼文',
     Icon: IconUserCircle,
+  },
+  {
+    href: 'https://game.stayinde.de/', title: '行前生存挑戰',
+    description: '免費遊戲，完成後有付費電子書購買選項',
+    Icon: IconDeviceGamepad2,
   },
 ];
 
@@ -212,32 +222,47 @@ export default function Home() {
       <section>
         <div className="text-xs text-content-muted mb-4 uppercase tracking-wider">Portal</div>
         <div className="flex flex-col gap-2 sm:grid sm:grid-cols-3 lg:grid-cols-4 sm:gap-3">
-          {PORTAL_ITEMS.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle
-                         bg-surface-card hover:border-border-strong transition-all duration-150
-                         no-underline
-                         sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0
-                         sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5"
-            >
-              <div className="text-brand-burgundy w-12 h-12 shrink-0 flex items-center justify-center
-                              sm:w-16 sm:h-16 lg:w-20 lg:h-20 sm:mb-2">
-                <item.Icon className="w-full h-full" stroke={1.5} />
-              </div>
+          {PORTAL_ITEMS.map((item) => {
+            const cardClassName = "flex items-center gap-3 p-3 rounded-lg border border-border-subtle "
+              + "bg-surface-card hover:border-border-strong transition-all duration-150 "
+              + "no-underline "
+              + "sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0 "
+              + "sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5";
+            const content = (
+              <>
+                <div className="text-brand-burgundy w-12 h-12 shrink-0 flex items-center justify-center
+                                sm:w-16 sm:h-16 lg:w-20 lg:h-20 sm:mb-2">
+                  <item.Icon className="w-full h-full" stroke={1.5} />
+                </div>
 
-              <div className="flex-1 min-w-0 sm:flex-none sm:w-full">
-                <div className="text-sm font-semibold text-content-primary truncate
-                                sm:text-base sm:whitespace-normal">
-                  {item.title}
+                <div className="flex-1 min-w-0 sm:flex-none sm:w-full">
+                  <div className="text-sm font-semibold text-content-primary truncate
+                                  sm:text-base sm:whitespace-normal">
+                    {item.title}
+                  </div>
+                  <div className="text-xs text-content-muted truncate sm:block sm:mt-0.5">
+                    {item.description}
+                  </div>
                 </div>
-                <div className="text-xs text-content-muted truncate sm:block sm:mt-0.5">
-                  {item.description}
-                </div>
-              </div>
-            </Link>
-          ))}
+              </>
+            );
+
+            return item.href ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cardClassName}
+              >
+                {content}
+              </a>
+            ) : (
+              <Link key={item.to} to={item.to!} className={cardClassName}>
+                {content}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
