@@ -7,6 +7,7 @@ import {
   IconStar,
   IconMessageQuestion,
   IconUserCircle,
+  IconDeviceGamepad2,
 } from '@tabler/icons-react';
 import HeroSection from '../components/HeroSection';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
@@ -53,6 +54,9 @@ const EDU_TOPICS_MAP: Record<string, WorkflowTopic> = {
  * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
  * 統一固定為 text-brand-burgundy，脫離 module-edu/module-recommendation 等
  * 只該用於各自頁面內部語境的變數（PAT-119）。
+ * Phase CB：新增「行前生存挑戰」卡片，導向站內子頁面 `/pretrip-challenge`
+ * （非直接外連），比照既有卡片皆為站內路由的模式；真正的外部連結
+ * （game.stayinde.de）收在該子頁面內部，見 PretripChallenge.tsx。
  */
 const PORTAL_ITEMS = [
   {
@@ -78,6 +82,11 @@ const PORTAL_ITEMS = [
   {
     to: '/board?view=mine&sub=posts', title: '我的資料', description: '管理自己的評價與貼文',
     Icon: IconUserCircle,
+  },
+  {
+    to: '/pretrip-challenge', title: '行前生存挑戰',
+    description: '免費遊戲，完成後有付費電子書購買選項',
+    Icon: IconDeviceGamepad2,
   },
 ];
 
