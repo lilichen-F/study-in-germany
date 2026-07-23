@@ -20,6 +20,7 @@ import VisaSelector from './pages/VisaSelector';
 import VisaMatcher from './pages/VisaMatcher';
 import Recommendation from './pages/Recommendation';
 import RecommendationCategory from './pages/RecommendationCategory';
+import PretripChallenge from './pages/PretripChallenge';
 import Support from './pages/Support';
 import NotFound from './pages/NotFound';
 import { WorkflowProgressProvider } from './lib/WorkflowProgressContext';
@@ -58,6 +59,7 @@ export default function App() {
                 <Route path="/edu/:slug" element={<EduTopic />} />
                 <Route path="/recommendation" element={<Recommendation />} />
                 <Route path="/recommendation/:slug" element={<RecommendationCategory />} />
+                <Route path="/pretrip-challenge" element={<PretripChallenge />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/support" element={<Support />} />
                 <Route path="/my-profile" element={<MyProfile />} />
